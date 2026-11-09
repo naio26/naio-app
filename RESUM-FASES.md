@@ -152,7 +152,7 @@ Important: cada vegada que es torna a carregar, l'app comença de zero (al víde
 - **Alerts**: «Leo asked to join your plan» → el perfil del Leo (els interessos que teniu en comú surten marcats) → **Accept** → «Leo has been accepted…» → «Open temporary chat».
 - **Xat**: escriu alguna cosa i prem la fletxa. Al cap de 2 o 3 segons algú del grup et respon sol.
 - **My plans**: a Upcoming hi ha el teu pla i la caminada de demà a Philopappou (ja hi ets acceptada). A Requests, el Leo. A Past, «Beach walk at Glyfada» (només informació, el xat ja està tancat).
-- **Crear un pla**: prem el «+». Omple l'activitat, tria avui o demà i una hora, les places, l'idioma, la zona, el punt de trobada i l'estat d'ànim, i prem «Post plan» → «Plan posted.» → «View my plan». El pla surt al mapa en color terracota.
+- **Crear un pla**: prem el «+». Omple l'activitat, tria avui o demà i una hora, les places, l'idioma, la zona, el punt de trobada i l'estat d'ànim, i prem «Post plan» → «Plan posted.» → «View my plan». El pla surt al mapa amb una estrella i el text «Your plan» (en verd, com tots els plans, des del 9 de novembre).
 - **Editar i cancel·lar**: al teu pla, «Edit plan» → canvia alguna cosa → «Save changes». Després «Cancel plan» → «Yes, cancel plan» → «Plan cancelled.» → «Go to my plans». El pla desapareix del mapa i de les llistes.
 - **Unir-te a Sunset drinks** (com a la Fase 3) i, quan t'acceptin, «Say hi in the chat»: veuràs la conversa del disseny (la Maya, el Leo, el Jonas) i «You joined the plan».
 - **Profile** → roda dentada → **Settings**:
@@ -182,6 +182,9 @@ Important: cada vegada que es torna a carregar, l'app comença de zero (al víde
 - He instal·lat petites actualitzacions d'Expo (correccions d'errors) perquè l'app segueixi funcionant amb Expo Go.
 - 9 de novembre de 2026: he canviat els textos de les 5 diapositives del vídeo inicial pels que em vas donar (per exemple, «Go off script.»). A l'última, l'etiqueta de dalt és «GO WITH YOUR FLOW» i el títol «And have fun.» (amb la «A» majúscula). El disseny i l'estil no han canviat.
 - Aquest document (`RESUM-FASES.md`) i la seva versió Word (`RESUM-FASES.docx`).
+- **Versió desada a GitHub (9 de novembre de 2026):**
+  - Tot el que hi ha fins ara està desat amb git i pujat a GitHub, a la branca `phases-1-4`: https://github.com/naio26/naio-app/tree/phases-1-4
+  - Les 5 fotos originals del vídeo inicial (uns 120 MB) continuen a la carpeta `assets/Reel` del projecte, però git les ignora i no s'han pujat. L'app fa servir les còpies lleugeres.
 - **Icones més netes (9 de novembre de 2026):**
   - Totes les icones són ara del mateix estil: línia fina (Lucide), de la mateixa mida i gruix a tota l'app.
   - He tret els requadres, cercles i fons que tenien al voltant: ara surten directament sobre el fons, al costat del text. Només els botons de debò semblen botons.
@@ -190,7 +193,7 @@ Important: cada vegada que es torna a carregar, l'app comença de zero (al víde
   - El botó d'enrere ara és una «‹» sense cercle a totes les pantalles.
   - Les icones grans de «You’re in», «Plan posted», «Plan cancelled» i «Request sent» són més grans que la resta, però sense cercle.
 - **Colors més suaus i càlids (9 de novembre de 2026):** el groc mostassa es va provar i després es va canviar per una paleta més suau i harmoniosa:
-  - **Color principal: terracota** `#C66337`, a tots els botons principals, el «+», la pestanya activa i el teu pin al mapa, amb el text en blanc. Cap botó és marró fosc.
+  - **Color principal: terracota** `#C66337`, a tots els botons principals, el «+» i la pestanya activa, amb el text en blanc. Cap botó és marró fosc.
   - **Superfícies suaus i lluminoses:** mantega `#FBEFD3` per als requadres d'informació i les bombolles del xat, préssec pàl·lid `#F8DED0` per a les etiquetes seleccionades, sorra `#EFDCCF` per a les vores.
   - **Detalls:** vores d'etiquetes en terracota clar `#E2A07C`, i etiquetes petites i enllaços en un terracota una mica més intens `#B05430` perquè es llegeixin bé.
   - **Text:** marró càlid `#43312A` (no gairebé negre), i gris càlid `#7D675B` per al text secundari.
@@ -218,8 +221,7 @@ Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan v
 
 ### El que necessito de tu
 
-- **Git:** encara no he desat cap versió a git. Vols que en faci una amb tot el que hi ha fins ara?
-- **Fotos originals del reel:** ocupen 120 MB dins del projecte i l'app no les fa servir. Et proposo treure-les del projecte (o dir a git que les ignori) abans de desar la versió. Em dius si et sembla bé?
+- **Unir la versió desada amb la branca principal:** la versió està desada a GitHub en una branca a part, `phases-1-4`. Quan vulguis, la puc unir amb la branca principal (`main`).
 - **Les decisions de les fases 3 i 4:** el rellotge de prova, el pla «Coffee and a wander?» com a teu, el mapa dibuixat i els camps nous de «Create a plan» (zona i estat d'ànim). Digues-me si en vols canviar alguna.
 - **Textos legals:** les «Terms» i les «Safety Guidelines» encara no tenen text. A «Settings → Terms & privacy» de moment hi ha un resum curt fet per mi. Quan tinguis els textos de debò, me'ls pots passar.
 - **Què fem ara:** com que les quatre fases estan fetes, digues-me què vols fer a continuació (mira «2. Properament»).
