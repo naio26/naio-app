@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Easing, StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icon, type IconName } from '@/components';
 import { BackButton, Button, CornerFrame, Screen, Txt } from '@/components';
 import { checkFace } from '@/data/api';
 import { useProfile } from '@/state/profile';
 import { colors, fonts, radius, space } from '@/theme';
+import { goBack } from '@/components';
 
 const CHECKS = ['One face detected', 'Live camera check', 'Basic anti-fake check'];
 const OVAL_W = 176;
@@ -40,7 +40,7 @@ export default function FaceCheck() {
     setPassed(CHECKS.length);
     setPhase('done');
     update({ photoChecked: true });
-    setTimeout(() => router.back(), 700);
+    setTimeout(() => goBack(), 700);
   };
 
   const caption = { idle: 'Move your face into the oval', checking: 'Hold still…', done: 'Looking good!' }[phase];
@@ -66,7 +66,7 @@ export default function FaceCheck() {
       <View style={styles.hero}>
         <Txt variant="eyebrow">One quick check</Txt>
         <Txt variant="display">Show us it’s really you.</Txt>
-        <Txt>Take a live photo. We’ll check that one real face is present and that it isn’t a photo of a photo.</Txt>
+        <Txt variant="intro">Take a live photo. We’ll check that one real face is present and that it isn’t a photo of a photo.</Txt>
       </View>
 
       <LinearGradient
@@ -109,7 +109,7 @@ export default function FaceCheck() {
         })}
       </View>
 
-      <Txt variant="caption" center style={styles.note}>
+      <Txt variant="note" center style={styles.note}>
         This only confirms that a live face is in front of the camera. It is not matched with your ID; age verification
         happens separately.
       </Txt>
@@ -164,5 +164,5 @@ const styles = StyleSheet.create({
   },
   pill: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   pillText: { fontFamily: fonts.sans, fontSize: 13, color: colors.green },
-  note: { marginTop: space.md, lineHeight: 17 },
+  note: { marginTop: space.md },
 });

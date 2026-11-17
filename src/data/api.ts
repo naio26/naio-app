@@ -1,12 +1,15 @@
 // The single door to all app data. Today it reads mock data; later each function
 // can call Supabase instead, and no screen needs to change.
 import { AREAS } from './catalog';
+import { demoCity } from './mock/city';
 import { people } from './mock/people';
 import { plans } from './mock/plans';
 import { autoReplies, joinedAtStart, messages, notices, pastPlans, requests } from './mock/social';
 import { nowHHMM } from './time';
+import { load, save } from '@/state/storage';
 import {
   Account,
+  City,
   AgeRange,
   DocType,
   JoinRequest,
@@ -19,10 +22,18 @@ import {
   PlanDraft,
 } from './types';
 
-/** Pretend network latency so loading states are visible. */
-const wait = (ms = 600) => new Promise((resolve) => setTimeout(resolve, ms));
+/** Pretend network latency so loading states are visible. Also waits for the saved data to be read. */
+const wait = async (ms = 600) => {
+  await ready;
+  await new Promise((resolve) => setTimeout(resolve, ms));
+};
 
 // ---- Auth (fake) ----
+
+/** The city the user is in (the demo always uses Athens). Later: from the user's real location. */
+export function getCurrentCity(): City {
+  return demoCity;
+}
 
 export const mockAppleAccount = {
   name: 'Alicia Morató',
@@ -56,16 +67,34 @@ export async function signInWithEmail(email: string): Promise<Account> {
 }
 
 // ---- In-memory "database" (demo) ----
-// A changeable copy of the mock data, so creating, editing, accepting and chatting really change things
-// while the app is open. Reloading the app starts again from the mock files.
+// A changeable copy of the mock data, so creating, editing, accepting and chatting really change things.
+// It's also saved on the phone (like a real backend would keep it), so changes survive a reload.
 const clone = <T>(x: T): T => JSON.parse(JSON.stringify(x));
-const db = {
+const fresh = () => ({
   plans: clone(plans),
   requests: clone(requests),
   messages: clone(messages),
   notices: clone(notices),
   blocked: [] as string[],
-};
+});
+let db = fresh();
+const ready: Promise<void> = load<ReturnType<typeof fresh>>('db').then((saved) => {
+  if (saved) db = { ...fresh(), ...saved };
+});
+const persist = () => save('db', db);
+// Bumped by "Reset demo", so replies that were still on their way are dropped.
+let generation = 0;
+
+/** "Reset demo": back to the original mock data (the saved copy is cleared separately). */
+export function resetDemoData() {
+  db = fresh();
+  generation += 1;
+}
+
+export async function listBlocked(): Promise<string[]> {
+  await wait(50);
+  return [...db.blocked];
+}
 let counter = 0;
 const newId = (prefix: string) => `${prefix}-${Date.now().toString(36)}-${(counter++).toString(36)}`;
 
@@ -158,6 +187,7 @@ export async function createPlan(d: PlanDraft): Promise<Plan> {
     d,
   );
   db.plans.push(plan);
+  persist();
   return clone(plan);
 }
 
@@ -165,6 +195,7 @@ export async function updatePlan(id: string, d: PlanDraft): Promise<Plan> {
   await wait(600);
   const i = db.plans.findIndex((p) => p.id === id);
   db.plans[i] = applyDraft(db.plans[i], d);
+  persist();
   return clone(db.plans[i]);
 }
 
@@ -175,6 +206,7 @@ export async function cancelPlan(id: string): Promise<Plan> {
   plan.cancelled = true;
   db.requests = db.requests.filter((r) => r.planId !== id);
   db.messages = db.messages.filter((m) => m.planId !== id);
+  persist();
   return clone(plan);
 }
 
@@ -187,8 +219,10 @@ export async function requestToJoin(planId: string): Promise<{ planId: string; s
 }
 
 /** Demo only: the host "accepts" a few seconds after the request. */
-export async function waitForHostReply(planId: string): Promise<{ planId: string; status: 'accepted' }> {
+export async function waitForHostReply(planId: string): Promise<{ planId: string; status: 'accepted' } | null> {
+  const gen = generation;
   await wait(5000);
+  if (gen !== generation) return null; // "Reset demo" happened meanwhile
   return { planId, status: 'accepted' };
 }
 
@@ -221,6 +255,7 @@ export async function answerJoinRequest(id: string, accept: boolean): Promise<Jo
       time: nowHHMM(),
     });
   }
+  persist();
   return clone(r);
 }
 
@@ -229,6 +264,7 @@ export async function removeFromPlan(planId: string, personId: string): Promise<
   await wait(400);
   const plan = db.plans.find((p) => p.id === planId)!;
   plan.memberIds = plan.memberIds.filter((m) => m !== personId);
+  persist();
   return clone(plan);
 }
 
@@ -243,12 +279,15 @@ export async function sendMessage(planId: string, text: string): Promise<Message
   await wait(200);
   const msg: Message = { id: newId('msg'), planId, authorId: 'me', text: text.trim(), time: nowHHMM() };
   db.messages.push(msg);
+  persist();
   return clone(msg);
 }
 
 /** Demo only: someone in the group answers a couple of seconds later. */
 export async function waitForReply(planId: string, fromIds: string[]): Promise<Message | null> {
+  const gen = generation;
   await wait(2500);
+  if (gen !== generation) return null;
   const others = fromIds.filter((id) => id !== 'me');
   if (!others.length) return null;
   const msg: Message = {
@@ -259,13 +298,16 @@ export async function waitForReply(planId: string, fromIds: string[]): Promise<M
     time: nowHHMM(),
   };
   db.messages.push(msg);
+  persist();
   return clone(msg);
 }
 
 /** A line in a chat like "You joined the plan". */
 export async function addSystemMessage(planId: string, text: string): Promise<Message> {
+  await ready;
   const msg: Message = { id: newId('msg'), planId, authorId: 'system', text, time: nowHHMM() };
   db.messages.push(msg);
+  persist();
   return clone(msg);
 }
 
@@ -277,14 +319,18 @@ export async function listNotices(): Promise<Notice[]> {
 }
 
 export async function addNotice(n: Omit<Notice, 'id' | 'read' | 'minutesAgo'>): Promise<Notice> {
+  await ready;
   const notice: Notice = { ...n, id: newId('notice'), read: false, minutesAgo: 0 };
   db.notices.unshift(notice);
+  persist();
   return clone(notice);
 }
 
 export async function markNoticeRead(id: string): Promise<void> {
+  await ready;
   const n = db.notices.find((x) => x.id === id);
   if (n) n.read = true;
+  persist();
 }
 
 // ---- Safety (43–44) ----
@@ -292,12 +338,14 @@ export async function markNoticeRead(id: string): Promise<void> {
 export async function blockPerson(id: string): Promise<string[]> {
   await wait(300);
   if (!db.blocked.includes(id)) db.blocked.push(id);
+  persist();
   return [...db.blocked];
 }
 
 export async function unblockPerson(id: string): Promise<string[]> {
   await wait(300);
   db.blocked = db.blocked.filter((b) => b !== id);
+  persist();
   return [...db.blocked];
 }
 

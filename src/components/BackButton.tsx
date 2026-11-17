@@ -9,9 +9,18 @@ type Props = {
   color?: string;
 };
 
+/**
+ * Go to the previous screen. If there is none (the app was opened or reloaded on this screen),
+ * go to the start instead, which opens the map or the intro. Never throws "GO_BACK was not handled".
+ */
+export function goBack() {
+  if (router.canGoBack()) router.back();
+  else router.replace('/');
+}
+
 /** A plain "‹", the same on every screen (no circle). */
 export function BackButton({ onPress, color = colors.dark }: Props) {
-  const handlePress = onPress ?? (() => router.back());
+  const handlePress = onPress ?? goBack;
   return (
     <Pressable
       accessibilityRole="button"

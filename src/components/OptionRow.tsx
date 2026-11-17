@@ -63,6 +63,14 @@ const badge = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  strong: { backgroundColor: colors.accentSoft, minWidth: 44, height: 44, borderRadius: 12 },
+  // "Add your level" (17): only a border, no fill.
+  strong: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: colors.accentLine,
+    minWidth: 44,
+    height: 44,
+    borderRadius: 12,
+  },
   text: { fontFamily: fonts.sansMedium, fontSize: 12, color: colors.accent, letterSpacing: 0.5 },
 });

@@ -1,6 +1,6 @@
 // Times in the app. The demo runs on a fixed clock so plans always look "upcoming",
 // whatever time you test at. Swap demoNow() for the real time once there's a backend.
-import { Filters, Plan, PlanDay, TimeWindow } from './types';
+import { Filters, Gender, Plan, PlanDay, TimeWindow } from './types';
 
 /** Demo clock: today at 4:18 PM. */
 export const demoNow = () => ({ day: 'today' as PlanDay, minutes: 16 * 60 + 18 });
@@ -41,10 +41,11 @@ function slot(plan: Plan): TimeWindow {
 }
 
 /** Does a plan pass the filters from screens 23–24? Empty groups mean "anything". */
-export function matchesFilters(plan: Plan, f: Filters) {
+export function matchesFilters(plan: Plan, f: Filters, hostGender?: Gender) {
   if (f.maxKm !== null && plan.distanceKm > f.maxKm) return false;
   if (f.moods.length && !plan.moods.some((m) => f.moods.includes(m))) return false;
   if (f.languages.length && !f.languages.includes(plan.language)) return false;
+  if (f.genders.length && !(hostGender && f.genders.includes(hostGender))) return false;
   if (f.when.length && !(f.when.includes(slot(plan)) || (f.when.includes('now') && isNow(plan)))) return false;
   return true;
 }

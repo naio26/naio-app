@@ -1,6 +1,6 @@
 # Resum de fases — naio.
 
-Última actualització: 9 de novembre de 2026 (textos del vídeo inicial, icones més netes i colors més suaus; les quatre fases estan fetes)
+Última actualització: 17 de novembre de 2026 (retocs de disseny al registre, al perfil i a la verificació d'edat; les quatre fases estan fetes)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -11,7 +11,7 @@ Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falt
 3. Escaneja'l: a l'iPhone amb l'app **Càmera**; a Android amb **Expo Go → Scan QR code**.
 4. Per tornar a carregar l'app després d'un canvi, prem `r` al terminal. Per aturar-ho, prem `Ctrl + C`.
 
-Important: cada vegada que es torna a carregar, l'app comença de zero (al vídeo inicial) i s'oblida del perfil. Encara no es guarda res.
+Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on eres (per exemple, al mapa). Per començar de zero, ves a Profile → ⚙️ Settings → «Reset demo».
 
 ## 1. FET FINS ARA
 
@@ -208,12 +208,86 @@ Important: cada vegada que es torna a carregar, l'app comença de zero (al víde
   - A dalt del mapa hi ha una petita llegenda amb els dos punts de color.
   - El disseny 25 no tenia aquesta llegenda: l'he fet seguint la teva descripció.
 
+- **El progrés es guarda al mòbil (9 de novembre de 2026):**
+  - Ara l'app recorda el que has fet encara que la tanquis o la tornis a carregar:
+    - qui ha entrat;
+    - el teu perfil;
+    - els filtres;
+    - els plans on t'has apuntat o has demanat entrar;
+    - els plans que has creat, editat o cancel·lat;
+    - el Leo acceptat, els xats, els avisos, les persones bloquejades i les opcions de Settings.
+  - **On s'obre l'app:**
+    - Si ja havies creat el perfil, va directament al **mapa**.
+    - Si només havies entrat (Apple, Google o correu) però no havies acabat el perfil, va a **«Your profile»**.
+    - Si encara no havies fet res, va al **vídeo inicial**.
+  - Si tanques l'app mentre esperes que t'acceptin en un pla, en tornar-la a obrir l'organitzador t'accepta igualment al cap d'uns segons.
+  - **Nova opció «Reset demo»** a **Profile → ⚙️ Settings**, a sota de tot (secció «Demo»). Et demana confirmació («Keep» / «Reset»). Després esborra tot el que s'ha guardat al mòbil i torna a començar des del vídeo inicial.
+  - Tot es guarda només al teu mòbil, sense cap servei extern.
+  - **Com provar-ho al mòbil:**
+    1. Fes el perfil fins al mapa, posa un filtre i apunta't a un pla.
+    2. Tanca Expo Go del tot (o prem `r` al terminal) i torna a obrir l'app: has de tornar al mapa amb tot igual.
+    3. Després prova «Reset demo» per tornar a començar.
+
+- **Retocs al registre i al perfil, i nou camp «Gender» (16 de novembre de 2026):**
+  - **Vídeo inicial, diapositiva 2:** «Pick one or create your own.» ara comença en una línia nova.
+  - **Entrar amb Apple i amb Google:** he tret el requadre groc. El text explicatiu («naio will receive your name and email address. You can change profile visibility inside naio.») ara va sense fons, petit, sense negreta i centrat. Les dues pantalles tenen exactament el mateix estil.
+  - **Apple:** «Hide my email» es manté, una mica més avall i una mica més petit.
+  - **«Your profile»:**
+    - A dalt només hi diu «Your profile» (he tret «Takes one minute»). Quan edites el perfil més tard, a dalt continua posant «EDIT».
+    - El cercle de la foto: el text de dins («Add your photo *», «Required · selfie check») és més petit i queda ben dins del cercle.
+    - Totes les caselles són iguals: vora fina i la mateixa fletxeta petita (⌄) a la dreta. Ja no hi ha el «+».
+    - **Nou camp «Gender»** a sota d'«Age range»: en tocar-lo s'obre una llista amb Male, Female i Other. És obligatori per crear el perfil.
+    - «+ Add more about you» es queda igual.
+    - La frase de sota de tot està centrada i més separada de «+ Add more about you».
+    - «Optional profile details» ara és del mateix color terracota que «+ Add more about you».
+  - **Nou filtre «Who’s hosting?»** a Filters: pots triar Male, Female i/o Other per veure només els plans d'organitzadors d'aquest gènere. Si no en tries cap, surten tots. El teu pla sempre surt.
+  - **Text explicatiu igual a tot arreu:** la mateixa mida petita (13) a les pantalles d'entrar, al perfil i a les següents (selfie, foto del document, idiomes).
+  - He instal·lat petites actualitzacions d'Expo (correccions d'errors).
+  - **Què has de mirar al mòbil:**
+    1. A la segona diapositiva del vídeo, «Pick one…» comença a la línia de sota.
+    2. A «Sign in with Apple» i «Sign in with Google», el text de sota no té fons i està centrat.
+    3. A «Your profile», tria un gènere: el botó del final no s'activa fins que l'hagis triat.
+    4. Al mapa, obre Filters i tria «Female» a «Who’s hosting?»: només queden els plans de la Nora i la Sofia (i el teu).
+  - **Decisions:** el filtre mira el gènere de qui organitza el pla. Si prefereixes una altra cosa (per exemple, el gènere de les persones apuntades), m'ho dius.
+
+- **Retocs de disseny (17 de novembre de 2026):**
+  - **Regla general:** els textos d'ajuda petits sota els títols («We show a range…», «Use a clear…», «Choose…», «Select 3–8…») ara són una mica més petits i tots de la mateixa mida a tota l'app.
+  - **Sign in with Apple:** «Hide my email» i la seva explicació ara van dins d'un requadre propi de color préssec suau, separat de la targeta del compte. Més espai entre les seccions (també a Google).
+  - **Your profile:** el que has omplert dins de cada casella ja no surt en negreta. Els idiomes surten un per línia, amb el nivell en cursiva i color terracota (per exemple «English · *Native*»).
+  - **Choose your age range:** el text de dalt és més petit. El requadre de sota té les cantonades gairebé rectes i un color més clar.
+  - **Verify your range:** el requadre «Selected range» té les cantonades més petites i és més baix. La frase «Use an official document…» és més petita i centrada. «Add the photo page» ara és blanc amb vora fina, com les opcions de document, i «What naio checks» ara no té fons i té la vora discontínua.
+  - **Add your ID i Upload ID photo:** el text de dalt és més petit. «Before you continue» ara diu **«Make sure your ID photo is clear»**.
+  - **What are you into?:** «Select 3–8…» més petit.
+  - **Languages you speak:** la lupa ara surt dins del camp de cerca, al principi. **Add your level:** el requadre amb el codi de l'idioma (per exemple «EN») ja no té fons, només vora.
+  - **About me:** el text d'exemple ara diu «A line or two: what you do, what you love, who you are.»
+  - **Your situation:** «Living locally» ara es diu **«Local»** (si ja ho tenies triat, es canvia sol). El requadre groc de sota ara és text sense fons i centrat.
+
+- **La ciutat ja no està escrita a mà (16 de novembre de 2026):**
+  - Ara hi ha un sol lloc on es guarda «la ciutat on ets» (de moment sempre Athens). Tots els textos la fan servir: «Welcome to Athens.», el mapa, «Exploring Athens» al perfil, «How are you experiencing Athens?», el missatge per compartir del Safety centre i el «In Athens for 4 days» de la Maya.
+  - Més endavant, quan l'app faci servir la ubicació real, només caldrà canviar aquest lloc i tots els textos es posaran al dia sols. De moment no fa servir la ubicació real.
+  - Al telèfon no es veu cap canvi: continua posant Athens.
+
+- **Arreglat: l'app es quedava a les pantalles del perfil (16 de novembre de 2026):**
+  - **Què passava:** si havies entrat (Apple, Google o correu) però no havies acabat el perfil, en tornar a obrir l'app anava directament a «Your profile». Aquesta pantalla quedava com la primera, sense res al darrere: el botó «‹» no tenia on tornar i sortia l'error «The action 'GO_BACK' was not handled by any navigator». I com que el perfil no estava acabat, no podies arribar al mapa.
+  - **Què he canviat:**
+    - Fins que no acabes el perfil, l'app **sempre comença pel vídeo inicial**. Quan l'acabes («Create profile»), s'obre directament al **mapa**.
+    - El que ja havies omplert del perfil es guarda igualment.
+    - Tots els botons d'enrere i «Cancel» ara són segurs: si no hi ha pantalla anterior (per exemple, després de recarregar l'app), tornen a l'inici en lloc de donar error.
+  - **Provat de cap a peus** en un navegador de proves: vídeo inicial, registre amb Google i Apple, tot el perfil (selfie, edat i document, gènere, idiomes, interessos), la benvinguda, el mapa, les 5 pestanyes, filtres, apuntar-se a un pla, xat, el teu pla (editar, grup, xat, cancel·lar), la sol·licitud del Leo, crear un pla, Settings, Safety centre i «Reset demo». Tots els botons d'enrere funcionen i no surt cap error.
+
+- **Versió de prova publicada amb EAS Update (9 de novembre de 2026):**
+  - Ara pots obrir l'app al teu iPhone amb Expo Go **sense que el Codespace estigui obert**.
+  - El projecte és al teu compte d'Expo: https://expo.dev/accounts/naioali/projects/naio
+  - **Com obrir-la:** escaneja amb la Càmera de l'iPhone el codi QR de `docs/expo-go-preview-qr.png` (o toca l'enllaç de `docs/PREVIEW.md` des del mòbil). S'obre a Expo Go.
+  - **L'enllaç i el QR no canvien mai.** Quan et publiqui una versió nova, només cal tancar l'app del tot i tornar-la a obrir (de vegades cal fer-ho dues vegades).
+  - Quan vulguis una versió nova, digues-me «publish a new preview».
+  - Nota: Expo no explica oficialment aquesta manera d'obrir actualitzacions a Expo Go. Des d'aquí he comprovat que el servidor d'Expo serveix bé l'app, però el pas final s'ha de confirmar al teu iPhone.
+
 ## 2. PROPERAMENT
 
 Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan vulguis, podem decidir junts què ve ara. Algunes idees (cap no està decidida):
 
 - Repassar l'app sencera amb tu i ajustar el que no t'agradi.
-- Guardar el perfil al mòbil, perquè no calgui refer-lo cada vegada que es torna a carregar l'app.
 - Més endavant, connectar-la a una base de dades real (Supabase), perquè els plans, els xats i els perfils siguin de debò i es comparteixin entre persones.
 - Preparar-la per publicar-la a l'App Store i a Google Play. Això necessitaria comptes de desenvolupador, que són de pagament.
 
@@ -238,4 +312,4 @@ Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan v
 - **Els avisos:** només surten dins de l'app, a la pestanya Alerts. No arriba cap notificació al mòbil.
 - **Les denúncies i els bloquejos:** no s'envien enlloc. Només canvien el que veus a l'app.
 - **Compartir el pla:** fa servir el menú de compartir del mòbil, i no passa per cap servei de naio.
-- **Les dades:** la gent i els plans són inventats. El que fas (crear plans, acceptar el Leo, escriure al xat…) es manté mentre l'app està oberta, però si la tornes a carregar tot torna a començar. Més endavant es pot connectar a una base de dades real (Supabase).
+- **Les dades:** la gent i els plans són inventats. El que fas (crear plans, acceptar el Leo, escriure al xat…) es guarda només al teu mòbil: no ho veu ningú més. Amb «Reset demo» ho esborres tot. Més endavant es pot connectar a una base de dades real (Supabase).

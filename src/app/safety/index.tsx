@@ -3,12 +3,14 @@ import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
 import { Screen, ScreenHeader, Txt } from '@/components';
 import { planWhen, toMinutes } from '@/data/time';
+import { useCity } from '@/state/city';
 import { usePlans } from '@/state/plans';
 import { colors, fonts, radius, space } from '@/theme';
 
 // Screen 44 — Safety centre.
 export default function SafetyCentre() {
   const { plans, statusOf } = usePlans();
+  const city = useCity();
   // Your next plan where you know the exact point (you host it or you've been accepted).
   const next = plans
     .filter((p) => ['host', 'accepted'].includes(statusOf(p)))
@@ -18,8 +20,8 @@ export default function SafetyCentre() {
   const share = () =>
     Share.share({
       message: next
-        ? `I'm meeting people from naio. — ${next.title}, ${planWhen(next)} at ${next.exactPoint} (${next.area}, Athens).`
-        : "I'm using naio. to meet people in Athens. I'll share my plan details when I have one.",
+        ? `I'm meeting people from naio. — ${next.title}, ${planWhen(next)} at ${next.exactPoint} (${next.area}, ${city.name}).`
+        : `I'm using naio. to meet people in ${city.name}. I'll share my plan details when I have one.`,
     });
 
   const rows: { icon: IconName; title: string; sub: string; onPress: () => void }[] = [
@@ -80,7 +82,13 @@ export default function SafetyCentre() {
 }
 
 const styles = StyleSheet.create({
-  hero: { backgroundColor: colors.accentDeep, borderRadius: radius.lg + 8, padding: 28, gap: 14, marginBottom: space.sm },
+  hero: {
+    backgroundColor: colors.accentDeep,
+    borderRadius: radius.lg + 8,
+    padding: 28,
+    gap: 14,
+    marginBottom: space.sm,
+  },
   heroTitle: { fontFamily: fonts.serif, fontSize: 38, lineHeight: 44, color: colors.white },
   heroText: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: 'rgba(255,255,255,0.75)' },
   row: {

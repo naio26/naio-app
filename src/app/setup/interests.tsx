@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
 import { Button, Screen, ScreenHeader, Txt } from '@/components';
 import { INTERESTS, MAX_INTERESTS, MIN_INTERESTS } from '@/data/catalog';
 import { useProfile } from '@/state/profile';
 import { colors, fonts, radius, space } from '@/theme';
+import { goBack } from '@/components';
 
 // Screen 18 — 3 to 8 interests. They show up on your profile as "My kind of plans".
 export default function Interests() {
@@ -18,7 +18,7 @@ export default function Interests() {
 
   const save = () => {
     update({ interests: picked });
-    router.back();
+    goBack();
   };
 
   const short = MIN_INTERESTS - picked.length;
@@ -42,7 +42,7 @@ export default function Interests() {
         </View>
       }
     >
-      <Txt>Select 3–8 interests. The ones you choose will appear together on your profile.</Txt>
+      <Txt variant="intro">Select 3–8 interests. The ones you choose will appear together on your profile.</Txt>
       <View style={styles.grid}>
         {INTERESTS.map((i) => {
           const on = picked.includes(i);

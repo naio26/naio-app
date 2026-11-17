@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, View } from 'react-native';
+import { useCity } from '@/state/city';
 import { colors, fonts } from '@/theme';
 import { Txt } from './Txt';
 
@@ -41,9 +42,10 @@ const areas = [
 
 /** A hand-drawn style map of central Athens. Pins go on top as children. */
 export function FakeMap({ children, onPressMap }: { children?: React.ReactNode; onPressMap?: () => void }) {
+  const city = useCity();
   return (
     <View style={styles.map}>
-      <Pressable accessibilityLabel="Map of Athens" onPress={onPressMap} style={StyleSheet.absoluteFill}>
+      <Pressable accessibilityLabel={`Map of ${city.name}`} onPress={onPressMap} style={StyleSheet.absoluteFill}>
         {parks.map((p) => (
           <View key={p.name} style={[styles.blob, styles.park, blob(p)]} />
         ))}
@@ -60,7 +62,7 @@ export function FakeMap({ children, onPressMap }: { children?: React.ReactNode; 
             {a.name}
           </Txt>
         ))}
-        <Txt style={styles.city}>Athens</Txt>
+        <Txt style={styles.city}>{city.name}</Txt>
       </Pressable>
       {children}
     </View>

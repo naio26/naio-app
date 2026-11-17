@@ -31,7 +31,7 @@ export default function LanguageLevels() {
       footer={
         <View style={{ gap: 8 }}>
           {hint && (
-            <Txt variant="caption" center>
+            <Txt variant="note" center>
               {hint}
             </Txt>
           )}
@@ -39,7 +39,7 @@ export default function LanguageLevels() {
         </View>
       }
     >
-      <Txt>Choose one native language and set the level for every other language you speak.</Txt>
+      <Txt variant="intro">Choose one native language and set the level for every other language you speak.</Txt>
 
       {langs.map((l) => {
         const isOpen = open === l.code;

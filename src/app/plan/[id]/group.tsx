@@ -33,7 +33,7 @@ export default function ManageGroup() {
       </View>
       <View style={{ gap: 10 }}>
         <Txt variant="h1">Manage group</Txt>
-        <Txt>Only the host can remove someone from the plan.</Txt>
+        <Txt variant="intro">Only the host can remove someone from the plan.</Txt>
       </View>
 
       {!isHost && <Txt>Only {plan.title}’s host can see this page.</Txt>}

@@ -18,6 +18,7 @@ import { useLoad } from '@/data/hooks';
 import { JoinRequest, JoinStatus, Plan, PlanDraft } from '@/data/types';
 import { useAlerts } from './alerts';
 import { useChat } from './chat';
+import { KEYS, useSaved } from './storage';
 
 /** Your relation to a plan: 'host' for your own plans, otherwise none → requested → accepted. */
 export type MyStatus = JoinStatus | 'host';
@@ -41,38 +42,40 @@ type PlansState = {
 
 const PlansContext = createContext<PlansState | null>(null);
 
-/** All plans, your joins and requests to your plans. In memory only, like the rest of the demo. */
-export function PlansProvider({ children }: { children: ReactNode }) {
+/** Your join statuses, saved on the phone. */
+export type SavedPlans = Record<string, JoinStatus>;
+
+/** All plans, your joins and requests to your plans. Saved on the phone (statuses here, the rest in api.ts). */
+export function PlansProvider({ children, initial }: { children: ReactNode; initial?: SavedPlans }) {
   const alerts = useAlerts();
   const chat = useChat();
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loaded, setLoaded] = useState(false);
-  const [status, setStatus] = useState<Record<string, JoinStatus>>({});
+  const [status, setStatus] = useState<Record<string, JoinStatus>>(initial ?? {});
+  useSaved(KEYS.plans, status);
   const [requests, setRequests] = useState<JoinRequest[]>([]);
   // Latest statuses for the async host reply below (state inside it would be stale).
   const latest = useRef(status);
   latest.current = status;
+  // After "Reset demo" this store is replaced: late replies must not touch it.
+  const alive = useRef(true);
+  useEffect(
+    () => () => {
+      alive.current = false;
+    },
+    [],
+  );
 
   const refresh = useCallback(async () => {
     setPlans(await listPlans());
     setLoaded(true);
   }, []);
 
-  useEffect(() => {
-    refresh();
-    listJoinRequests().then(setRequests);
-    listMyJoinedPlans().then((ids) =>
-      setStatus((s) => ({ ...Object.fromEntries(ids.map((id) => [id, 'accepted'])), ...s })),
-    );
-  }, [refresh]);
-
-  const requestJoin = useCallback(
-    async (planId: string) => {
-      const res = await requestToJoin(planId);
-      setStatus((s) => ({ ...s, [planId]: res.status }));
-      // Demo: the host accepts a few seconds later, unless you cancelled meanwhile.
+  // Demo: the host accepts a few seconds after your request, unless you cancelled meanwhile.
+  const awaitHost = useCallback(
+    (planId: string) => {
       waitForHostReply(planId).then(async (reply) => {
-        if (latest.current[planId] !== 'requested') return;
+        if (!reply || !alive.current || latest.current[planId] !== 'requested') return;
         setStatus((s) => ({ ...s, [planId]: reply.status }));
         const plan = await getPlan(planId);
         const [host] = plan ? await listPeople([plan.hostId]) : [];
@@ -87,6 +90,33 @@ export function PlansProvider({ children }: { children: ReactNode }) {
       });
     },
     [alerts, chat],
+  );
+
+  useEffect(() => {
+    refresh();
+    listJoinRequests().then(setRequests);
+    if (initial) {
+      // Reopening the app while a request was waiting: the host answers again a few seconds later.
+      Object.entries(initial)
+        .filter(([, st]) => st === 'requested')
+        .forEach(([id]) => awaitHost(id));
+    } else {
+      // First start: the plans you're already in.
+      listMyJoinedPlans().then((ids) =>
+        setStatus((s) => ({ ...Object.fromEntries(ids.map((id) => [id, 'accepted'])), ...s })),
+      );
+    }
+    // Only once, when the app starts.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const requestJoin = useCallback(
+    async (planId: string) => {
+      const res = await requestToJoin(planId);
+      setStatus((s) => ({ ...s, [planId]: res.status }));
+      awaitHost(planId);
+    },
+    [awaitHost],
   );
 
   const cancelRequest = useCallback(async (planId: string) => {

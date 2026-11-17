@@ -1,5 +1,5 @@
 export { Avatar } from './Avatar';
-export { BackButton } from './BackButton';
+export { BackButton, goBack } from './BackButton';
 export { Button } from './Button';
 export { Card } from './Card';
 export { Chip } from './Chip';

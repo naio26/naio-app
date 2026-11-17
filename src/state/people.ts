@@ -12,6 +12,7 @@ export function useMe(): Person {
     firstName: name,
     initials: name.charAt(0).toUpperCase(),
     ageRange: profile.ageRange ?? AGE_RANGES[0],
+    gender: profile.gender,
     verified: profile.ageVerified,
     from: profile.from,
     situation: profile.situation,

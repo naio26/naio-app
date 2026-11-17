@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { draftFromPlan, PlanForm, Screen } from '@/components';
+import { draftFromPlan, goBack, PlanForm, Screen } from '@/components';
 import { usePlan, usePlans } from '@/state/plans';
 
 // Screen 32 — change your plan.
@@ -16,7 +16,7 @@ export default function EditPlan() {
       minSpots={membersOf(plan).length - 1}
       onSubmit={async (d) => {
         await updatePlan(id, d);
-        router.back();
+        goBack();
       }}
     />
   );

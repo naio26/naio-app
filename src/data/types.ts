@@ -4,6 +4,10 @@
 export const AGE_RANGES = ['18-24', '25-30', '31-39', '40-45', '46-49', '50+'] as const;
 export type AgeRange = (typeof AGE_RANGES)[number];
 
+/** Gender options on the profile (09) and in the filters. */
+export const GENDERS = ['Male', 'Female', 'Other'] as const;
+export type Gender = (typeof GENDERS)[number];
+
 export type LanguageLevel = 'Native' | 'Fluent' | 'Conversational' | 'Learning';
 
 export type Language = {
@@ -12,7 +16,10 @@ export type Language = {
   level?: LanguageLevel;
 };
 
-export type Situation = 'Living locally' | 'New in town' | 'Travelling solo' | 'Staying temporarily';
+export type Situation = 'Local' | 'New in town' | 'Travelling solo' | 'Staying temporarily';
+
+/** The city the user is in. Only the name is shown in texts. */
+export type City = { name: string; country: string };
 
 export type AuthProvider = 'apple' | 'google' | 'email';
 
@@ -29,6 +36,7 @@ export type Person = {
   firstName: string;
   initials: string;
   ageRange: AgeRange;
+  gender?: Gender;
   verified: boolean;
   from?: string; // "Valencia, Spain"
   situation?: Situation;
@@ -134,6 +142,7 @@ export type MyProfile = {
   firstName: string;
   ageRange?: AgeRange;
   ageVerified: boolean; // ID checked against the range (screens 12–15)
+  gender?: Gender;
   languages: Language[];
   interests: string[]; // 3–8
   situation?: Situation;
@@ -157,4 +166,5 @@ export type Filters = {
   moods: string[]; // empty = any mood
   languages: string[]; // empty = any language
   when: TimeWindow[]; // empty = any time
+  genders: Gender[]; // host's gender, empty = anyone
 };

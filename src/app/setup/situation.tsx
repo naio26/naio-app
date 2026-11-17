@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
-import { Button, InfoBox, Screen, ScreenHeader, Txt } from '@/components';
+import { Button, Screen, ScreenHeader, Txt } from '@/components';
 import { SITUATIONS } from '@/data/catalog';
 import { Situation } from '@/data/types';
 import { useProfile } from '@/state/profile';
 import { colors, fonts, radius, space } from '@/theme';
+import { goBack } from '@/components';
 
 const icons: Record<Situation, IconName> = {
-  'Living locally': 'home',
+  'Local': 'home',
   'New in town': 'compass',
   'Travelling solo': 'backpack',
   'Staying temporarily': 'luggage',
@@ -32,12 +32,12 @@ export default function SituationScreen() {
           disabled={!picked}
           onPress={() => {
             update({ situation: picked });
-            router.back();
+            goBack();
           }}
         />
       }
     >
-      <Txt>
+      <Txt variant="intro">
         Choose the option that best describes how you’re experiencing this place right now. You can change it anytime.
       </Txt>
       <View style={styles.grid}>
@@ -57,7 +57,9 @@ export default function SituationScreen() {
           );
         })}
       </View>
-      <InfoBox text="Your situation gives context to your profile. It does not change who can see you or which plans appear." />
+      <Txt variant="note" center>
+        Your situation gives context to your profile. It does not change who can see you or which plans appear.
+      </Txt>
     </Screen>
   );
 }

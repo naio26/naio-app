@@ -51,6 +51,10 @@ export const type = {
   body: { fontFamily: fonts.sans, fontSize: 16, lineHeight: 23, color: colors.muted },
   bodyStrong: { fontFamily: fonts.sansBold, fontSize: 16, lineHeight: 22, color: colors.dark },
   small: { fontFamily: fonts.sans, fontSize: 13, lineHeight: 18, color: colors.muted },
+  /** Helper text under a screen title ("We show a range…", "Select 3–8…"): the same size on every screen. */
+  intro: { fontFamily: fonts.sans, fontSize: 14, lineHeight: 20, color: colors.muted },
+  /** Explanatory sentences (sign-in, profile setup): small, regular, no box. */
+  note: { fontFamily: fonts.sans, fontSize: 13, lineHeight: 19, color: colors.muted },
   caption: { fontFamily: fonts.sans, fontSize: 12, lineHeight: 16, color: colors.muted },
   button: { fontFamily: fonts.sansBold, fontSize: 18, lineHeight: 22 },
 } satisfies Record<string, TextStyle>;

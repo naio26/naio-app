@@ -19,6 +19,7 @@ export const colors = {
 
   // Soft surfaces
   mist: '#FBEFD3', // butter: info boxes, received chat bubbles, small badges
+  mistLight: '#FDF6E6', // lighter butter: the age-range info box
   blush: '#FBE9DD', // pale peach band on plan details
   border: '#EFDCCF', // sand: card and field borders
 

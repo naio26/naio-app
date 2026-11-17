@@ -21,7 +21,7 @@ const slides = [
   {
     eyebrow: 'Your mood sets the map',
     title: 'Join a plan.',
-    body: 'Coffee in 20 minutes? A sunset swim? Pick one or create your own.',
+    body: 'Coffee in 20 minutes? A sunset swim?\nPick one or create your own.',
     photo: require('../../../assets/images/reel/02.jpg'),
   },
   {

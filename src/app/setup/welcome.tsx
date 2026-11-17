@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Logo, Txt } from '@/components';
-import { CITY } from '@/data/catalog';
+import { useCity } from '@/state/city';
 import { useProfile } from '@/state/profile';
 import { colors, fonts, space } from '@/theme';
 
@@ -12,6 +12,7 @@ const STAY_MS = 3200;
 
 // Screen 21 — a short welcome that moves on to the map by itself (tap to skip).
 export default function Welcome() {
+  const city = useCity();
   const insets = useSafeAreaInsets();
   const { profile } = useProfile();
   const intro = useRef(new Animated.Value(0)).current;
@@ -70,7 +71,7 @@ export default function Welcome() {
           <Txt style={styles.hi}>Hi {profile.firstName || 'there'}!</Txt>
           <Txt style={styles.big}>
             Welcome to{'\n'}
-            <Txt style={[styles.big, { color: colors.brandInk }]}>{CITY}.</Txt>
+            <Txt style={[styles.big, { color: colors.brandInk }]}>{city.name}.</Txt>
           </Txt>
         </Animated.View>
 

@@ -11,6 +11,8 @@ type Props = {
   value?: string;
   /** Small line under the value, e.g. "Verified". */
   note?: ReactNode;
+  /** Custom content instead of the plain value text (languages list on screen 09). */
+  valueContent?: ReactNode;
   icon?: IconName;
   /** Terracotta border to draw attention (languages and interests on screen 09). */
   highlight?: boolean;
@@ -18,7 +20,7 @@ type Props = {
 };
 
 /** A tappable field that opens another screen (age range, languages, interests on screen 09). */
-export function SelectField({ label, placeholder, value, note, icon = 'chevron-down', highlight, onPress }: Props) {
+export function SelectField({ label, placeholder, value, valueContent, note, icon = 'chevron-down', highlight, onPress }: Props) {
   return (
     <View style={styles.wrap}>
       <Txt variant="section">{label}</Txt>
@@ -29,9 +31,13 @@ export function SelectField({ label, placeholder, value, note, icon = 'chevron-d
         style={({ pressed }) => [styles.box, highlight && !value && styles.highlight, pressed && { opacity: 0.75 }]}
       >
         <View style={{ flex: 1, gap: 2 }}>
-          <Txt numberOfLines={2} style={[styles.text, value ? styles.value : styles.placeholder]}>
-            {value ?? placeholder}
-          </Txt>
+          {value && valueContent ? (
+            valueContent
+          ) : (
+            <Txt numberOfLines={2} style={[styles.text, value ? styles.value : styles.placeholder]}>
+              {value ?? placeholder}
+            </Txt>
+          )}
           {note}
         </View>
         <Icon name={icon} color={highlight ? colors.accent : colors.muted} />
@@ -56,6 +62,6 @@ const styles = StyleSheet.create({
   },
   highlight: { borderColor: colors.accentLine, borderWidth: 1.5 },
   text: { fontSize: 16, lineHeight: 22 },
-  value: { fontFamily: fonts.sansBold, color: colors.dark },
+  value: { fontFamily: fonts.sans, color: colors.dark },
   placeholder: { fontFamily: fonts.sans, color: colors.muted },
 });

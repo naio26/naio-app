@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
-import { Button, Chip, InfoBox, Screen, ScreenHeader, Txt } from '@/components';
+import { Button, Chip, goBack, InfoBox, Screen, ScreenHeader, Txt } from '@/components';
 import { DISTANCES, LANGUAGES, MOODS, SUGGESTED_PLAN_LANGUAGES } from '@/data/catalog';
-import { Filters, TimeWindow } from '@/data/types';
+import { Filters, Gender, GENDERS, TimeWindow } from '@/data/types';
 import { NO_FILTERS, useFilters } from '@/state/filters';
 import { colors, fonts, radius, space } from '@/theme';
 
@@ -68,7 +67,7 @@ export default function FiltersSheet() {
           arrow
           onPress={() => {
             setFilters(draft);
-            router.back();
+            goBack();
           }}
         />
       }
@@ -105,6 +104,24 @@ export default function FiltersSheet() {
               label={m}
               selected={draft.moods.includes(m)}
               onPress={() => set({ moods: toggle(draft.moods, m) })}
+            />
+          ))}
+        </View>
+      </View>
+
+      {/* Gender of the person hosting the plan */}
+      <View style={styles.section}>
+        <Txt variant="question">Who’s hosting?</Txt>
+        <Txt variant="caption" style={{ marginTop: -6 }}>
+          Leave empty to see plans from everyone.
+        </Txt>
+        <View style={styles.chips}>
+          {GENDERS.map((g) => (
+            <Chip
+              key={g}
+              label={g}
+              selected={draft.genders.includes(g)}
+              onPress={() => set({ genders: toggle<Gender>(draft.genders, g) })}
             />
           ))}
         </View>

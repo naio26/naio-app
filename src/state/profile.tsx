@@ -1,6 +1,9 @@
 import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
 import { MIN_INTERESTS } from '@/data/catalog';
 import { DocType, MyProfile } from '@/data/types';
+import { KEYS, useSaved } from './storage';
+
+export type SavedProfile = { profile: MyProfile; created: boolean };
 
 /** An ID photo taken or uploaded during the age check (never shown to other people). */
 export type IdPhoto = { source: 'camera' | 'upload' } | null;
@@ -30,14 +33,21 @@ const empty: MyProfile = {
   about: '',
 };
 
+/** Profiles saved by older versions: "Living locally" is now called "Local". */
+function upgrade(p: MyProfile): MyProfile {
+  return (p.situation as string) === 'Living locally' ? { ...p, situation: 'Local' } : p;
+}
+
 const ProfileContext = createContext<ProfileState | null>(null);
 
-/** Your own profile while you set it up. In memory only for now (Supabase later). */
-export function ProfileProvider({ children }: { children: ReactNode }) {
-  const [profile, setProfile] = useState<MyProfile>(empty);
+/** Your own profile. Saved on the phone (Supabase later). */
+export function ProfileProvider({ children, initial }: { children: ReactNode; initial?: SavedProfile }) {
+  const [profile, setProfile] = useState<MyProfile>(() => upgrade(initial?.profile ?? empty));
   const [docType, setDocType] = useState<DocType>('National ID');
   const [idPhoto, setIdPhoto] = useState<IdPhoto>(null);
-  const [created, setCreated] = useState(false);
+  const [created, setCreated] = useState(initial?.created ?? false);
+  const saved = useMemo(() => ({ profile, created }), [profile, created]);
+  useSaved(KEYS.profile, saved);
 
   const update = useCallback((changes: Partial<MyProfile>) => setProfile((p) => ({ ...p, ...changes })), []);
 
@@ -46,6 +56,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     if (!profile.photoChecked) missing.push('photo');
     if (!profile.firstName.trim()) missing.push('first name');
     if (!profile.ageVerified) missing.push('verified age range');
+    if (!profile.gender) missing.push('gender');
     if (profile.languages.length === 0) missing.push('languages');
     if (profile.interests.length < MIN_INTERESTS) missing.push('interests');
     return { profile, update, docType, setDocType, idPhoto, setIdPhoto, created, setCreated, missing };

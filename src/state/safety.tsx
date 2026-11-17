@@ -1,5 +1,6 @@
-import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
-import { blockPerson, unblockPerson } from '@/data/api';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { blockPerson, listBlocked, unblockPerson } from '@/data/api';
+import { KEYS, useSaved } from './storage';
 
 export type LocationMode = 'approximate' | 'hidden-until-joined';
 export type NotifyPrefs = { joins: boolean; matches: boolean; messages: boolean };
@@ -19,12 +20,19 @@ type SafetyState = {
 
 const SafetyContext = createContext<SafetyState | null>(null);
 
-/** Settings and safety choices (43–44). In memory only. */
-export function SafetyProvider({ children }: { children: ReactNode }) {
+export type SavedSafety = { offline: boolean; locationMode: LocationMode; prefs: NotifyPrefs };
+
+/** Settings and safety choices (43–44). Saved on the phone; blocked people live in api.ts. */
+export function SafetyProvider({ children, initial }: { children: ReactNode; initial?: SavedSafety }) {
   const [blocked, setBlocked] = useState<string[]>([]);
-  const [offline, setOffline] = useState(false);
-  const [locationMode, setLocationMode] = useState<LocationMode>('approximate');
-  const [prefs, setPrefs] = useState<NotifyPrefs>({ joins: true, matches: true, messages: true });
+  const [offline, setOffline] = useState(initial?.offline ?? false);
+  const [locationMode, setLocationMode] = useState<LocationMode>(initial?.locationMode ?? 'approximate');
+  const [prefs, setPrefs] = useState<NotifyPrefs>(initial?.prefs ?? { joins: true, matches: true, messages: true });
+  const saved = useMemo(() => ({ offline, locationMode, prefs }), [offline, locationMode, prefs]);
+  useSaved(KEYS.safety, saved);
+  useEffect(() => {
+    listBlocked().then(setBlocked);
+  }, []);
 
   const block = useCallback(async (id: string) => setBlocked(await blockPerson(id)), []);
   const unblock = useCallback(async (id: string) => setBlocked(await unblockPerson(id)), []);

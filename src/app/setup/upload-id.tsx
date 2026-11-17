@@ -30,7 +30,7 @@ export default function UploadId() {
       contentStyle={styles.content}
       footer={<Button title="Use this photo" arrow disabled={state !== 'ready'} onPress={use} />}
     >
-      <Txt>Choose a clear image showing your portrait and date of birth.</Txt>
+      <Txt variant="intro">Choose a clear image showing your portrait and date of birth.</Txt>
 
       <Pressable
         accessibilityRole="button"
@@ -64,11 +64,11 @@ export default function UploadId() {
       )}
 
       <InfoBox
-        title="Before you continue"
+        title="Make sure your ID photo is clear"
         checks={['Text is sharp and readable', 'No glare covers your photo or date of birth']}
       />
 
-      <Txt variant="caption" center>
+      <Txt variant="note" center>
         Encrypted during verification and removed after the result is recorded.
       </Txt>
     </Screen>

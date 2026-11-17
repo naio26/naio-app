@@ -3,16 +3,20 @@ import { LayoutAnimation, Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
 import { Button, Input, ProfilePhoto, Screen, ScreenHeader, SelectField, Txt } from '@/components';
-import { CITY } from '@/data/catalog';
+import { GENDERS } from '@/data/types';
+import { useCity } from '@/state/city';
 import { useProfile } from '@/state/profile';
 import { useSession } from '@/state/session';
-import { colors, fonts, space } from '@/theme';
+import { colors, fonts, radius, space } from '@/theme';
+import { goBack } from '@/components';
 
 // Screen 09 — the profile checklist. Every field opens its own step and comes back here.
 export default function ProfileSetup() {
+  const city = useCity();
   const { account } = useSession();
   const { profile, update, missing, created } = useProfile();
   const [more, setMore] = useState(!!(profile.about || profile.from || profile.situation));
+  const [genderOpen, setGenderOpen] = useState(false);
 
   // Start with the first name from Apple/Google, if we have it.
   useEffect(() => {
@@ -33,14 +37,14 @@ export default function ProfileSetup() {
   return (
     <Screen
       scroll
-      header={<ScreenHeader eyebrow={created ? 'Edit' : 'Takes one minute'} title="Your profile" />}
+      header={<ScreenHeader eyebrow={created ? 'Edit' : undefined} title="Your profile" />}
       contentStyle={styles.content}
       footer={
         <Button
           title={!ready ? 'Complete required fields' : created ? 'Save changes' : 'Review profile'}
           arrow
           disabled={!ready}
-          onPress={() => (created ? router.back() : router.push('/setup/completed'))}
+          onPress={() => (created ? goBack() : router.push('/setup/completed'))}
         />
       }
     >
@@ -94,12 +98,54 @@ export default function ProfileSetup() {
         onPress={() => router.push('/setup/age-range')}
       />
 
+      {/* Gender: a small dropdown that opens in place. Plans can be filtered by the host's gender. */}
+      <View>
+        <SelectField
+          label="Gender"
+          placeholder="Select your gender"
+          value={profile.gender}
+          icon={genderOpen ? 'chevron-up' : 'chevron-down'}
+          onPress={() => {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+            setGenderOpen((o) => !o);
+          }}
+        />
+        {genderOpen && (
+          <View style={styles.dropdown}>
+            {GENDERS.map((g, i) => (
+              <Pressable
+                key={g}
+                accessibilityRole="button"
+                accessibilityState={{ selected: profile.gender === g }}
+                onPress={() => {
+                  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                  update({ gender: g });
+                  setGenderOpen(false);
+                }}
+                style={({ pressed }) => [styles.option, i > 0 && styles.optionLine, pressed && { opacity: 0.7 }]}
+              >
+                <Txt style={[styles.optionText, profile.gender === g && styles.optionOn]}>{g}</Txt>
+                {profile.gender === g && <Icon name="check" color={colors.accent} />}
+              </Pressable>
+            ))}
+          </View>
+        )}
+      </View>
+
       <SelectField
         label="Languages you speak"
         placeholder="Add languages and speaking level"
         value={languages || undefined}
-        icon={languages ? 'pencil' : 'plus'}
-        highlight
+        valueContent={
+          <View style={{ gap: 4 }}>
+            {profile.languages.map((l) => (
+              <Txt key={l.code} style={styles.langLine}>
+                {l.name}
+                {l.level && <Txt style={styles.langLevel}> · {l.level}</Txt>}
+              </Txt>
+            ))}
+          </View>
+        }
         onPress={() => router.push('/setup/languages')}
       />
 
@@ -107,8 +153,6 @@ export default function ProfileSetup() {
         label="Choose your interests"
         placeholder="Select at least 3 interests"
         value={profile.interests.length ? profile.interests.join(', ') : undefined}
-        icon={profile.interests.length ? 'pencil' : 'plus'}
-        highlight
         onPress={() => router.push('/setup/interests')}
       />
 
@@ -121,7 +165,9 @@ export default function ProfileSetup() {
       >
         <View style={{ flex: 1, gap: 4 }}>
           <Txt style={styles.moreTitle}>+ Add more about you</Txt>
-          <Txt variant="caption">Optional profile details</Txt>
+          <Txt variant="caption" color={colors.accent}>
+            Optional profile details
+          </Txt>
         </View>
         <Icon name={more ? 'chevron-up' : 'chevron-down'} color={colors.accent} />
       </Pressable>
@@ -131,7 +177,7 @@ export default function ProfileSetup() {
           <View style={styles.field}>
             <Txt variant="section">About me</Txt>
             <Input
-              placeholder="A line or two: what you do, what you love."
+              placeholder="A line or two: what you do, what you love, who you are."
               value={profile.about}
               onChangeText={(t) => update({ about: t })}
               multiline
@@ -154,7 +200,7 @@ export default function ProfileSetup() {
           </View>
           <SelectField
             label="Your situation"
-            placeholder={`How are you experiencing ${CITY}?`}
+            placeholder={`How are you experiencing ${city.name}?`}
             value={profile.situation}
             icon="chevron-right"
             onPress={() => router.push('/setup/situation')}
@@ -162,7 +208,7 @@ export default function ProfileSetup() {
         </View>
       )}
 
-      <Txt variant="caption" style={styles.privacy}>
+      <Txt variant="note" center style={styles.privacy}>
         Your exact location is never shown. naio uses an approximate area while you’re active.
       </Txt>
     </Screen>
@@ -182,10 +228,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.accentSoft,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 4,
+    paddingHorizontal: 18,
+    gap: 2,
   },
-  photoTitle: { fontFamily: fonts.sansMedium, fontSize: 13, color: colors.accent, marginTop: 4 },
-  photoSub: { fontFamily: fonts.sans, fontSize: 10, color: colors.muted },
+  photoTitle: { fontFamily: fonts.sansMedium, fontSize: 12, lineHeight: 16, color: colors.accent, marginTop: 2, textAlign: 'center' },
+  photoSub: { fontFamily: fonts.sans, fontSize: 9.5, lineHeight: 13, color: colors.muted, textAlign: 'center' },
   photoNote: { marginTop: 8 },
   field: { gap: 10 },
   moreRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
@@ -198,5 +245,19 @@ const styles = StyleSheet.create({
   },
   more: { gap: space.xl },
   about: { height: 96, paddingTop: 14, textAlignVertical: 'top' },
-  privacy: { fontSize: 13, lineHeight: 19 },
+  privacy: { marginTop: space.lg },
+  langLine: { fontFamily: fonts.sans, fontSize: 16, lineHeight: 22, color: colors.dark },
+  langLevel: { fontFamily: fonts.sansItalic, color: colors.accent },
+  dropdown: {
+    marginTop: 6,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.white,
+    overflow: 'hidden',
+  },
+  option: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 18, paddingVertical: 14 },
+  optionLine: { borderTopWidth: 1, borderTopColor: colors.border },
+  optionText: { flex: 1, fontFamily: fonts.sans, fontSize: 16, color: colors.dark },
+  optionOn: { fontFamily: fonts.sansBold, color: colors.accent },
 });

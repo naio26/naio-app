@@ -44,7 +44,7 @@ export default function VerifyAge() {
         <Txt style={styles.rangeValue}>{profile.ageRange ?? '—'}</Txt>
       </Card>
 
-      <Txt>Use an official document to confirm that your date of birth matches this range.</Txt>
+      <Txt variant="intro" center>Use an official document to confirm that your date of birth matches this range.</Txt>
 
       <View style={{ gap: 12 }}>
         <Txt variant="label">Document type</Txt>
@@ -89,7 +89,7 @@ export default function VerifyAge() {
         <Icon name={idPhoto ? 'refresh-cw' : 'camera'} color={colors.muted} />
       </Pressable>
 
-      <Card style={styles.info}>
+      <Card style={[styles.info, styles.checks]}>
         <Icon name="check" color={colors.dark} />
         <View style={{ flex: 1, gap: 6 }}>
           <Txt style={styles.infoTitle}>What naio checks</Txt>
@@ -116,8 +116,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 28,
-    paddingVertical: 24,
+    borderRadius: radius.sm,
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    paddingBottom: 12,
   },
   rangeValue: { fontFamily: fonts.serifBold, fontSize: 40, lineHeight: 46, color: colors.dark },
   docs: { flexDirection: 'row', gap: 10 },
@@ -140,12 +142,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 16,
     padding: 18,
-    borderRadius: radius.lg,
-    borderWidth: 1.5,
-    borderStyle: 'dashed',
-    borderColor: colors.accentLine,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.white,
   },
-  addDone: { borderStyle: 'solid', borderColor: colors.green, backgroundColor: colors.white },
+  addDone: { borderColor: colors.green },
   info: { flexDirection: 'row', gap: 16, padding: 22 },
+  // "What naio checks": no fill, dashed border (swapped with the "Add the photo page" box).
+  checks: { backgroundColor: 'transparent', borderWidth: 1.5, borderStyle: 'dashed', borderColor: colors.accentLine },
   infoTitle: { fontFamily: fonts.sansBold, fontSize: 16, color: colors.accent },
 });

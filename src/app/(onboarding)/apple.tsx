@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { ProviderSignIn, Txt } from '@/components';
 import { mockAppleAccount, signInWithApple } from '@/data/api';
 import { useSession } from '@/state/session';
-import { colors, space } from '@/theme';
+import { colors, radius, space } from '@/theme';
 
 // Screen 07 — fake "Sign in with Apple" sheet.
 export default function AppleSignIn() {
@@ -37,9 +37,11 @@ export default function AppleSignIn() {
         style={styles.option}
       >
         <View style={[styles.radio, hideEmail && styles.radioOn]}>{hideEmail && <View style={styles.dot} />}</View>
-        <View style={{ flex: 1, gap: 4 }}>
-          <Txt variant="bodyStrong">Hide my email</Txt>
-          <Txt variant="small">Apple creates a private relay address for naio.</Txt>
+        <View style={{ flex: 1, gap: 2 }}>
+          <Txt variant="bodyStrong" style={styles.hideTitle}>
+            Hide my email
+          </Txt>
+          <Txt variant="caption">Apple creates a private relay address for naio.</Txt>
         </View>
       </Pressable>
     </ProviderSignIn>
@@ -47,17 +49,27 @@ export default function AppleSignIn() {
 }
 
 const styles = StyleSheet.create({
-  option: { flexDirection: 'row', gap: 10, marginTop: space.lg, paddingHorizontal: 6 },
+  // Its own soft box, apart from the account card: a privacy choice, not part of signing in.
+  option: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: space.xl,
+    paddingHorizontal: 18,
+    paddingVertical: 16,
+    borderRadius: radius.md,
+    backgroundColor: colors.blush,
+  },
+  hideTitle: { fontSize: 14, lineHeight: 19 },
   radio: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     borderWidth: 2,
     borderColor: colors.faint,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 1,
+    marginTop: 0,
   },
   radioOn: { borderColor: '#0A7AFF' },
-  dot: { width: 12, height: 12, borderRadius: 6, backgroundColor: '#0A7AFF' },
+  dot: { width: 10, height: 10, borderRadius: 5, backgroundColor: '#0A7AFF' },
 });

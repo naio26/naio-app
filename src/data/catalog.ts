@@ -75,7 +75,7 @@ export const INTERESTS = [
 export const MIN_INTERESTS = 3;
 export const MAX_INTERESTS = 8;
 
-export const SITUATIONS: Situation[] = ['Living locally', 'New in town', 'Travelling solo', 'Staying temporarily'];
+export const SITUATIONS: Situation[] = ['Local', 'New in town', 'Travelling solo', 'Staying temporarily'];
 
 export const MOODS = [
   'Coffee',
@@ -108,9 +108,6 @@ export const DISTANCES: { label: string; maxKm: number }[] = [
 
 /** Plan languages suggested in the filters (Athens). "+ Add" shows the rest. */
 export const SUGGESTED_PLAN_LANGUAGES = ['English', 'Spanish', 'Greek'];
-
-/** The city the demo runs in. */
-export const CITY = 'Athens';
 
 /** Neighbourhoods you can pick as the public area of a plan (29), with an approximate spot for the map. */
 export const AREAS: { name: string; location: { latitude: number; longitude: number } }[] = [

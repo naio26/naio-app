@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { BackButton, Button, Screen, Txt } from '@/components';
+import { BackButton, Button, goBack, Screen, Txt } from '@/components';
 import { usePlan, usePlans } from '@/state/plans';
 import { space } from '@/theme';
 
@@ -25,7 +25,7 @@ export default function CancelPlan() {
       footer={
         <View style={{ gap: 10 }}>
           <Button title="Yes, cancel plan" variant="danger" loading={busy} onPress={confirm} />
-          <Button title="Keep plan" variant="outline" onPress={() => router.back()} />
+          <Button title="Keep plan" variant="outline" onPress={() => goBack()} />
         </View>
       }
     >
@@ -37,7 +37,7 @@ export default function CancelPlan() {
           Cancel plan
         </Txt>
         <Txt variant="h1">Cancel {plan.title}</Txt>
-        <Txt>Everyone who joined will be notified. The chat and exact meeting point will no longer be available.</Txt>
+        <Txt variant="intro">Everyone who joined will be notified. The chat and exact meeting point will no longer be available.</Txt>
       </View>
     </Screen>
   );

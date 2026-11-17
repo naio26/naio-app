@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
 import { Button, Chip, Input, Screen, ScreenHeader, Txt } from '@/components';
 import { listEveryone, sendReport } from '@/data/api';
@@ -9,6 +8,7 @@ import { useLoad } from '@/data/hooks';
 import { usePlans } from '@/state/plans';
 import { useSafety } from '@/state/safety';
 import { colors, icon, space } from '@/theme';
+import { goBack } from '@/components';
 
 type Target = { kind: 'person' | 'plan'; id: string; name: string };
 
@@ -44,7 +44,7 @@ export default function Report() {
             {canBlock && (
               <Button title={`Also block ${target.name}`} variant="outline" onPress={() => block(target.id)} />
             )}
-            <Button title="Done" arrow onPress={() => router.back()} />
+            <Button title="Done" arrow onPress={() => goBack()} />
           </View>
         }
       >

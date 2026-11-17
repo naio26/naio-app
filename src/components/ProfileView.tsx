@@ -1,7 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import { Icon, type IconName } from './Icon';
-import { CITY, LANGUAGE_FLAGS } from '@/data/catalog';
+import { LANGUAGE_FLAGS } from '@/data/catalog';
 import { MyProfile } from '@/data/types';
+import { useCity } from '@/state/city';
 import { colors, fonts, shadow, space } from '@/theme';
 import { Button } from './Button';
 import { Card } from './Card';
@@ -11,8 +12,9 @@ import { Txt } from './Txt';
 
 /** Your profile as other people see it: preview (20) and Profile tab (42). */
 export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: () => void }) {
+  const city = useCity();
   const subtitle = [profile.ageRange, profile.from && `From ${profile.from}`].filter(Boolean).join(' · ');
-  const where = profile.situation === 'Living locally' ? `Living in ${CITY}` : `Exploring ${CITY}`;
+  const where = profile.situation === 'Local' ? `Living in ${city.name}` : `Exploring ${city.name}`;
   return (
     <>
       <View style={styles.hero}>

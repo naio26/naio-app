@@ -1,7 +1,10 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
 import { Filters } from '@/data/types';
+import { KEYS, useSaved } from './storage';
 
-export const NO_FILTERS: Filters = { maxKm: null, moods: [], languages: [], when: [] };
+export type SavedFilters = { filters: Filters; introSeen: boolean };
+
+export const NO_FILTERS: Filters = { maxKm: null, moods: [], languages: [], when: [], genders: [] };
 
 type FiltersState = {
   filters: Filters;
@@ -13,9 +16,11 @@ type FiltersState = {
 
 const FiltersContext = createContext<FiltersState | null>(null);
 
-export function FiltersProvider({ children }: { children: ReactNode }) {
-  const [filters, setFilters] = useState<Filters>(NO_FILTERS);
-  const [introSeen, setIntroSeen] = useState(false);
+export function FiltersProvider({ children, initial }: { children: ReactNode; initial?: SavedFilters }) {
+  const [filters, setFilters] = useState<Filters>({ ...NO_FILTERS, ...initial?.filters });
+  const [introSeen, setIntroSeen] = useState(initial?.introSeen ?? false);
+  const saved = useMemo(() => ({ filters, introSeen }), [filters, introSeen]);
+  useSaved(KEYS.filters, saved);
   const value = useMemo(() => ({ filters, setFilters, introSeen, setIntroSeen }), [filters, introSeen]);
   return <FiltersContext.Provider value={value}>{children}</FiltersContext.Provider>;
 }
@@ -28,5 +33,5 @@ export function useFilters() {
 
 /** How many filter groups are active, for the "Filters · 2" button. */
 export function countActive(f: Filters) {
-  return (f.maxKm !== null ? 1 : 0) + (f.moods.length ? 1 : 0) + (f.languages.length ? 1 : 0) + (f.when.length ? 1 : 0);
+  return (f.maxKm !== null ? 1 : 0) + (f.moods.length ? 1 : 0) + (f.languages.length ? 1 : 0) + (f.when.length ? 1 : 0) + (f.genders.length ? 1 : 0);
 }

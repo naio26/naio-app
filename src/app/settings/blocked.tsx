@@ -15,7 +15,7 @@ export default function BlockedPeople() {
       header={<ScreenHeader eyebrow="Trust & safety" title="Blocked people" />}
       contentStyle={{ paddingTop: space.lg, gap: space.lg }}
     >
-      <Txt>Blocked people can’t see you or your plans, and you won’t see theirs. They aren’t told.</Txt>
+      <Txt variant="intro">Blocked people can’t see you or your plans, and you won’t see theirs. They aren’t told.</Txt>
       <View>
         {people.map((p) => (
           <View key={p.id} style={styles.row}>

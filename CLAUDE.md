@@ -34,13 +34,28 @@ naio. (always lowercase, always with the period) is a mobile app where people wh
 - Install packages with `npx expo install`, never plain npm. Before saying a phase is done: `npx tsc --noEmit` and `npx expo-doctor`.
 - See also AGENTS.md (Expo's own notes: check the SDK 58 docs, don't trust memory).
 - No backend. All data goes through `src/data/api.ts` (backed by mock data in `src/data/mock/`) so it can be swapped for Supabase later. Screens never import mock files directly.
-- Fixed choice lists (languages, interests, moods, distances, situations, city) live in `src/data/catalog.ts`.
-- App state lives in `src/state/` (in memory only, resets on reload): `session` (sign-in), `profile` (your profile + age check in progress), `filters` (map filters + whether the "What are you up to?" card was seen), `plans` (all plans, your joins with demo auto-accept, requests to your plans, create/edit/cancel), `chat` (temporary chats, demo auto-replies), `alerts` (Alerts tab), `safety` (blocked people, offline, location and notification settings). `api.ts` keeps an in-memory copy of the mock data so changes stick until reload. `useMe`/`usePeople` in `state/people.ts` turn ids (incl. `'me'`) into people.
+- Fixed choice lists (languages, interests, moods, distances, situations) live in `src/data/catalog.ts`.
+- **Current city: never type a city name in a text.** Screens use `useCity().name` (`src/state/city.ts`), which reads `getCurrentCity()` in `api.ts` (mock: `src/data/mock/city.ts`, always Athens in the demo). Later it will come from the user's real location; don't add real location until asked.
+- App state lives in `src/state/` and is **saved on the phone** with AsyncStorage (`src/state/storage.ts`, keys prefixed `naio:`). Each store takes an `initial` value read once at start-up in `src/app/_layout.tsx` (splash stays up until then) and saves on every change (`useSaved`). `src/app/index.tsx` opens the map if the profile was created, otherwise always the intro reel (never jump into profile setup: that left it as the first screen with nothing to go back to → "GO_BACK was not handled"). Back buttons use `goBack()` from `@/components` (never `router.back()` directly): it goes back, or to `/` when there is no previous screen (e.g. after a reload). Settings → "Reset demo" (`useBoot().resetDemo`) clears the saved data, resets `api.ts` and rebuilds the app at the intro. Stores: `session` (sign-in), `profile` (your profile + age check in progress), `filters` (map filters + whether the "What are you up to?" card was seen), `plans` (all plans, your joins with demo auto-accept, requests to your plans, create/edit/cancel), `chat` (temporary chats, demo auto-replies), `alerts` (Alerts tab), `safety` (blocked people, offline, location and notification settings). `api.ts` keeps a copy of the mock data that it also saves on the phone (key `db`), so created plans, accepted requests, chats, alerts and blocked people survive a reload. New persistent state: add it to `KEYS` and to the start-up snapshot, and make sure "Reset demo" clears it. `useMe`/`usePeople` in `state/people.ts` turn ids (incl. `'me'`) into people.
 - Times: the demo runs on a fixed demo clock (today, 4:18 PM) in `src/data/time.ts`, so plans always look upcoming. Times show in 12-hour format like the designs.
 - The map is a drawing (`FakeMap`), not a real map SDK. Coordinates are turned into screen positions by `project()`.
 - You host the mock plan "Coffee and a wander?" (`hostId: 'me'`, Today 5:00 PM, Monastiraki) and Leo has asked to join it (39–41). You start already accepted in "Morning walk on Philopappou" so a chat has messages.
 - Sign in with Apple/Google, face check, ID check, map, chat and push notifications are fake: screens with mock behaviour only. Never integrate paid or external services.
 - Bottom tabs: Map, Plans, big "+" in the middle, Alerts, Profile.
+
+## Publishing a preview (EAS Update, opens in Expo Go without the Codespace)
+When the owner says **"publish a new preview"**:
+1. Check: `npx tsc --noEmit` and `npx expo-doctor` must pass.
+2. Check the login: `npx eas-cli@latest whoami` must show `naioali`. If not, stop and ask the owner to type `! npx expo login` (account `naioali`).
+3. Publish: `npx eas-cli@latest update --channel preview --environment preview --platform all --non-interactive --message "<short description of what changed>"`
+4. Give the owner the dashboard link the command prints, and remind them how to open it (below). The link and QR never change: Expo Go always loads the latest update of the `preview` channel when the app is opened again (close it fully and reopen; sometimes it needs a second reopen).
+
+Setup (already done, don't redo):
+- EAS project `@naioali/naio`, id `69984178-632d-4299-99a2-3328d3585b14` (in `app.json` → `extra.eas.projectId`, `owner: naioali`).
+- `app.json`: `"runtimeVersion": "exposdk:58.0.0"` and `"updates": { "url": "https://u.expo.dev/<projectId>" }`. **The runtime must be exactly `exposdk:<SDK>.0.0`**: it's the only runtime Expo Go accepts (Expo's docs say updates with a runtime version don't load in Expo Go; this exposdk form is the exception). Never switch it to the `appVersion`/`fingerprint` policies or run `eas update:configure` (it would change it). When upgrading the Expo SDK, change it to the new SDK (e.g. `exposdk:59.0.0`), regenerate the link and QR, and publish again.
+- `expo-updates` is installed (it's included in Expo Go). `eas.json` has a `preview` channel.
+- Expo Go link: `exp://u.expo.dev/69984178-632d-4299-99a2-3328d3585b14?runtime-version=exposdk%3A58.0.0&channel-name=preview`. QR code: `docs/expo-go-preview-qr.png` (see `docs/PREVIEW.md`).
+- The preview only contains what's in this folder when publishing (saved or not in git). Dashboard: https://expo.dev/accounts/naioali/projects/naio/updates
 
 ## Product rules
 - Plans exist only for today or tomorrow, never later. Plans and their chats disappear after they happen.

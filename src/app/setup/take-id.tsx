@@ -1,10 +1,9 @@
 import { useRef, useState } from 'react';
 import { ActivityIndicator, Animated, Pressable, StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BackButton, CornerFrame, IdCardArt, Txt } from '@/components';
+import { BackButton, CornerFrame, goBack, IdCardArt, Txt } from '@/components';
 import { checkIdPhoto } from '@/data/api';
 import { useProfile } from '@/state/profile';
 import { colors, fonts, radius, space } from '@/theme';
@@ -23,7 +22,7 @@ export default function TakeId() {
     ]).start();
     await checkIdPhoto();
     setIdPhoto({ source: 'camera' });
-    router.back();
+    goBack();
   };
 
   return (

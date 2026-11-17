@@ -1,4 +1,5 @@
 import { Person } from '../types';
+import { demoCity } from './city';
 
 export const people: Person[] = [
   {
@@ -6,6 +7,7 @@ export const people: Person[] = [
     firstName: 'Maya',
     initials: 'M',
     ageRange: '25-30',
+    gender: 'Female',
     verified: true,
     from: 'Lisbon, Portugal',
     situation: 'Travelling solo',
@@ -16,13 +18,14 @@ export const people: Person[] = [
       { code: 'ES', name: 'Spanish', level: 'Conversational' },
     ],
     avatarColor: '#C8694F',
-    available: { until: '20:00', stay: 'In Athens for 4 days', location: { latitude: 37.9792, longitude: 23.7402 } },
+    available: { until: '20:00', stay: `In ${demoCity.name} for 4 days`, location: { latitude: 37.9792, longitude: 23.7402 } },
   },
   {
     id: 'leo',
     firstName: 'Leo',
     initials: 'L',
     ageRange: '31-39',
+    gender: 'Male',
     verified: true,
     from: 'Valencia, Spain',
     situation: 'New in town',
@@ -40,6 +43,7 @@ export const people: Person[] = [
     firstName: 'Nora',
     initials: 'N',
     ageRange: '25-30',
+    gender: 'Female',
     verified: true,
     from: 'Lyon, France',
     situation: 'Staying temporarily',
@@ -56,9 +60,10 @@ export const people: Person[] = [
     firstName: 'Jonas',
     initials: 'J',
     ageRange: '31-39',
+    gender: 'Male',
     verified: true,
     from: 'Hamburg, Germany',
-    situation: 'Living locally',
+    situation: 'Local',
     about: 'Athens local for three years. Happy to show the good spots.',
     interests: ['Sports', 'Night out', 'Cooking'],
     languages: [
@@ -73,9 +78,10 @@ export const people: Person[] = [
     firstName: 'Sofia',
     initials: 'S',
     ageRange: '25-30',
+    gender: 'Female',
     verified: true,
     from: 'Athens, Greece',
-    situation: 'Living locally',
+    situation: 'Local',
     about: 'Born and raised in Athens. Early hikes, late dinners.',
     interests: ['Nature', 'Adventure', 'Photography'],
     languages: [
@@ -89,6 +95,7 @@ export const people: Person[] = [
     firstName: 'Daniel',
     initials: 'D',
     ageRange: '40-45',
+    gender: 'Male',
     verified: true,
     from: 'Toronto, Canada',
     situation: 'New in town',
@@ -99,6 +106,6 @@ export const people: Person[] = [
       { code: 'FR', name: 'French', level: 'Conversational' },
     ],
     avatarColor: '#8A6A9A',
-    available: { until: '22:00', stay: 'New in Athens', location: { latitude: 37.9702, longitude: 23.7366 } },
+    available: { until: '22:00', stay: `New in ${demoCity.name}`, location: { latitude: 37.9702, longitude: 23.7366 } },
   },
 ];

@@ -18,7 +18,7 @@ export default function BlockSomeone() {
       header={<ScreenHeader eyebrow="Safety" title="Block someone" />}
       contentStyle={{ paddingTop: space.lg, gap: space.lg }}
     >
-      <Txt>They won’t see you or your plans, and you won’t see theirs. They aren’t told.</Txt>
+      <Txt variant="intro">They won’t see you or your plans, and you won’t see theirs. They aren’t told.</Txt>
       <View>
         {everyone.map((p) => {
           const isBlocked = blocked.includes(p.id);

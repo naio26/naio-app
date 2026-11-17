@@ -5,6 +5,7 @@ import { Icon, type IconName } from '@/components';
 import { Button, CornerFrame, IdCardArt, InfoBox, Screen, ScreenHeader, Txt } from '@/components';
 import { useProfile } from '@/state/profile';
 import { colors, fonts, radius, space } from '@/theme';
+import { goBack } from '@/components';
 
 // Screen 13 — choose how to add the ID photo: camera (14) or upload (15).
 export default function AddId() {
@@ -33,9 +34,9 @@ export default function AddId() {
       scroll
       header={<ScreenHeader eyebrow="Age check" title="Add your ID" />}
       contentStyle={styles.content}
-      footer={<Button title="Use this photo" arrow disabled={!idPhoto} onPress={() => router.back()} />}
+      footer={<Button title="Use this photo" arrow disabled={!idPhoto} onPress={() => goBack()} />}
     >
-      <Txt>Use a clear photo of the side that shows your portrait and date of birth.</Txt>
+      <Txt variant="intro">Use a clear photo of the side that shows your portrait and date of birth.</Txt>
 
       <LinearGradient colors={['#34302C', '#24201D']} style={styles.frame}>
         <View style={styles.frameInner}>
@@ -76,7 +77,7 @@ export default function AddId() {
       </View>
 
       <InfoBox
-        title="Before you continue"
+        title="Make sure your ID photo is clear"
         checks={[
           'All four corners are visible',
           'Text is sharp and readable',
@@ -84,7 +85,7 @@ export default function AddId() {
         ]}
       />
 
-      <Txt variant="caption" center>
+      <Txt variant="note" center>
         Encrypted during verification and removed after the result is recorded.
       </Txt>
     </Screen>

@@ -51,7 +51,9 @@ export default function Languages() {
           returnKeyType="search"
           style={styles.search}
         />
-        <Icon name="search" color={colors.muted} />
+        <View pointerEvents="none" style={styles.searchIcon}>
+          <Icon name="search" color={colors.muted} />
+        </View>
       </View>
 
       <Txt variant="caption" style={styles.heading}>

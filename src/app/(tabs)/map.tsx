@@ -21,7 +21,6 @@ import {
   YouMarker,
 } from '@/components';
 import { listAvailablePeople } from '@/data/api';
-import { CITY } from '@/data/catalog';
 import { useLoad } from '@/data/hooks';
 import { formatTime, matchesFilters, pinLabel, planWhen } from '@/data/time';
 import { Person, Plan } from '@/data/types';
@@ -29,6 +28,7 @@ import { countActive, NO_FILTERS, useFilters } from '@/state/filters';
 import { usePeople } from '@/state/people';
 import { usePlans } from '@/state/plans';
 import { useSafety } from '@/state/safety';
+import { useCity } from '@/state/city';
 import { useProfile } from '@/state/profile';
 import { colors, fonts, radius, shadow, space } from '@/theme';
 
@@ -36,6 +36,7 @@ type Selected = { kind: 'plan'; plan: Plan } | { kind: 'person'; person: Person 
 
 // Screens 25 (live map), 26 (plan on map) and 28 (available person).
 export default function MapTab() {
+  const city = useCity();
   const insets = useSafeAreaInsets();
   const { profile, created } = useProfile();
   const { filters, setFilters, introSeen, setIntroSeen } = useFilters();
@@ -46,10 +47,18 @@ export default function MapTab() {
   const [selected, setSelected] = useState<Selected>(null);
   const active = countActive(filters);
 
+  // Hosts' genders, for the gender filter.
+  const hosts = usePeople([...new Set(plans.map((p) => p.hostId))]);
   // Your own plan always shows; other plans follow the filters.
   const visible = useMemo(
-    () => plans.filter((p) => statusOf(p) === 'host' || (!blocked.includes(p.hostId) && matchesFilters(p, filters))),
-    [plans, filters, statusOf, blocked],
+    () =>
+      plans.filter(
+        (p) =>
+          statusOf(p) === 'host' ||
+          (!blocked.includes(p.hostId) &&
+            matchesFilters(p, filters, hosts.find((h) => h.id === p.hostId)?.gender)),
+      ),
+    [plans, filters, statusOf, blocked, hosts],
   );
   const others = visible.filter((p) => statusOf(p) !== 'host').length;
 
@@ -84,7 +93,7 @@ export default function MapTab() {
       <View style={[styles.top, { top: insets.top + 10 }]}>
         <View style={{ flex: 1 }}>
           <Txt variant="caption">Hi {profile.firstName || 'there'}</Txt>
-          <Txt style={styles.city}>{CITY}</Txt>
+          <Txt style={styles.city}>{city.name}</Txt>
         </View>
         <Pressable
           accessibilityRole="button"

@@ -7,6 +7,7 @@ import { planWhen } from '@/data/time';
 import { usePeople } from '@/state/people';
 import { usePlan, usePlans } from '@/state/plans';
 import { colors, fonts, icon, space } from '@/theme';
+import { goBack } from '@/components';
 
 // NEW screen (not in the designs): shown after "Join plan" while the host decides.
 export default function RequestSent() {
@@ -47,7 +48,7 @@ export default function RequestSent() {
             variant="link"
             onPress={async () => {
               await cancelRequest(plan.id);
-              router.back();
+              goBack();
             }}
           />
         </View>

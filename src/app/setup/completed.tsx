@@ -6,6 +6,7 @@ import { Button, Logo, ProfileView, Screen } from '@/components';
 import { saveProfile } from '@/data/api';
 import { useProfile } from '@/state/profile';
 import { colors, space } from '@/theme';
+import { goBack } from '@/components';
 
 // Screen 20 — your profile as other people will see it, before creating it.
 export default function ProfileCompleted() {
@@ -31,13 +32,13 @@ export default function ProfileCompleted() {
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Edit profile"
-          onPress={() => router.back()}
+          onPress={() => goBack()}
           style={styles.iconBtn}
         >
           <Icon name="pencil" color={colors.dark} />
         </Pressable>
       </View>
-      <ProfileView profile={profile} onEdit={() => router.back()} />
+      <ProfileView profile={profile} onEdit={() => goBack()} />
     </Screen>
   );
 }

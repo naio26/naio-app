@@ -14,7 +14,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
 };
 
-/** Light grey box with a terracotta title ("Age verified by ID", "Before you continue"). */
+/** Light grey box with a terracotta title ("Age verified by ID", "Make sure your ID photo is clear"). */
 export function InfoBox({ title, text, checks, children, style }: Props) {
   return (
     <Card tone="muted" style={[styles.box, style]}>
