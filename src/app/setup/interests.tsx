@@ -42,7 +42,7 @@ export default function Interests() {
         </View>
       }
     >
-      <Txt variant="intro">Select 3–8 interests. The ones you choose will appear together on your profile.</Txt>
+      <Txt variant="intro">Select 3–8 interests. The ones you choose will appear on your profile.</Txt>
       <View style={styles.grid}>
         {INTERESTS.map((i) => {
           const on = picked.includes(i);

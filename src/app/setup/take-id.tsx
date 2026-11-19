@@ -12,6 +12,7 @@ import { colors, fonts, radius, space } from '@/theme';
 export default function TakeId() {
   const { setIdPhoto } = useProfile();
   const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
   const flash = useRef(new Animated.Value(0)).current;
 
   const shoot = async () => {
@@ -22,7 +23,9 @@ export default function TakeId() {
     ]).start();
     await checkIdPhoto();
     setIdPhoto({ source: 'camera' });
-    goBack();
+    // Show clearly that the photo is fine, then go back to "Add your ID" (which shows "ID photo ready" too).
+    setDone(true);
+    setTimeout(() => goBack(), 1200);
   };
 
   return (
@@ -37,11 +40,13 @@ export default function TakeId() {
       <LinearGradient colors={['#3A3531', '#221E1B']} style={styles.viewfinder}>
         <View style={styles.frame}>
           <View style={StyleSheet.absoluteFill}>
-            <CornerFrame width="100%" height={220} size={36} thickness={3} />
+            <CornerFrame width="100%" height={220} size={36} thickness={3} color={done ? '#7EE0A6' : colors.white} />
           </View>
           <IdCardArt width={250} tone="dim" />
         </View>
-        <Txt style={styles.hint}>{busy ? 'Checking the photo…' : 'Keep the document flat and inside the frame'}</Txt>
+        <Txt style={styles.hint}>
+          {done ? '✓ ID photo ready' : busy ? 'Checking the photo…' : 'Keep the document flat and inside the frame'}
+        </Txt>
       </LinearGradient>
 
       <Txt style={styles.tips}>Good light · No glare · All corners visible</Txt>
@@ -53,7 +58,7 @@ export default function TakeId() {
         onPress={shoot}
         style={({ pressed }) => [styles.shutter, pressed && { transform: [{ scale: 0.94 }] }]}
       >
-        <View style={styles.shutterInner}>{busy && <ActivityIndicator color={colors.dark} />}</View>
+        <View style={styles.shutterInner}>{busy && !done && <ActivityIndicator color={colors.dark} />}</View>
       </Pressable>
 
       <Txt style={styles.footnote}>Encrypted during verification and removed after the result is recorded.</Txt>

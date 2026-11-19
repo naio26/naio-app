@@ -32,7 +32,6 @@ export function isNow(plan: Plan) {
 export const planWhen = (plan: Plan) => `${dayLabel(plan.day)} · ${formatTime(plan.time)}`;
 
 /** Map pin label: "NOW", "TODAY 6 PM", "TOMORROW 10 AM". */
-export const pinLabel = (plan: Plan) => (isNow(plan) ? 'Now' : `${dayLabel(plan.day)} ${formatTime(plan.time, true)}`);
 
 function slot(plan: Plan): TimeWindow {
   const m = toMinutes(plan.time);

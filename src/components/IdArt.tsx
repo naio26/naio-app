@@ -1,5 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import { colors } from '@/theme';
+import { Card } from './Card';
+import { Icon } from './Icon';
+import { Txt } from './Txt';
 
 /** Corner brackets of a camera frame (face check, ID photo). */
 export function CornerFrame({
@@ -104,4 +107,32 @@ export function IdCardArt({ width = 260, tone = 'light' }: { width?: number; ton
 const styles = StyleSheet.create({
   card: { flexDirection: 'row', alignItems: 'center' },
   photo: { alignItems: 'center', justifyContent: 'center' },
+});
+
+/** Clear success state once the ID photo is fine (taken or uploaded): "ID photo ready". */
+export function IdReadyCard() {
+  return (
+    <Card style={readyStyles.ready}>
+      <View style={readyStyles.thumb}>
+        <IdCardArt width={104} tone="mini" />
+      </View>
+      <View style={{ flex: 1, gap: 4 }}>
+        <Txt variant="label">ID photo ready</Txt>
+        <Txt variant="caption">All four corners detected</Txt>
+      </View>
+      <Icon name="check" color={colors.green} />
+    </Card>
+  );
+}
+
+const readyStyles = StyleSheet.create({
+  ready: { flexDirection: 'row', alignItems: 'center', gap: 16, padding: 14, paddingRight: 20 },
+  thumb: {
+    width: 110,
+    height: 72,
+    borderRadius: 12,
+    backgroundColor: colors.mist,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
-import { Button, CodeBadge, Screen, ScreenHeader, Txt } from '@/components';
+import { Button, Screen, ScreenHeader, Txt } from '@/components';
 import { LANGUAGE_LEVELS } from '@/data/catalog';
 import { LanguageLevel } from '@/data/types';
 import { useProfile } from '@/state/profile';
@@ -39,15 +39,15 @@ export default function LanguageLevels() {
         </View>
       }
     >
-      <Txt variant="intro">Choose one native language and set the level for every other language you speak.</Txt>
+      <Txt variant="intro">Choose the native language and set the level for every other language you speak.</Txt>
 
       {langs.map((l) => {
         const isOpen = open === l.code;
         return (
           <View key={l.code} style={[styles.cardWrap, isOpen && styles.raised]}>
             <View style={[styles.card, isOpen && styles.cardOpen]}>
-              <CodeBadge code={l.code} strong />
-              <Txt variant="bodyStrong" style={{ flex: 1, fontSize: 18 }}>
+              {/* Just the name (no code box), so long names fit even with "Conversational". */}
+              <Txt variant="bodyStrong" numberOfLines={1} style={{ flex: 1, fontSize: 18 }}>
                 {l.name}
               </Txt>
               <Pressable
@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 18,
-    paddingHorizontal: 26,
+    gap: 12,
+    paddingHorizontal: 22,
     height: 96,
     borderRadius: radius.lg + 8,
     borderWidth: 1,

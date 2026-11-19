@@ -1,6 +1,7 @@
+
 # Resum de fases — naio.
 
-Última actualització: 19 de novembre de 2026 (publicada la versió de prova v2; les quatre fases estan fetes)
+Última actualització: 19 de novembre de 2026 (mapa real, filtre d'edat i canvis de disseny; nova pantalla «You're all set.» després de crear el perfil, amb la ubicació obligatòria; les quatre fases estan fetes)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -70,7 +71,7 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
 - 18: els teus interessos (de 3 a 8).
 - 19: la teva situació (opcional).
 - 20: la vista prèvia del teu perfil.
-- 21: «Welcome to Athens.» (passa sola al cap de 3 segons).
+- 21: en tocar «Create profile» surt l'avís de la ubicació i després «You're all set!» + «Welcome to Athens, (nom).» (abans era «Welcome to Athens.» sol, canviada el 19 de novembre de 2026: mira «Altres canvis»).
 - 22: «What are you up to?» (a sobre del mapa).
 - 23–24: els filtres (distància, estat d'ànim, idioma, quan).
 
@@ -281,7 +282,7 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     - He tret el requadre «Everyone is verified» del final.
   - **Nova etiqueta discreta «Everyone is age and selfie verified»** (amb un escut verd petit): al mapa, sota la llegenda de colors, i a la pantalla de detall d'un pla, just a sobre del botó «Join plan».
   - He instal·lat petites actualitzacions d'Expo (correccions d'errors).
-  - **Pendent de la teva resposta:** com preguntar d'on ets, com ha de ser la pantalla després de crear el perfil (en lloc de «Welcome to Athens») i si afegim més «moods».
+  - **Pendent de la teva resposta:** com preguntar d'on ets, com ha de ser la pantalla després de crear el perfil (en lloc de «Welcome to Athens»; ja triada: «You're all set.», el 19 de novembre) i si afegim més «moods».
 
 - **Retocs de disseny (17 de novembre de 2026):**
   - **Regla general:** els textos d'ajuda petits sota els títols («We show a range…», «Use a clear…», «Choose…», «Select 3–8…») ara són una mica més petits i tots de la mateixa mida a tota l'app.
@@ -316,6 +317,46 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - Quan vulguis una versió nova, digues-me «publish a new preview».
   - Nota: Expo no explica oficialment aquesta manera d'obrir actualitzacions a Expo Go. Des d'aquí he comprovat que el servidor d'Expo serveix bé l'app, però el pas final s'ha de confirmar al teu iPhone.
 
+- **Nova pantalla després de crear el perfil: «You're all set.» (19 de novembre de 2026):**
+  - Substitueix «Welcome to Athens.». Has triat l'opció A; l'opció B s'ha esborrat. Fons sense foto.
+  - **La ubicació és obligatòria.** Sense ubicació no es pot continuar: el mapa i les pestanyes no s'obren fins que la permets. Si tanques l'app sense haver-la permès, en tornar-la a obrir torna a aquesta pantalla.
+  - **Com funciona (l'ordre final, de la fi del perfil fins al mapa):**
+    1. **«Review profile»:** veus el teu perfil tal com el veuran els altres i toques «Create profile».
+    2. **De seguida surt l'avís del mòbil** «Allow “naio.” to use your location?», amb el motiu («naio shows plans and people near you…»), i les opcions «Allow while using the app» o «Don't allow».
+    3. **Si la permets → «You're all set!»:** a dalt la marca ✓ i «PROFILE CREATED»; el títol «You're all set!»; a sota, en un terracota més suau, «Welcome to Athens, (el teu nom).» (la ciutat surt de la ubicació, el nom del teu perfil); i «See who's around and join a plan today.». Ja no cal esperar: el botó «Find plans nearby →» obre el mapa.
+    4. **Mapa amb la targeta «First things first»** («What are you up to?»).
+    - **Si no la permets → pantalla que bloqueja:** «naio. needs your location to show plans nearby», amb el text de sota més petit, i el botó «Turn on location», que obre la configuració del mòbil. No es pot anar enlloc més. Quan tornes a l'app, passa al punt 3.
+    - Si tanques l'app amb l'avís obert, en tornar-la a obrir surt una pantalla curta «Plans near you» i l'avís torna a sortir.
+  - **De moment és de mentida:** no es llegeix cap ubicació real. A la demo, en tornar de la configuració del mòbil, l'app fa com si l'haguessis activat.
+  - **Color:** has triat la **A1, amb fons crema**. La versió terracota (A2) s'ha esborrat.
+  - **Per provar-ho (Profile → Settings →** baixa fins a **Demo):**
+    - «Test the location question»: surt l'avís; pots provar «Allow» i «Don't allow».
+    - «Preview “You're all set!”»: la pantalla final.
+    - «Test “location denied” screen»: la pantalla que bloqueja.
+    - Aquestes proves no canvien el que hi ha desat: la teva ubicació continua permesa.
+  - **El logo ara és exactament igual a tot arreu:** totes les pantalles fan servir el mateix logo (la mateixa lletra, el mateix gruix i el mateix punt). Només canvia la mida. Sobre fons crema és marró fosc amb el punt terracota; sobre fons de color o fotos (per exemple, el vídeo inicial) és el mateix logo, tot de color crema. He corregit les pantalles «Request sent», «You're in», «Plan posted» i «Plan cancelled», que el tenien de color terracota. Aquesta norma ara també és a CLAUDE.md.
+
+- **Canvis de disseny i mapa real (19 de novembre de 2026):**
+  - **Selfie («Show us it's really you»):** el punt i coma abans de «age verification…» ara és un punt: «… with your ID. Age verification happens separately.»
+  - **«Add your ID»:** quan la foto del document està llesta (feta amb la càmera o pujada), surt la mateixa targeta clara «ID photo ready · All four corners detected» amb un ✓ verd, i el quadre groc de consells s'amaga. A la càmera, després de fer la foto, el marc es posa verd i diu «✓ ID photo ready» un moment abans de tornar. El text «Encrypted…» no ha canviat.
+  - **«What are you into?»:** ara diu «The ones you choose will appear on your profile.» (sense «together»).
+  - **«Add your level»:** ja no hi ha la caixeta amb el codi (CA, IT, FR…) davant de cada idioma, només el nom, i així «Italian» hi cap encara que triïs «Conversational». El text diu «Choose the native language…».
+  - **«Your situation»:** el títol de la pantalla ara és la pregunta «What's your situation?», i l'opció «Local» es diu «I'm a local» (també als perfils que ja la tenien triada).
+  - **El meu perfil:** sota la franja d'edat surt d'on ets («From Barcelona, Spain») en terracota i sense negreta.
+  - **Filtres:**
+    - **When:** el dia va a sobre de les opcions, així les caselles tenen més espai (també quan estan triades). «Now» està alineat a l'esquerra i té la mida d'una casella.
+    - **Nou «Age range»** (just després dels idiomes): una barra amb dues boles que es mouen per triar de quina edat vols que sigui la gent amb qui fas plans. Salta sempre a les franges oficials (18-24, 25-30, 31-39, 40-45, 46-49, 50+). Si les deixes als extrems, vol dir «qualsevol edat».
+    - **Moods:** hi ha «Party» i «Beach».
+    - **Idiomes:** nova etiqueta «Suggested languages for your location» damunt dels idiomes suggerits.
+  - **Mapa real:** ara és un mapa de debò (Apple Maps a l'iPhone, Google Maps a Android). Et pots moure, fer zoom amb dos dits i explorar zones. Funciona a Expo Go, sense cap compte ni pagament. Encara no fa servir la teva ubicació real: el punt blau és una posició de demo al centre d'Athens.
+  - **Marques del mapa:** només surten les que coincideixen amb els teus filtres (distància, gènere, idioma, edat i hora).
+    - **Verdes (plans):** «Today» o «Tomorrow» a dalt i l'hora a sota. El teu pla diu «★ Your plan · Today» i surt sempre.
+    - **Taronges (gent oberta a plans, sense pla):** el cercle amb la inicial, i a sota el nom i la franja d'edat.
+    - **Punt blau (tu):** l'etiqueta «You (approximate)» només surt quan el toques (i s'amaga al cap de 3 segons).
+  - **«Everyone is age and selfie verified»:** ja no surt al mapa. Només surt a la pantalla de detalls del pla, just a sobre del botó «Join».
+  - **«First things first»:** l'etiqueta i el títol «What are you up to?» estan centrats.
+  - **Pendent de la teva resposta:** com ha de ser «My kind of plans» al perfil (t'he proposat dues opcions més tranquil·les).
+
 ## 2. PROPERAMENT
 
 Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan vulguis, podem decidir junts què ve ara. Algunes idees (cap no està decidida):
@@ -328,6 +369,7 @@ Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan v
 
 ### El que necessito de tu
 
+- **«My kind of plans» al perfil:** tria una de les dues propostes (o cap) i la faré.
 - **Unir la versió desada amb la branca principal:** la versió està desada a GitHub en una branca a part, `phases-1-4`. Quan vulguis, la puc unir amb la branca principal (`main`).
 - **Les decisions de les fases 3 i 4:** el rellotge de prova, el pla «Coffee and a wander?» com a teu, el mapa dibuixat i els camps nous de «Create a plan» (zona i estat d'ànim). Digues-me si en vols canviar alguna.
 - **Textos legals:** les «Terms» i les «Safety Guidelines» encara no tenen text. A «Settings → Terms & privacy» de moment hi ha un resum curt fet per mi. Quan tinguis els textos de debò, me'ls pots passar.

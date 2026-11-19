@@ -54,7 +54,7 @@ export default function RequestSent() {
         </View>
       }
     >
-      <Logo size={30} color={colors.accent} dotColor={colors.accent} />
+      <Logo size={30} />
 
       <View style={styles.center}>
         <Animated.View

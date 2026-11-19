@@ -9,10 +9,18 @@ import { colors, fonts, radius, space } from '@/theme';
 import { goBack } from '@/components';
 
 const icons: Record<Situation, IconName> = {
-  'Local': 'home',
+  'I’m a local': 'home',
   'New in town': 'compass',
   'Travelling solo': 'backpack',
   'Staying temporarily': 'luggage',
+};
+
+// Two lines on each card.
+const lines: Record<Situation, string> = {
+  'I’m a local': 'I’m a\nlocal',
+  'New in town': 'New\nin town',
+  'Travelling solo': 'Travelling\nsolo',
+  'Staying temporarily': 'Staying\ntemporarily',
 };
 
 // Screen 19 — optional: how you're experiencing the city right now.
@@ -23,7 +31,7 @@ export default function SituationScreen() {
   return (
     <Screen
       scroll
-      header={<ScreenHeader eyebrow="Optional" title="Your situation" />}
+      header={<ScreenHeader eyebrow="Optional" title="What’s your situation?" />}
       contentStyle={styles.content}
       footer={
         <Button
@@ -52,7 +60,7 @@ export default function SituationScreen() {
               style={({ pressed }) => [styles.card, on && styles.cardOn, pressed && { opacity: 0.75 }]}
             >
               <Icon name={icons[s]} color={on ? colors.accent : colors.dark} />
-              <Txt style={[styles.label, on && { color: colors.accent }]}>{s.replace(' ', '\n')}</Txt>
+              <Txt style={[styles.label, on && { color: colors.accent }]}>{lines[s]}</Txt>
             </Pressable>
           );
         })}

@@ -143,7 +143,7 @@ export default function Reel() {
       />
 
       <View style={[styles.top, { paddingTop: insets.top + 12 }]}>
-        <Logo size={30} color={colors.white} />
+        <Logo size={30} tone="light" />
         <Pressable accessibilityRole="button" hitSlop={16} onPress={start}>
           <Txt style={styles.skip}>Skip</Txt>
         </Pressable>

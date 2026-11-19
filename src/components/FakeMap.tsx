@@ -16,9 +16,6 @@ export function project({ latitude, longitude }: LatLng) {
   return { left: `${x}%` as const, top: `${y}%` as const };
 }
 
-/** You, approximately (Syntagma). The real location is never shown to anyone. */
-export const MY_AREA: LatLng = { latitude: 37.9755, longitude: 23.7348 };
-
 const parks = [
   { name: 'Lycabettus', x: 86, y: 26, w: 190, h: 170 },
   { name: 'National Garden', x: 72, y: 56, w: 120, h: 150 },
@@ -40,7 +37,7 @@ const areas = [
   { name: 'Monastiraki', x: 5, y: 41 },
 ];
 
-/** A hand-drawn style map of central Athens. Pins go on top as children. */
+/** A hand-drawn style map of central Athens. Only used where the real map can't run (web browser tests). */
 export function FakeMap({ children, onPressMap }: { children?: React.ReactNode; onPressMap?: () => void }) {
   const city = useCity();
   return (
@@ -78,20 +75,6 @@ const blob = (p: { x: number; y: number; w: number; h: number }) => ({
   marginTop: -p.h / 2,
 });
 
-/** The blue "You · approximate" dot. */
-export function YouMarker() {
-  return (
-    <View pointerEvents="none" style={[styles.youWrap, project(MY_AREA)]}>
-      <View style={styles.halo}>
-        <View style={styles.dot} />
-      </View>
-      <View style={styles.youTag}>
-        <Txt style={styles.youText}>You · approximate</Txt>
-      </View>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   map: {
     position: 'absolute',
@@ -128,31 +111,4 @@ const styles = StyleSheet.create({
     fontSize: 19,
     color: colors.mapLabel,
   },
-  youWrap: { position: 'absolute', marginLeft: -28, marginTop: -28, flexDirection: 'row', alignItems: 'center' },
-  halo: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: colors.youHalo,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  dot: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: colors.you,
-    borderWidth: 3,
-    borderColor: colors.white,
-  },
-  youTag: {
-    marginLeft: 4,
-    backgroundColor: colors.white,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#9CC3DF',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-  youText: { fontFamily: fonts.sansBold, fontSize: 11, color: colors.you },
 });

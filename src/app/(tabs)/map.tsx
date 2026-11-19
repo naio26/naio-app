@@ -1,28 +1,31 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
-import { Icon, type IconName, VerifiedBadge } from '@/components';
+import { Icon } from '@/components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   AvatarStack,
   BottomSheet,
   Button,
   Chip,
-  FakeMap,
   InfoBox,
+  MapMarker,
   MeetingPoint,
+  NaioMap,
   PersonPin,
+  PIN_SIZE,
   PlanActions,
   PlanBadge,
   PlanFacts,
   PlanPin,
   Txt,
   UpToCard,
-  YouMarker,
+  YouDot,
 } from '@/components';
 import { listAvailablePeople } from '@/data/api';
 import { useLoad } from '@/data/hooks';
-import { formatTime, matchesFilters, pinLabel, planWhen } from '@/data/time';
+import { MY_AREA, personMatches, planMatches } from '@/data/match';
+import { formatTime, isNow, planWhen } from '@/data/time';
 import { Person, Plan } from '@/data/types';
 import { countActive, NO_FILTERS, useFilters } from '@/state/filters';
 import { usePeople } from '@/state/people';
@@ -42,21 +45,34 @@ export default function MapTab() {
   const { filters, setFilters, introSeen, setIntroSeen } = useFilters();
   const { plans, statusOf } = usePlans();
   const { blocked, offline, setOffline } = useSafety();
-  // Blocked people disappear from your map, with their plans.
-  const available = (useLoad(listAvailablePeople, []) ?? []).filter((p) => !blocked.includes(p.id));
+  // Orange markers: people open to plans who match your filters. Blocked people disappear, with their plans.
+  const available = (useLoad(listAvailablePeople, []) ?? []).filter(
+    (p) => !blocked.includes(p.id) && personMatches(p, filters),
+  );
+  // "You (approximate)" only shows for a few seconds after tapping the blue dot.
+  const [youLabel, setYouLabel] = useState(false);
+  useEffect(() => {
+    if (!youLabel) return;
+    const t = setTimeout(() => setYouLabel(false), 3000);
+    return () => clearTimeout(t);
+  }, [youLabel]);
   const [selected, setSelected] = useState<Selected>(null);
   const active = countActive(filters);
 
-  // Hosts' genders, for the gender filter.
+  // Hosts' gender and age range, for the filters.
   const hosts = usePeople([...new Set(plans.map((p) => p.hostId))]);
-  // Your own plan always shows; other plans follow the filters.
+  // Green markers: your own plan always shows; other plans follow the filters.
   const visible = useMemo(
     () =>
       plans.filter(
         (p) =>
           statusOf(p) === 'host' ||
           (!blocked.includes(p.hostId) &&
-            matchesFilters(p, filters, hosts.find((h) => h.id === p.hostId)?.gender)),
+            planMatches(
+              p,
+              filters,
+              hosts.find((h) => h.id === p.hostId),
+            )),
       ),
     [plans, filters, statusOf, blocked, hosts],
   );
@@ -64,30 +80,50 @@ export default function MapTab() {
 
   return (
     <View style={styles.root}>
-      <FakeMap onPressMap={() => setSelected(null)}>
+      <NaioMap
+        onPressMap={() => {
+          setSelected(null);
+          setYouLabel(false);
+        }}
+      >
         {available.map((p) => (
-          <PersonPin
+          <MapMarker
             key={p.id}
             location={p.available!.location}
-            initials={p.initials}
-            name={p.firstName}
-            color={p.avatarColor}
-            selected={selected?.kind === 'person' && selected.person.id === p.id}
+            size={PIN_SIZE.person}
+            label={`${p.firstName}, ${p.ageRange}, open to plans`}
+            z={selected?.kind === 'person' && selected.person.id === p.id ? 5 : 1}
             onPress={() => setSelected({ kind: 'person', person: p })}
-          />
+          >
+            <PersonPin
+              initials={p.initials}
+              name={p.firstName}
+              ageRange={p.ageRange}
+              selected={selected?.kind === 'person' && selected.person.id === p.id}
+            />
+          </MapMarker>
         ))}
-        <YouMarker />
-        {visible.map((p) => (
-          <PlanPin
-            key={p.id}
-            location={p.location}
-            label={statusOf(p) === 'host' ? `Your plan · ${formatTime(p.time, true)}` : pinLabel(p)}
-            mine={statusOf(p) === 'host'}
-            selected={selected?.kind === 'plan' && selected.plan.id === p.id}
-            onPress={() => setSelected({ kind: 'plan', plan: p })}
-          />
-        ))}
-      </FakeMap>
+        <MapMarker location={MY_AREA} size={PIN_SIZE.you} label="You (approximate)" onPress={() => setYouLabel(true)}>
+          <YouDot showLabel={youLabel} />
+        </MapMarker>
+        {visible.map((p) => {
+          const on = selected?.kind === 'plan' && selected.plan.id === p.id;
+          const day = p.day === 'today' ? 'Today' : 'Tomorrow';
+          const time = isNow(p) ? 'Now' : formatTime(p.time);
+          return (
+            <MapMarker
+              key={p.id}
+              location={p.location}
+              size={PIN_SIZE.plan}
+              label={`Plan, ${day} ${time}`}
+              z={on ? 6 : 2}
+              onPress={() => setSelected({ kind: 'plan', plan: p })}
+            >
+              <PlanPin day={day} time={time} mine={statusOf(p) === 'host'} selected={on} />
+            </MapMarker>
+          );
+        })}
+      </NaioMap>
 
       {/* Greeting card + filters */}
       <View style={[styles.top, { top: insets.top + 10 }]}>
@@ -127,7 +163,6 @@ export default function MapTab() {
             </Txt>
           </View>
         </View>
-        <VerifiedBadge variant="pill" />
       </View>
 
       {offline && (

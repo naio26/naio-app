@@ -4,7 +4,7 @@ import { KEYS, useSaved } from './storage';
 
 export type SavedFilters = { filters: Filters; introSeen: boolean };
 
-export const NO_FILTERS: Filters = { maxKm: null, moods: [], languages: [], when: [], genders: [] };
+export const NO_FILTERS: Filters = { maxKm: null, moods: [], languages: [], when: [], genders: [], ages: null };
 
 type FiltersState = {
   filters: Filters;
@@ -33,5 +33,12 @@ export function useFilters() {
 
 /** How many filter groups are active, for the "Filters · 2" button. */
 export function countActive(f: Filters) {
-  return (f.maxKm !== null ? 1 : 0) + (f.moods.length ? 1 : 0) + (f.languages.length ? 1 : 0) + (f.when.length ? 1 : 0) + (f.genders.length ? 1 : 0);
+  return (
+    (f.maxKm !== null ? 1 : 0) +
+    (f.moods.length ? 1 : 0) +
+    (f.languages.length ? 1 : 0) +
+    (f.when.length ? 1 : 0) +
+    (f.genders.length ? 1 : 0) +
+    (f.ages ? 1 : 0)
+  );
 }

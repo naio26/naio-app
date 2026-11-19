@@ -75,7 +75,7 @@ export const INTERESTS = [
 export const MIN_INTERESTS = 3;
 export const MAX_INTERESTS = 8;
 
-export const SITUATIONS: Situation[] = ['Local', 'New in town', 'Travelling solo', 'Staying temporarily'];
+export const SITUATIONS: Situation[] = ['I’m a local', 'New in town', 'Travelling solo', 'Staying temporarily'];
 
 // Ordered so the chips fill balanced rows in the filters (Music in the 2nd row, no chip left alone at the end).
 export const MOODS = [
@@ -96,6 +96,8 @@ export const MOODS = [
   'Sports',
   'Outdoors',
   'Wellness',
+  'Party',
+  'Beach',
 ];
 
 /** Distance chips. Choosing one includes every closer plan. */

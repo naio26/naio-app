@@ -16,7 +16,7 @@ export type Language = {
   level?: LanguageLevel;
 };
 
-export type Situation = 'Local' | 'New in town' | 'Travelling solo' | 'Staying temporarily';
+export type Situation = 'I’m a local' | 'New in town' | 'Travelling solo' | 'Staying temporarily';
 
 /** The city the user is in. Only the name is shown in texts. */
 export type City = {
@@ -172,4 +172,6 @@ export type Filters = {
   languages: string[]; // empty = any language
   when: TimeWindow[]; // empty = any time
   genders: Gender[]; // host's gender, empty = anyone
+  /** Age ranges of the people you want to make plans with, from–to (both included). null = any age. */
+  ages: { from: AgeRange; to: AgeRange } | null;
 };

@@ -66,7 +66,9 @@ export default function FaceCheck() {
       <View style={styles.hero}>
         <Txt variant="eyebrow">One quick check</Txt>
         <Txt variant="display">Show us it’s really you.</Txt>
-        <Txt variant="intro">Take a live photo. We’ll check that one real face is present and that it isn’t a photo of a photo.</Txt>
+        <Txt variant="intro">
+          Take a live photo. We’ll check that one real face is present and that it isn’t a photo of a photo.
+        </Txt>
       </View>
 
       <LinearGradient
@@ -110,7 +112,7 @@ export default function FaceCheck() {
       </View>
 
       <Txt variant="note" center style={styles.note}>
-        This only confirms that a live face is in front of the camera. It is not matched with your ID; age verification
+        This only confirms that a live face is in front of the camera. It is not matched with your ID. Age verification
         happens separately.
       </Txt>
     </Screen>

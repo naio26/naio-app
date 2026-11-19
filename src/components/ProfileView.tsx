@@ -21,7 +21,7 @@ export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: (
         {!!from && (
           <View style={styles.where}>
             <Icon name="map-pin" color={colors.muted} />
-            <Txt variant="label">From {from}</Txt>
+            <Txt style={styles.from}>From {from}</Txt>
           </View>
         )}
       </View>
@@ -74,6 +74,7 @@ export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: (
 const styles = StyleSheet.create({
   hero: { alignItems: 'center', marginTop: space.lg, gap: 8 },
   name: { fontFamily: fonts.serif, fontSize: 46, lineHeight: 54, color: colors.dark, marginTop: space.sm },
+  from: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 20, color: colors.accent },
   where: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: space.xs },
   card: { marginTop: space.xl, padding: 26, borderRadius: 30, gap: 0, ...shadow.soft, shadowOpacity: 0.05 },
   block: { gap: 12, marginBottom: space.lg },

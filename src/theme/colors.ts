@@ -12,6 +12,7 @@ export const colors = {
   // Primary: terracotta
   accentFill: '#C66337', // main buttons, the "+", badges, your chat bubbles (white text on top); never map markers
   accent: '#B05430', // small labels, links, selected text, active tab and icons (readable terracotta)
+  accentLight: '#CC7650', // soft light terracotta for large text only (3.2:1 on cream): "Welcome to {city}, {name}."
   accentLine: '#E2A07C', // soft light terracotta: chip borders, selected outlines, focused fields
   accentSoft: '#F8DED0', // pale peach: selected chips, soft fills, avatars
   disabled: '#E9BCA7', // disabled main button
@@ -29,14 +30,11 @@ export const colors = {
   danger: '#B8433A', // destructive actions (white text on top)
 
   // Brand details
-  brand: '#C66337', // welcome screen background
   brandDot: '#E0784A', // the period in the "naio." logo
   reelEyebrow: '#F2A285', // small labels on the intro photos
   overlay: 'rgba(67, 49, 42, 0.55)',
-  // Welcome screen (21): softer terracotta bands, the "Athens." colour and the light circles.
-  brandBand: '#BA5A36',
+  // Soft terracotta tones of the photo placeholder gradient.
   brandBandDeep: '#A84E30',
-  brandInk: '#5A3427',
   brandGlow: '#E8956C',
   // The very light, soft gradient of "Get started" on the intro.
   glowFrom: '#FFF7EE',

@@ -44,7 +44,9 @@ export default function VerifyAge() {
         <Txt style={styles.rangeValue}>{profile.ageRange ?? '—'}</Txt>
       </Card>
 
-      <Txt variant="intro" center>Use an official document to confirm that your date of birth matches this range.</Txt>
+      <Txt variant="intro" center>
+        Use an official document to confirm that your date of birth matches this range.
+      </Txt>
 
       <View style={{ gap: 12 }}>
         <Txt variant="label">Document type</Txt>

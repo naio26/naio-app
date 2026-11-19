@@ -15,13 +15,15 @@ export function UpToCard({ visible, onSetFilters, onSkip }: Props) {
     <Modal visible={visible} transparent animationType="fade" statusBarTranslucent onRequestClose={onSkip}>
       <View style={styles.backdrop}>
         <View style={styles.card}>
-          <Txt variant="eyebrow" style={{ letterSpacing: 3 }}>
+          <Txt variant="eyebrow" center style={{ letterSpacing: 3 }}>
             First things first
           </Txt>
-          <Txt style={styles.title} numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.8}>
+          <Txt style={styles.title} center numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.8}>
             What are you{'\n'}up to?
           </Txt>
-          <Txt style={styles.sub} center>Customize your experience to set the perfect plan.</Txt>
+          <Txt style={styles.sub} center>
+            Customize your experience to set the perfect plan.
+          </Txt>
           <Button title="Set filters" arrow onPress={onSetFilters} style={styles.cta} />
           <Button title="Skip for now" variant="link" onPress={onSkip} />
           <Txt variant="caption" center style={{ marginTop: -6 }}>

@@ -63,7 +63,7 @@ export const people: Person[] = [
     gender: 'Male',
     verified: true,
     from: 'Hamburg, Germany',
-    situation: 'Local',
+    situation: 'I’m a local',
     about: 'Athens local for three years. Happy to show the good spots.',
     interests: ['Sports', 'Night out', 'Cooking'],
     languages: [
@@ -81,7 +81,7 @@ export const people: Person[] = [
     gender: 'Female',
     verified: true,
     from: 'Athens, Greece',
-    situation: 'Local',
+    situation: 'I’m a local',
     about: 'Born and raised in Athens. Early hikes, late dinners.',
     interests: ['Nature', 'Adventure', 'Photography'],
     languages: [

@@ -61,6 +61,21 @@ export default function Settings() {
 
       {/* Demo only: clears everything saved on this phone and starts again from the intro. */}
       <SettingsSection title="Demo" />
+      <SettingsRow
+        title="Test the location question"
+        sub="The pop-up after “Create profile”: try Allow or Don’t allow"
+        onPress={() => router.push('/setup/welcome?demo=ask')}
+      />
+      <SettingsRow
+        title="Preview “You’re all set!”"
+        sub="The screen after allowing location"
+        onPress={() => router.push('/setup/welcome?demo=granted')}
+      />
+      <SettingsRow
+        title="Test “location denied” screen"
+        sub="What you see if you don’t allow location"
+        onPress={() => router.push('/setup/welcome?demo=denied')}
+      />
       {confirmReset ? (
         <Card tone="muted" style={{ marginTop: space.md, padding: 20, gap: 14 }}>
           <Txt variant="bodyStrong">Reset the demo?</Txt>

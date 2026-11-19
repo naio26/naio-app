@@ -27,7 +27,7 @@ export function ResultScreen({
 }) {
   return (
     <Screen contentStyle={styles.content} footer={footer}>
-      <Logo size={30} color={colors.accent} dotColor={colors.accent} />
+      <Logo size={30} />
       <View style={styles.center}>
         <View style={styles.hero}>
           <Icon name={icon} size={iconSize.hero} color={colors.accent} />

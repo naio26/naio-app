@@ -33,9 +33,10 @@ const empty: MyProfile = {
   about: '',
 };
 
-/** Profiles saved by older versions: "Living locally" is now called "Local". */
+/** Profiles saved by older versions: "Living locally" and "Local" are now called "I’m a local". */
 function upgrade(p: MyProfile): MyProfile {
-  return (p.situation as string) === 'Living locally' ? { ...p, situation: 'Local' } : p;
+  const old = p.situation as string | undefined;
+  return old === 'Living locally' || old === 'Local' ? { ...p, situation: 'I’m a local' } : p;
 }
 
 const ProfileContext = createContext<ProfileState | null>(null);

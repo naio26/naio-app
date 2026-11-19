@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icon, type IconName } from '@/components';
-import { Button, CornerFrame, IdCardArt, InfoBox, Screen, ScreenHeader, Txt } from '@/components';
+import { Button, CornerFrame, IdCardArt, IdReadyCard, InfoBox, Screen, ScreenHeader, Txt } from '@/components';
 import { useProfile } from '@/state/profile';
 import { colors, fonts, radius, space } from '@/theme';
 import { goBack } from '@/components';
@@ -76,14 +76,19 @@ export default function AddId() {
         })}
       </View>
 
-      <InfoBox
-        title="Make sure your ID photo is clear"
-        checks={[
-          'All four corners are visible',
-          'Text is sharp and readable',
-          'No glare covers your photo or date of birth',
-        ]}
-      />
+      {/* Taken or uploaded: the same clear "ID photo ready" state; the tips box is only useful before. */}
+      {idPhoto ? (
+        <IdReadyCard />
+      ) : (
+        <InfoBox
+          title="Make sure your ID photo is clear"
+          checks={[
+            'All four corners are visible',
+            'Text is sharp and readable',
+            'No glare covers your photo or date of birth',
+          ]}
+        />
+      )}
 
       <Txt variant="note" center>
         Encrypted during verification and removed after the result is recorded.
