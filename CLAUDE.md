@@ -47,14 +47,15 @@ naio. (always lowercase, always with the period) is a mobile app where people wh
 When the owner says **"publish a new preview"**:
 1. Check: `npx tsc --noEmit` and `npx expo-doctor` must pass.
 2. Check the login: `npx eas-cli@latest whoami` must show `naioali`. If not, stop and ask the owner to type `! npx expo login` (account `naioali`).
-3. Publish: `npx eas-cli@latest update --channel preview --environment preview --platform all --non-interactive --message "<short description of what changed>"`
-4. Give the owner the dashboard link the command prints, and remind them how to open it (below). The link and QR never change: Expo Go always loads the latest update of the `preview` channel when the app is opened again (close it fully and reopen; sometimes it needs a second reopen).
+3. **Previews are versioned: never overwrite an older version.** Each version has its own EAS channel + branch with the same name `vN-YYYY-MM-DD` (v1 is the old `preview` channel; v2 is `v2-2026-11-19`). Unless the owner says to update an existing version, make the next one: `npx eas-cli@latest channel:create vN-YYYY-MM-DD --non-interactive`, then `npx eas-cli@latest update --branch vN-YYYY-MM-DD --environment preview --platform all --non-interactive --message "vN - D Mon YYYY"`.
+4. Its Expo Go link is `exp://u.expo.dev/<projectId>?runtime-version=exposdk%3A58.0.0&channel-name=vN-YYYY-MM-DD`. Make its QR at `docs/expo-go-preview-vN-YYYY-MM-DD.png` (Python `qrcode`), add it at the top of `docs/PREVIEW.md` (keep the older ones), save a git checkpoint with tag `vN-YYYY-MM-DD`, push branch and tag, and note it in RESUM-FASES. Check the link serves the new update (`curl` the link's https form with `expo-platform: ios`, `expo-protocol-version: 1`, `accept: multipart/mixed`).
+5. Give the owner the dashboard link and how to open it. A version's link and QR never change; if that version is updated, Expo Go loads it when the app is closed fully and reopened (sometimes twice).
 
 Setup (already done, don't redo):
 - EAS project `@naioali/naio`, id `69984178-632d-4299-99a2-3328d3585b14` (in `app.json` → `extra.eas.projectId`, `owner: naioali`).
 - `app.json`: `"runtimeVersion": "exposdk:58.0.0"` and `"updates": { "url": "https://u.expo.dev/<projectId>" }`. **The runtime must be exactly `exposdk:<SDK>.0.0`**: it's the only runtime Expo Go accepts (Expo's docs say updates with a runtime version don't load in Expo Go; this exposdk form is the exception). Never switch it to the `appVersion`/`fingerprint` policies or run `eas update:configure` (it would change it). When upgrading the Expo SDK, change it to the new SDK (e.g. `exposdk:59.0.0`), regenerate the link and QR, and publish again.
-- `expo-updates` is installed (it's included in Expo Go). `eas.json` has a `preview` channel.
-- Expo Go link: `exp://u.expo.dev/69984178-632d-4299-99a2-3328d3585b14?runtime-version=exposdk%3A58.0.0&channel-name=preview`. QR code: `docs/expo-go-preview-qr.png` (see `docs/PREVIEW.md`).
+- `expo-updates` is installed (it's included in Expo Go). `eas.json` has a `preview` build profile on the `preview` channel.
+- Versions, links and QR codes are listed in `docs/PREVIEW.md`. v1 (9 Nov 2026): channel `preview`, QR `docs/expo-go-preview-qr.png`. v2 (19 Nov 2026): channel `v2-2026-11-19`, QR `docs/expo-go-preview-v2-2026-11-19.png`, git tag `v2-2026-11-19`.
 - The preview only contains what's in this folder when publishing (saved or not in git). Dashboard: https://expo.dev/accounts/naioali/projects/naio/updates
 
 ## Product rules

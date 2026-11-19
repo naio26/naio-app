@@ -1,6 +1,6 @@
 # Resum de fases — naio.
 
-Última actualització: 19 de novembre de 2026 (retocs al perfil, a «What are you up to?» i als filtres; les quatre fases estan fetes)
+Última actualització: 19 de novembre de 2026 (publicada la versió de prova v2; les quatre fases estan fetes)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -249,6 +249,16 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     3. A «Your profile», tria un gènere: el botó del final no s'activa fins que l'hagis triat.
     4. Al mapa, obre Filters i tria «Female» a «Who’s hosting?»: només queden els plans de la Nora i la Sofia (i el teu).
   - **Decisions:** el filtre mira el gènere de qui organitza el pla. Si prefereixes una altra cosa (per exemple, el gènere de les persones apuntades), m'ho dius.
+
+- **Publicada la versió de prova v2 (19 de novembre de 2026):**
+  - S'anomena **«v2 - 19 Nov 2026»** i porta tot el que hem fet fins avui (perfil amb «Gender», filtres nous, retocs de disseny, la ciutat, l'etiqueta «Everyone is age and selfie verified»…).
+  - **La v1 no ha canviat:** cada versió té el seu enllaç i el seu codi QR, i totes dues es poden obrir sense el Codespace.
+  - **Com obrir la v2:** escaneja amb la Càmera de l'iPhone el codi QR `docs/expo-go-preview-v2-2026-11-19.png` (o toca l'enllaç de la v2 de `docs/PREVIEW.md` des del mòbil). S'obre a Expo Go.
+  - **Com obrir la v1:** igual, amb el codi QR antic `docs/expo-go-preview-qr.png` (o l'enllaç de la v1 de `docs/PREVIEW.md`).
+  - A Expo Go, les dues versions surten a la llista «Recently opened». Per canviar d'una a l'altra, toca la que vulguis (o torna a escanejar el seu QR).
+  - Si la v2 s'obre directament al mapa amb dades antigues, ves a **Profile → ⚙️ Settings → «Reset demo»** per començar des del vídeo inicial.
+  - A expo.dev la trobaràs amb el missatge «v2 - 19 Nov 2026»: https://expo.dev/accounts/naioali/projects/naio/updates/359fea66-aa9a-4208-b4c5-251fe771b30d
+  - També està desada a GitHub amb l'etiqueta `v2-2026-11-19`.
 
 - **Retocs al perfil, a «What are you up to?» i als filtres (19 de novembre de 2026):**
   - **El teu perfil (pestanya Profile i revisió abans de crear-lo):**
