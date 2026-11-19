@@ -36,7 +36,7 @@ export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: (
 
         <View style={styles.block}>
           <Txt style={styles.rowLabel}>My kind of plans</Txt>
-          {/* Two columns, each chip aligned to the left of its column. */}
+          {/* Two columns, each chip centred in its column. */}
           <View style={styles.chips}>
             {profile.interests.map((i) => (
               <View key={i} style={styles.chipCell}>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   card: { marginTop: space.xl, padding: 26, borderRadius: 30, gap: 0, ...shadow.soft, shadowOpacity: 0.05 },
   block: { gap: 12, marginBottom: space.lg },
   chips: { flexDirection: 'row', flexWrap: 'wrap', rowGap: 10 },
-  chipCell: { width: '50%', alignItems: 'flex-start', paddingRight: 8 },
+  chipCell: { width: '50%', alignItems: 'center', paddingHorizontal: 4 },
   level: { fontFamily: fonts.sans, color: colors.accent },
   row: {
     flexDirection: 'row',

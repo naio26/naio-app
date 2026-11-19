@@ -250,6 +250,11 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     4. Al mapa, obre Filters i tria «Female» a «Who’s hosting?»: només queden els plans de la Nora i la Sofia (i el teu).
   - **Decisions:** el filtre mira el gènere de qui organitza el pla. Si prefereixes una altra cosa (per exemple, el gènere de les persones apuntades), m'ho dius.
 
+- **Interessos (19 de novembre de 2026, després de la v2):**
+  - **El teu perfil:** els interessos continuen en dues columnes, però ara centrats al mig de la pantalla.
+  - **«Your profile» (la llista per omplir):** a «Choose your interests» ja no es talla el text amb «…»: surten tots els interessos triats, en tantes línies com calgui, i la casella es fa més alta. El mateix passa a la resta de caselles (idiomes, etc.).
+  - **La v2 s'ha actualitzat amb aquests canvis dels interessos** (19 de novembre de 2026, missatge «v2 - 19 Nov 2026 (updated)»). El QR i l'enllaç de la v2 són els mateixos: tanca Expo Go del tot i torna a obrir la v2 (de vegades cal fer-ho dues vegades). La v1 no ha canviat.
+
 - **Publicada la versió de prova v2 (19 de novembre de 2026):**
   - S'anomena **«v2 - 19 Nov 2026»** i porta tot el que hem fet fins avui (perfil amb «Gender», filtres nous, retocs de disseny, la ciutat, l'etiqueta «Everyone is age and selfie verified»…).
   - **La v1 no ha canviat:** cada versió té el seu enllaç i el seu codi QR, i totes dues es poden obrir sense el Codespace.

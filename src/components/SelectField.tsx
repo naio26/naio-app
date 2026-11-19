@@ -34,7 +34,8 @@ export function SelectField({ label, placeholder, value, valueContent, note, ico
           {value && valueContent ? (
             valueContent
           ) : (
-            <Txt numberOfLines={2} style={[styles.text, value ? styles.value : styles.placeholder]}>
+            // Never cut: the text wraps onto as many lines as needed and the box grows.
+            <Txt style={[styles.text, value ? styles.value : styles.placeholder]}>
               {value ?? placeholder}
             </Txt>
           )}
