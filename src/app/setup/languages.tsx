@@ -3,22 +3,25 @@ import { StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
 import { Button, CodeBadge, Input, OptionRow, Screen, ScreenHeader, Txt } from '@/components';
-import { LANGUAGES, POPULAR_LANGUAGES } from '@/data/catalog';
+import { LANGUAGES, languagesFor, POPULAR_LANGUAGES } from '@/data/catalog';
 import { Language } from '@/data/types';
+import { useCity } from '@/state/city';
 import { useProfile } from '@/state/profile';
 import { colors, space } from '@/theme';
 
 // Screen 16 — pick the languages you speak. Levels come next (17).
 export default function Languages() {
   const { profile, update } = useProfile();
+  const city = useCity();
   const [query, setQuery] = useState('');
   const selected = profile.languages;
 
   const list = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return LANGUAGES.slice(0, POPULAR_LANGUAGES);
+    // "Popular near you": the city's languages first.
+    if (!q) return languagesFor(city.languages).slice(0, POPULAR_LANGUAGES);
     return LANGUAGES.filter((l) => l.name.toLowerCase().includes(q) || l.code.toLowerCase() === q);
-  }, [query]);
+  }, [query, city.languages]);
 
   const toggle = (lang: Language) => {
     const isOn = selected.some((l) => l.code === lang.code);

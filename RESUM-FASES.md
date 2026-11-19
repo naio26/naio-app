@@ -1,6 +1,6 @@
 # Resum de fases — naio.
 
-Última actualització: 17 de novembre de 2026 (retocs de disseny al registre, al perfil i a la verificació d'edat; les quatre fases estan fetes)
+Última actualització: 19 de novembre de 2026 (retocs al perfil, a «What are you up to?» i als filtres; les quatre fases estan fetes)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -250,9 +250,27 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     4. Al mapa, obre Filters i tria «Female» a «Who’s hosting?»: només queden els plans de la Nora i la Sofia (i el teu).
   - **Decisions:** el filtre mira el gènere de qui organitza el pla. Si prefereixes una altra cosa (per exemple, el gènere de les persones apuntades), m'ho dius.
 
+- **Retocs al perfil, a «What are you up to?» i als filtres (19 de novembre de 2026):**
+  - **El teu perfil (pestanya Profile i revisió abans de crear-lo):**
+    - Ja no posa «Exploring Athens» (encara no sabem on ets). Ara posa **d'on ets**, per exemple «From Barcelona, Spain», si ho has omplert a «Where you’re from» (dins de «+ Add more about you»). Si no ho has omplert, no surt res.
+    - «My kind of plans» ja no va en negreta.
+    - Els interessos surten en dues columnes, alineats a l'esquerra.
+    - Idiomes sense banderes. El nivell (Native, Fluent…) va en color terracota, sense negreta ni cursiva.
+    - He tret el llapis de dalt a la dreta de la pantalla de revisió: ja hi ha el botó «Edit profile».
+  - **«What are you up to?»:** «First things first» igual. El títol ocupa només dues línies. El text de sota és centrat i més petit. L'última frase va en dues línies i centrada.
+  - **Filters:**
+    - «Reset» i els títols de cada secció una mica més petits.
+    - Les etiquetes de «mood» estan repartides en files equilibrades: «Music» ara és a la segona fila i «Wellness» ja no queda sola al final.
+    - Els idiomes s'adapten a la ciutat: a Athens surten primer **Greek i English**. També a «Languages you speak» del perfil («Popular near you» comença per Greek i English).
+    - A «When?», «Available» ara està centrat com la resta i les caselles estan repartides igual.
+    - He tret el requadre «Everyone is verified» del final.
+  - **Nova etiqueta discreta «Everyone is age and selfie verified»** (amb un escut verd petit): al mapa, sota la llegenda de colors, i a la pantalla de detall d'un pla, just a sobre del botó «Join plan».
+  - He instal·lat petites actualitzacions d'Expo (correccions d'errors).
+  - **Pendent de la teva resposta:** com preguntar d'on ets, com ha de ser la pantalla després de crear el perfil (en lloc de «Welcome to Athens») i si afegim més «moods».
+
 - **Retocs de disseny (17 de novembre de 2026):**
   - **Regla general:** els textos d'ajuda petits sota els títols («We show a range…», «Use a clear…», «Choose…», «Select 3–8…») ara són una mica més petits i tots de la mateixa mida a tota l'app.
-  - **Sign in with Apple:** «Hide my email» i la seva explicació ara van dins d'un requadre propi de color préssec suau, separat de la targeta del compte. Més espai entre les seccions (també a Google).
+  - **Sign in with Apple:** «Hide my email» i la seva explicació van sense requadre ni fons, separats de la targeta del compte només amb més espai (sense línia divisòria, no calia). Més espai entre les seccions (també a Google).
   - **Your profile:** el que has omplert dins de cada casella ja no surt en negreta. Els idiomes surten un per línia, amb el nivell en cursiva i color terracota (per exemple «English · *Native*»).
   - **Choose your age range:** el text de dalt és més petit. El requadre de sota té les cantonades gairebé rectes i un color més clar.
   - **Verify your range:** el requadre «Selected range» té les cantonades més petites i és més baix. La frase «Use an official document…» és més petita i centrada. «Add the photo page» ara és blanc amb vora fina, com les opcions de document, i «What naio checks» ara no té fons i té la vora discontínua.

@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
-import { Icon, type IconName } from '@/components';
 import { Button, Logo, ProfileView, Screen } from '@/components';
 import { saveProfile } from '@/data/api';
 import { useProfile } from '@/state/profile';
-import { colors, space } from '@/theme';
+import { space } from '@/theme';
 import { goBack } from '@/components';
 
 // Screen 20 — your profile as other people will see it, before creating it.
@@ -29,14 +28,6 @@ export default function ProfileCompleted() {
     >
       <View style={styles.top}>
         <Logo size={44} />
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Edit profile"
-          onPress={() => goBack()}
-          style={styles.iconBtn}
-        >
-          <Icon name="pencil" color={colors.dark} />
-        </Pressable>
       </View>
       <ProfileView profile={profile} onEdit={() => goBack()} />
     </Screen>
@@ -46,5 +37,4 @@ export default function ProfileCompleted() {
 const styles = StyleSheet.create({
   content: { paddingBottom: space.xl },
   top: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: space.xl },
-  iconBtn: { padding: 6 },
 });

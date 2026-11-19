@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { Button, Chip, goBack, InfoBox, Screen, ScreenHeader, Txt } from '@/components';
-import { DISTANCES, LANGUAGES, MOODS, SUGGESTED_PLAN_LANGUAGES } from '@/data/catalog';
+import { Button, Chip, goBack, Screen, ScreenHeader, Txt } from '@/components';
+import { DISTANCES, LANGUAGES, languagesFor, MOODS } from '@/data/catalog';
 import { Filters, Gender, GENDERS, TimeWindow } from '@/data/types';
+import { useCity } from '@/state/city';
 import { NO_FILTERS, useFilters } from '@/state/filters';
 import { colors, fonts, radius, space } from '@/theme';
 
@@ -17,6 +18,11 @@ const toggle = <T,>(list: T[], item: T) => (list.includes(item) ? list.filter((x
 // Screens 23–24 — the filters sheet. Changes only count after "Apply filters".
 export default function FiltersSheet() {
   const { filters, setFilters } = useFilters();
+  const city = useCity();
+  // Suggested languages follow the city (Greek and English in Athens).
+  const suggested = languagesFor(city.languages)
+    .slice(0, city.languages.length)
+    .map((l) => l.name);
   const [draft, setDraft] = useState<Filters>(filters);
   const [moreLangs, setMoreLangs] = useState(false);
   const set = (changes: Partial<Filters>) => setDraft((d) => ({ ...d, ...changes }));
@@ -30,8 +36,8 @@ export default function FiltersSheet() {
 
   // Suggested languages first, then any extra ones you added with "+ Add".
   const langChips = [
-    ...SUGGESTED_PLAN_LANGUAGES,
-    ...draft.languages.filter((l) => !SUGGESTED_PLAN_LANGUAGES.includes(l)),
+    ...suggested,
+    ...draft.languages.filter((l) => !suggested.includes(l)),
   ];
   const otherLangs = LANGUAGES.map((l) => l.name).filter((n) => !langChips.includes(n));
 
@@ -74,7 +80,7 @@ export default function FiltersSheet() {
     >
       {/* Distance */}
       <View style={styles.section}>
-        <Txt variant="question">How far would you go?</Txt>
+        <Txt variant="question" style={styles.q}>How far would you go?</Txt>
         <View style={styles.boxes}>
           {DISTANCES.map((d) => {
             const on = draft.maxKm !== null && d.maxKm <= draft.maxKm;
@@ -96,7 +102,7 @@ export default function FiltersSheet() {
 
       {/* Mood */}
       <View style={styles.section}>
-        <Txt variant="question">What are you in the mood for?</Txt>
+        <Txt variant="question" style={styles.q}>What are you in the mood for?</Txt>
         <View style={styles.chips}>
           {MOODS.map((m) => (
             <Chip
@@ -111,7 +117,7 @@ export default function FiltersSheet() {
 
       {/* Gender of the person hosting the plan */}
       <View style={styles.section}>
-        <Txt variant="question">Who’s hosting?</Txt>
+        <Txt variant="question" style={styles.q}>Who’s hosting?</Txt>
         <Txt variant="caption" style={{ marginTop: -6 }}>
           Leave empty to see plans from everyone.
         </Txt>
@@ -129,7 +135,7 @@ export default function FiltersSheet() {
 
       {/* Language */}
       <View style={styles.section}>
-        <Txt variant="question">Which language do you want the activity to be in?</Txt>
+        <Txt variant="question" style={styles.q}>Which language do you want the activity to be in?</Txt>
         <Txt variant="caption" style={{ marginTop: -6 }}>
           Leave empty for any language. Suggested languages adapt to your location.
         </Txt>
@@ -155,7 +161,7 @@ export default function FiltersSheet() {
 
       {/* When */}
       <View style={styles.section}>
-        <Txt variant="question">When?</Txt>
+        <Txt variant="question" style={styles.q}>When?</Txt>
         <Txt variant="caption" style={{ marginTop: -6 }}>
           You can combine more than one time window.
         </Txt>
@@ -166,7 +172,6 @@ export default function FiltersSheet() {
             sub="for the next 2 hours"
             on={draft.when.includes('now')}
             onPress={() => set({ when: toggle<TimeWindow>(draft.when, 'now') })}
-            wide
           />
         </View>
         {(['today', 'tomorrow'] as const).map((day) => (
@@ -188,11 +193,6 @@ export default function FiltersSheet() {
         ))}
       </View>
 
-      <InfoBox
-        title="✓ Everyone is verified"
-        text="All naio profiles complete an age and selfie check."
-        style={{ marginTop: space.sm }}
-      />
     </Screen>
   );
 }
@@ -202,20 +202,18 @@ function Slot({
   sub,
   on,
   onPress,
-  wide,
 }: {
   title: string;
   sub: string;
   on: boolean;
   onPress: () => void;
-  wide?: boolean;
 }) {
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ selected: on }}
       onPress={onPress}
-      style={[styles.box, styles.slot, wide && styles.slotWide, on && styles.boxOn]}
+      style={[styles.box, styles.slot, on && styles.boxOn]}
     >
       <Txt style={[styles.slotTitle, on && styles.boxTitleOn]}>{title}</Txt>
       <Txt numberOfLines={1} style={[styles.slotSub, on && { color: colors.accent, fontFamily: fonts.sansMedium }]}>
@@ -234,7 +232,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.border,
     marginTop: 10,
   },
-  reset: { fontFamily: fonts.sans, fontSize: 18, color: colors.accent },
+  reset: { fontFamily: fonts.sans, fontSize: 16, color: colors.accent },
+  q: { fontSize: 17, lineHeight: 23 },
   content: { paddingTop: space.xl, paddingBottom: space.xl },
   section: {
     gap: 16,
@@ -258,10 +257,9 @@ const styles = StyleSheet.create({
   boxTitleOn: { fontFamily: fonts.sansBold, color: colors.accent },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   moreLangs: { padding: 12, borderRadius: radius.md, backgroundColor: colors.mist },
-  whenRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  day: { width: 72, fontFamily: fonts.sansBold, fontSize: 14, color: colors.dark },
+  whenRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  day: { width: 76, fontFamily: fonts.sansBold, fontSize: 14, color: colors.dark },
   slot: { flex: 1, height: 60, gap: 2, paddingHorizontal: 2 },
-  slotWide: { alignItems: 'flex-start', paddingHorizontal: 20 },
   slotTitle: { fontFamily: fonts.sans, fontSize: 13.5, color: colors.dark },
   slotSub: { fontFamily: fonts.sans, fontSize: 10.5, color: colors.muted },
 });

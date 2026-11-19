@@ -1,8 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import { Icon, type IconName } from './Icon';
-import { LANGUAGE_FLAGS } from '@/data/catalog';
 import { MyProfile } from '@/data/types';
-import { useCity } from '@/state/city';
 import { colors, fonts, shadow, space } from '@/theme';
 import { Button } from './Button';
 import { Card } from './Card';
@@ -12,19 +10,20 @@ import { Txt } from './Txt';
 
 /** Your profile as other people see it: preview (20) and Profile tab (42). */
 export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: () => void }) {
-  const city = useCity();
-  const subtitle = [profile.ageRange, profile.from && `From ${profile.from}`].filter(Boolean).join(' · ');
-  const where = profile.situation === 'Local' ? `Living in ${city.name}` : `Exploring ${city.name}`;
+  // Where you're FROM (optional, asked in "Add more about you"). We don't show where you are now.
+  const from = profile.from.trim();
   return (
     <>
       <View style={styles.hero}>
         <ProfilePhoto name={profile.firstName} size={150} />
         <Txt style={styles.name}>{profile.firstName}</Txt>
-        <Txt style={{ fontSize: 17 }}>{subtitle}</Txt>
-        <View style={styles.where}>
-          <Icon name="map-pin" color={colors.muted} />
-          <Txt variant="label">{where}</Txt>
-        </View>
+        <Txt style={{ fontSize: 17 }}>{profile.ageRange}</Txt>
+        {!!from && (
+          <View style={styles.where}>
+            <Icon name="map-pin" color={colors.muted} />
+            <Txt variant="label">From {from}</Txt>
+          </View>
+        )}
       </View>
 
       <Card style={styles.card}>
@@ -36,10 +35,13 @@ export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: (
         )}
 
         <View style={styles.block}>
-          <Txt variant="section">My kind of plans</Txt>
+          <Txt style={styles.rowLabel}>My kind of plans</Txt>
+          {/* Two columns, each chip aligned to the left of its column. */}
           <View style={styles.chips}>
             {profile.interests.map((i) => (
-              <Chip key={i} label={i} selected />
+              <View key={i} style={styles.chipCell}>
+                <Chip label={i} selected />
+              </View>
             ))}
           </View>
         </View>
@@ -49,8 +51,8 @@ export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: (
           <View style={{ alignItems: 'flex-end', gap: 4, flexShrink: 1 }}>
             {profile.languages.map((l) => (
               <Txt key={l.code} variant="label" style={{ textAlign: 'right' }}>
-                {LANGUAGE_FLAGS[l.code] ? `${LANGUAGE_FLAGS[l.code]} ` : ''}
-                {l.name} · {l.level}
+                {l.name}
+                {l.level && <Txt style={styles.level}> · {l.level}</Txt>}
               </Txt>
             ))}
           </View>
@@ -75,7 +77,9 @@ const styles = StyleSheet.create({
   where: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: space.xs },
   card: { marginTop: space.xl, padding: 26, borderRadius: 30, gap: 0, ...shadow.soft, shadowOpacity: 0.05 },
   block: { gap: 12, marginBottom: space.lg },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', rowGap: 10 },
+  chipCell: { width: '50%', alignItems: 'flex-start', paddingRight: 8 },
+  level: { fontFamily: fonts.sans, color: colors.accent },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',

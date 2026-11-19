@@ -19,7 +19,12 @@ export type Language = {
 export type Situation = 'Local' | 'New in town' | 'Travelling solo' | 'Staying temporarily';
 
 /** The city the user is in. Only the name is shown in texts. */
-export type City = { name: string; country: string };
+export type City = {
+  name: string;
+  country: string;
+  /** Language codes most spoken there, most common first. Shown first in language lists. */
+  languages: string[];
+};
 
 export type AuthProvider = 'apple' | 'google' | 'email';
 

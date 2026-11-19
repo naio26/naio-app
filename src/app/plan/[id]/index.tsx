@@ -1,7 +1,17 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Avatar, BackButton, HostingNote, InfoBox, MeetingPoint, PlanActions, PlanBadge, Txt } from '@/components';
+import {
+  Avatar,
+  BackButton,
+  HostingNote,
+  InfoBox,
+  MeetingPoint,
+  PlanActions,
+  PlanBadge,
+  Txt,
+  VerifiedBadge,
+} from '@/components';
 import { planWhen } from '@/data/time';
 import { usePeople } from '@/state/people';
 import { usePlan, usePlans } from '@/state/plans';
@@ -93,6 +103,7 @@ export default function PlanDetails() {
       </ScrollView>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + space.sm }]}>
+        {status !== 'host' && <VerifiedBadge />}
         <PlanActions plan={plan} status={status} host={host} going={memberIds.length} hostingNote={false} />
       </View>
     </View>
@@ -121,5 +132,5 @@ const styles = StyleSheet.create({
     color: colors.accent,
     marginTop: -4,
   },
-  footer: { paddingHorizontal: space.gutter, paddingTop: space.md, backgroundColor: colors.cream },
+  footer: { paddingHorizontal: space.gutter, paddingTop: space.md, gap: space.sm, backgroundColor: colors.cream },
 });

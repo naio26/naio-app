@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { ProviderSignIn, Txt } from '@/components';
 import { mockAppleAccount, signInWithApple } from '@/data/api';
 import { useSession } from '@/state/session';
-import { colors, radius, space } from '@/theme';
+import { colors, space } from '@/theme';
 
 // Screen 07 — fake "Sign in with Apple" sheet.
 export default function AppleSignIn() {
@@ -49,16 +49,8 @@ export default function AppleSignIn() {
 }
 
 const styles = StyleSheet.create({
-  // Its own soft box, apart from the account card: a privacy choice, not part of signing in.
-  option: {
-    flexDirection: 'row',
-    gap: 12,
-    marginTop: space.xl,
-    paddingHorizontal: 18,
-    paddingVertical: 16,
-    borderRadius: radius.md,
-    backgroundColor: colors.blush,
-  },
+  // No box: kept apart from the account card (and the text below) by extra space only.
+  option: { flexDirection: 'row', gap: 12, marginTop: space.xxl, paddingHorizontal: 6 },
   hideTitle: { fontSize: 14, lineHeight: 19 },
   radio: {
     width: 20,

@@ -77,12 +77,14 @@ export const MAX_INTERESTS = 8;
 
 export const SITUATIONS: Situation[] = ['Local', 'New in town', 'Travelling solo', 'Staying temporarily'];
 
+// Ordered so the chips fill balanced rows in the filters (Music in the 2nd row, no chip left alone at the end).
 export const MOODS = [
   'Coffee',
   'Chill',
   'Adventure',
   'Night out',
   'Food & drinks',
+  'Music',
   'Museums',
   'Games',
   'Shopping',
@@ -91,7 +93,6 @@ export const MOODS = [
   'Movies',
   'Indoors',
   'Deep talk',
-  'Music',
   'Sports',
   'Outdoors',
   'Wellness',
@@ -106,8 +107,11 @@ export const DISTANCES: { label: string; maxKm: number }[] = [
   { label: '> 30 km', maxKm: Infinity },
 ];
 
-/** Plan languages suggested in the filters (Athens). "+ Add" shows the rest. */
-export const SUGGESTED_PLAN_LANGUAGES = ['English', 'Spanish', 'Greek'];
+/** All languages with the city's own languages first (e.g. Greek, English in Athens), then the usual order. */
+export function languagesFor(cityLanguages: string[]): Language[] {
+  const local = cityLanguages.map((c) => LANGUAGES.find((l) => l.code === c)).filter((l): l is Language => !!l);
+  return [...local, ...LANGUAGES.filter((l) => !cityLanguages.includes(l.code))];
+}
 
 /** Neighbourhoods you can pick as the public area of a plan (29), with an approximate spot for the map. */
 export const AREAS: { name: string; location: { latitude: number; longitude: number } }[] = [

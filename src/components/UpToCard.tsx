@@ -18,12 +18,14 @@ export function UpToCard({ visible, onSetFilters, onSkip }: Props) {
           <Txt variant="eyebrow" style={{ letterSpacing: 3 }}>
             First things first
           </Txt>
-          <Txt style={styles.title}>What are you{'\n'}up to?</Txt>
-          <Txt style={styles.sub}>Customize your experience to set the perfect plan.</Txt>
+          <Txt style={styles.title} numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.8}>
+            What are you{'\n'}up to?
+          </Txt>
+          <Txt style={styles.sub} center>Customize your experience to set the perfect plan.</Txt>
           <Button title="Set filters" arrow onPress={onSetFilters} style={styles.cta} />
           <Button title="Skip for now" variant="link" onPress={onSkip} />
           <Txt variant="caption" center style={{ marginTop: -6 }}>
-            See all active nearby plans without personal filters.
+            See all active nearby plans{'\n'}without personal filters.
           </Txt>
         </View>
       </View>
@@ -43,12 +45,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: fonts.serif,
-    fontSize: 52,
-    lineHeight: 58,
+    fontSize: 38,
+    lineHeight: 44,
     color: colors.dark,
     letterSpacing: -0.5,
     marginTop: 4,
   },
-  sub: { fontFamily: fonts.sans, fontSize: 18, lineHeight: 26, color: colors.accent },
+  sub: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.accent },
   cta: { marginTop: space.lg, minHeight: 60 },
 });

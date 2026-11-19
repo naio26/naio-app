@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
-import { Icon, type IconName } from '@/components';
+import { Icon, type IconName, VerifiedBadge } from '@/components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   AvatarStack,
@@ -112,23 +112,26 @@ export default function MapTab() {
       </View>
 
       {/* Map colour code: green = plans, orange = people open to plans. */}
-      <View style={[styles.legend, { top: insets.top + 96 }]} pointerEvents="none">
-        <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: colors.mapPlan }]} />
-          <Txt variant="caption" color={colors.dark}>
-            Plan to join
-          </Txt>
+      <View style={[styles.legendWrap, { top: insets.top + 96 }]} pointerEvents="none">
+        <View style={styles.legend}>
+          <View style={styles.legendItem}>
+            <View style={[styles.legendDot, { backgroundColor: colors.mapPlan }]} />
+            <Txt variant="caption" color={colors.dark}>
+              Plan to join
+            </Txt>
+          </View>
+          <View style={styles.legendItem}>
+            <View style={[styles.legendDot, { backgroundColor: colors.mapOpen }]} />
+            <Txt variant="caption" color={colors.dark}>
+              Open to plans
+            </Txt>
+          </View>
         </View>
-        <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: colors.mapOpen }]} />
-          <Txt variant="caption" color={colors.dark}>
-            Open to plans
-          </Txt>
-        </View>
+        <VerifiedBadge variant="pill" />
       </View>
 
       {offline && (
-        <View style={[styles.offline, { top: insets.top + 136 }]}>
+        <View style={[styles.offline, { top: insets.top + 176 }]}>
           <Txt variant="small" color={colors.white} style={{ flex: 1 }}>
             You’re offline and hidden from the map.
           </Txt>
@@ -308,9 +311,8 @@ const styles = StyleSheet.create({
     ...shadow.soft,
   },
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  legendWrap: { position: 'absolute', left: space.lg, gap: 8, alignItems: 'flex-start' },
   legend: {
-    position: 'absolute',
-    left: space.lg,
     flexDirection: 'row',
     gap: 16,
     paddingHorizontal: 14,
