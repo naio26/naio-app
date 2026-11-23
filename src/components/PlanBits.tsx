@@ -9,26 +9,6 @@ import { Avatar } from './Avatar';
 import { Button } from './Button';
 import { Txt } from './Txt';
 
-/** GOING / SPOTS / LANGUAGE boxes (screen 26). */
-export function PlanFacts({ plan, going }: { plan: Plan; going: number }) {
-  const left = Math.max(plan.capacity - going, 0);
-  const facts = [
-    { label: 'Going', value: `${going} ${going === 1 ? 'person' : 'people'}` },
-    { label: 'Spots', value: left ? `${left} left` : 'Full' },
-    { label: 'Language', value: plan.language },
-  ];
-  return (
-    <View style={styles.facts}>
-      {facts.map((f) => (
-        <View key={f.label} style={styles.fact}>
-          <Txt style={styles.factLabel}>{f.label}</Txt>
-          <Txt variant="label">{f.value}</Txt>
-        </View>
-      ))}
-    </View>
-  );
-}
-
 /** Overlapping initials + "Maya, Leo, Nora +1". */
 export function AvatarStack({ people, max = 3, hostId }: { people: Person[]; max?: number; hostId?: string }) {
   const shown = people.slice(0, max);
@@ -219,17 +199,18 @@ export function HostingNote() {
   );
 }
 
-/** Small label above a plan title: "TODAY · 6:00 PM" or "YOUR PLAN · TODAY · 7:30 PM". */
+/** Small label above a plan title: "Request sent", "You're in", or "★ Your plan" (light green, never a day or time). */
 export function PlanBadge({ status }: { status: MyStatus }) {
   if (status === 'none') return null;
   const look = {
     requested: { text: 'Request sent', fg: colors.accent, icon: 'clock' as const },
     accepted: { text: 'You’re in', fg: colors.green, icon: 'check' as const },
-    host: { text: 'Your plan', fg: colors.accent, icon: 'star' as const },
+    host: { text: 'Your plan', fg: colors.mapMineInk, icon: 'star' as const },
   }[status];
   return (
-    <View style={styles.badge}>
-      <Icon name={look.icon} color={look.fg} />
+    // Your own plan: a light green label that only says "Your plan" (never a day or time).
+    <View style={[styles.badge, status === 'host' && styles.badgeMine]}>
+      <Icon name={look.icon} size={14} color={look.fg} />
       <Txt style={[styles.badgeText, { color: look.fg }]}>{look.text}</Txt>
     </View>
   );
@@ -240,24 +221,6 @@ const styles = StyleSheet.create({
   goingSpots: { fontFamily: fonts.sans, color: colors.accent },
   goingNames: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.dark },
   pointNote: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  facts: { flexDirection: 'row', gap: 8 },
-  fact: {
-    flex: 1,
-    gap: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 14,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.white,
-  },
-  factLabel: {
-    fontFamily: fonts.sansBold,
-    fontSize: 10.5,
-    letterSpacing: 1,
-    textTransform: 'uppercase',
-    color: colors.muted,
-  },
   stackRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   stack: { flexDirection: 'row' },
   stackItem: { borderRadius: 20, borderWidth: 2, borderColor: colors.cream },
@@ -276,5 +239,6 @@ const styles = StyleSheet.create({
   pair: { flexDirection: 'row', gap: 10 },
   waiting: { flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: 44 },
   badge: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', gap: 6, marginBottom: space.xs },
+  badgeMine: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999, backgroundColor: colors.mapMine },
   badgeText: { fontFamily: fonts.sansBold, fontSize: 12 },
 });

@@ -416,6 +416,11 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **Com fer-ho servir:** escaneja aquest QR una vegada amb la Càmera de l'iPhone. A partir d'aleshores, a Expo Go, toca l'entrada que surt a «Recently opened»: sempre carregarà la versió més nova. Si veus una versió antiga, tanca Expo Go del tot i torna'l a obrir (de vegades dues vegades).
   - Els QR de la v1, v2 i v3 continuen funcionant igual, per si vols obrir una versió concreta.
 
+- **«Your plan» en verd clar i fitxa del pla B (23 de novembre de 2026):**
+  - **El teu pla:** l'etiqueta només diu «★ Your plan», mai «Now», «Today» ni «Tomorrow», i és de color **verd clar** perquè es distingeixi dels altres plans. Surt així al mapa (la marca del teu pla), a la fitxa del mapa, a la pantalla del pla i a la llista de «My plans». L'hora del pla continua a la seva línia de sempre («TODAY · 5:00 PM»).
+  - **Fitxa del pla al mapa: has triat la B.** «Going», «Spots» i «Language» ja no van en caixes: són dues línies tranquil·les amb una icona fina («**4 going** · 3 spots left» i l'idioma), i a sota les inicials amb els noms. L'opció A, les caixes antigues i les seves files del menú Demo s'han esborrat.
+  - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.
+
 ## 2. PROPERAMENT
 
 Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan vulguis, podem decidir junts què ve ara. Algunes idees (cap no està decidida):
@@ -429,7 +434,6 @@ Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan v
 ### El que necessito de tu
 
 - **Descripció del pla quan ja t'han acceptat:** tria l'opció A o B (al menú Demo).
-- **Fitxa del pla al mapa:** tria com vols «Going», «Spots» i «Language» (A o B, al menú Demo).
 - **Unir la versió desada amb la branca principal:** la versió està desada a GitHub en una branca a part, `phases-1-4`. Quan vulguis, la puc unir amb la branca principal (`main`).
 - **Les decisions de les fases 3 i 4:** el rellotge de prova, el pla «Coffee and a wander?» com a teu, el mapa dibuixat i els camps nous de «Create a plan» (zona i estat d'ànim). Digues-me si en vols canviar alguna.
 - **Textos legals:** les «Terms» i les «Safety Guidelines» encara no tenen text. A «Settings → Terms & privacy» de moment hi ha un resum curt fet per mi. Quan tinguis els textos de debò, me'ls pots passar.

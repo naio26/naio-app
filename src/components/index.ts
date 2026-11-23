@@ -20,7 +20,6 @@ export { NaioMap, MapMarker } from './NaioMap';
 export { PlanPin, PersonPin, YouDot, PIN_SIZE } from './MapPins';
 export { BottomSheet } from './BottomSheet';
 export {
-  PlanFacts,
   AvatarStack,
   MeetingPoint,
   PlanActions,
@@ -40,4 +39,4 @@ export { VerifiedBadge } from './VerifiedBadge';
 export { AllSet, askLocation } from './AllSet';
 export { RangeSlider } from './RangeSlider';
 export { BalancedTags } from './BalancedTags';
-export { PlanSheet, type FactsLook } from './PlanSheet';
+export { PlanSheet } from './PlanSheet';

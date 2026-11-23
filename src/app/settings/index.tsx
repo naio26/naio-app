@@ -62,16 +62,6 @@ export default function Settings() {
       {/* Demo only: clears everything saved on this phone and starts again from the intro. */}
       <SettingsSection title="Demo" />
       <SettingsRow
-        title="Plan sheet (Going, Spots, Language) - A"
-        sub="One line, no boxes"
-        onPress={() => router.push('/settings/plan-sheet-look?v=A')}
-      />
-      <SettingsRow
-        title="Plan sheet (Going, Spots, Language) - B"
-        sub="Two lines with a small icon, no boxes"
-        onPress={() => router.push('/settings/plan-sheet-look?v=B')}
-      />
-      <SettingsRow
         title="Plan description (after joining) - A"
         sub="In a soft box with a small title"
         onPress={() => router.push('/plan/philopappou-walk?desc=A')}

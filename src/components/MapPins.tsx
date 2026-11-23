@@ -14,24 +14,28 @@ export const PIN_SIZE = {
   you: { height: 76, anchorY: 24 }, // the centre of the blue dot
 };
 
-/** A plan: green pill with only "Now", "Today" or "Tomorrow". Yours adds ★ "Your plan" on top. */
+/**
+ * A plan: green pill with only "Now", "Today" or "Tomorrow".
+ * Yours: a LIGHT GREEN pill that only says ★ "Your plan" (no day or time), to set it apart.
+ */
 export function PlanPin({ when, mine, selected }: { when: string; mine?: boolean; selected?: boolean }) {
   return (
     <View style={styles.planWrap}>
-      <View style={[styles.pill, !mine && styles.pillShort, selected && styles.selected]}>
-        {mine && (
+      <View style={[styles.pill, styles.pillShort, mine && styles.pillMine, selected && styles.selected]}>
+        {mine ? (
           <View style={styles.pillTop}>
-            <Icon name="star" size={10} color={colors.white} />
-            <Txt numberOfLines={1} style={styles.pillDay}>
+            <Icon name="star" size={12} color={colors.mapMineInk} />
+            <Txt numberOfLines={1} style={[styles.pillTime, { color: colors.mapMineInk }]}>
               Your plan
             </Txt>
           </View>
+        ) : (
+          <Txt numberOfLines={1} style={styles.pillTime}>
+            {when}
+          </Txt>
         )}
-        <Txt numberOfLines={1} style={styles.pillTime}>
-          {when}
-        </Txt>
       </View>
-      <View style={styles.tip} />
+      <View style={[styles.tip, mine && { borderTopColor: colors.mapMine }]} />
     </View>
   );
 }
@@ -97,6 +101,7 @@ const styles = StyleSheet.create({
     ...shadow.soft,
   },
   pillShort: { height: 36, minWidth: 64 },
+  pillMine: { backgroundColor: colors.mapMine },
   selected: { borderColor: colors.white },
   pillTop: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   pillDay: {

@@ -116,7 +116,7 @@ export default function MapTab() {
               key={p.id}
               location={p.location}
               size={PIN_SIZE.plan}
-              label={`Plan, ${when}`}
+              label={statusOf(p) === 'host' ? 'Your plan' : `Plan, ${when}`}
               z={on ? 6 : 2}
               onPress={() => setSelected({ kind: 'plan', plan: p })}
             >
