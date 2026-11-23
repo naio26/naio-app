@@ -388,6 +388,15 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **Perfil:** hi ha una línia separadora entre «About me» i «My kind of plans», igual que la de sobre de «Languages» (mateix estil, color i espai).
   - La versió de prova v3 s'ha actualitzat amb tots aquests canvis (mateix QR i mateix enllaç).
 
+- **«My kind of plans» arreglat i pantalles dels plans (23 de novembre de 2026):**
+  - **«My kind of plans»:** al mòbil, l'app podia mesurar les etiquetes més amples del que eren i deixava espais buits al final d'algunes files. Ara mesura cada etiqueta sola, amb tot l'espai, i omple cada fila tant com pot (si una etiqueta de més avall hi cap, la puja), i després la reparteix d'un marge a l'altre. L'última fila queda a l'esquerra. Comprovat amb 96 combinacions (8 amplades de mòbil, de 360 a 440 punts, i 12 grups d'interessos): cap fila buida al final, cap etiqueta que hi càpiga més amunt.
+  - **Fitxa del pla al mapa:** més espai entre el dia i l'hora i el títol. El lloc és una mica més petit i, a sota, en petit: «Exact point is shared after joining» (o el punt exacte, si ja hi ets). La línia del cadenat que hi havia més avall s'ha tret perquè no surti dues vegades.
+  - **«View details»:** la descripció és una mica més petita. Sota el lloc surt «Exact point is shared after joining» en petit (la línia repetida de baix s'ha tret). Sota la inicial de cada persona surt la seva franja d'edat. Els títols van en negreta i el text en lletra normal. A «Who's going»: «4 people» en negreta i, després del punt, els noms en terracota i lletra normal, amb «(host)» entre parèntesis, per exemple «Nora (host)». Les places que queden («3 spots left») surten a sota, en petit.
+  - **«You're in» (quan t'accepten):** «Who's going» igual: «3 people» en negreta i els noms en terracota.
+  - **Fotos de la gent:** de moment continuen les inicials de colors, però l'app ja està preparada perquè, més endavant, cada persona hi tingui la seva foto.
+  - **Pendent de la teva resposta:** com vols que es vegi la descripció del pla quan ja t'han acceptat (t'he proposat dues opcions).
+  - La versió de prova v3 s'ha actualitzat amb aquests canvis (mateix QR i mateix enllaç).
+
 ## 2. PROPERAMENT
 
 Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan vulguis, podem decidir junts què ve ara. Algunes idees (cap no està decidida):
@@ -400,6 +409,7 @@ Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan v
 
 ### El que necessito de tu
 
+- **Descripció del pla quan ja t'han acceptat:** tria l'opció A o B.
 - **Fitxa del pla al mapa:** tria com vols «Going», «Spots» i «Language» (opció A o B).
 - **Unir la versió desada amb la branca principal:** la versió està desada a GitHub en una branca a part, `phases-1-4`. Quan vulguis, la puc unir amb la branca principal (`main`).
 - **Les decisions de les fases 3 i 4:** el rellotge de prova, el pla «Coffee and a wander?» com a teu, el mapa dibuixat i els camps nous de «Create a plan» (zona i estat d'ànim). Digues-me si en vols canviar alguna.

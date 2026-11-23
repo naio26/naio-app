@@ -1,8 +1,9 @@
 import { StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Icon, type IconName } from '@/components';
-import { Button, Card, Logo, Screen, Txt } from '@/components';
+import { Button, Card, GoingLine, Logo, Screen, Txt } from '@/components';
 import { planWhen } from '@/data/time';
+import { usePeople } from '@/state/people';
 import { usePlan, usePlans } from '@/state/plans';
 import { colors, icon, space } from '@/theme';
 
@@ -11,8 +12,8 @@ export default function YoureIn() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const plan = usePlan(id);
   const { membersOf } = usePlans();
+  const members = usePeople(plan ? membersOf(plan) : []);
   if (!plan) return <Screen>{null}</Screen>;
-  const going = membersOf(plan).length;
 
   return (
     <Screen
@@ -53,9 +54,9 @@ export default function YoureIn() {
             {plan.exactPoint} · {plan.distanceKm} km
           </Txt>
         </View>
-        <Txt variant="small">
-          {going} people · {plan.language}
-        </Txt>
+        {/* "2 people" in bold, then the names in terracotta. */}
+        <GoingLine people={members} hostId={plan.hostId} style={{ fontSize: 13, lineHeight: 18 }} />
+        <Txt variant="small">{plan.language}</Txt>
       </Card>
 
       <Txt variant="small" center style={{ fontSize: 14 }}>

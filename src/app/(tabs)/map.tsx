@@ -10,7 +10,6 @@ import {
   Chip,
   InfoBox,
   MapMarker,
-  MeetingPoint,
   NaioMap,
   PersonPin,
   PIN_SIZE,
@@ -18,6 +17,7 @@ import {
   PlanBadge,
   PlanFacts,
   PlanPin,
+  PointNote,
   Txt,
   UpToCard,
   YouDot,
@@ -249,18 +249,19 @@ function PlanSheet({ plan }: { plan: Plan }) {
     <View style={{ gap: space.lg }}>
       <View style={{ gap: 6 }}>
         <PlanBadge status={status} />
-        <Txt variant="eyebrow" style={{ letterSpacing: 1.2 }}>
+        {/* More room between the day/time and the title. */}
+        <Txt variant="eyebrow" style={{ letterSpacing: 1.2, marginBottom: 6 }}>
           {planWhen(plan)}
         </Txt>
         <Txt variant="h1">{plan.title}</Txt>
         <Txt style={styles.place}>
           {plan.area} · {plan.distanceKm} km
         </Txt>
-        <Txt style={{ marginTop: 4 }}>{plan.tagline}</Txt>
+        <PointNote plan={plan} status={status} />
+        <Txt style={{ marginTop: 6 }}>{plan.tagline}</Txt>
       </View>
       <PlanFacts plan={plan} going={memberIds.length} />
       <AvatarStack people={members} />
-      <MeetingPoint plan={plan} status={status} />
       <PlanActions
         plan={plan}
         status={status}
@@ -361,7 +362,7 @@ const styles = StyleSheet.create({
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   emptyButtons: { flexDirection: 'row', justifyContent: 'center', gap: 10, marginTop: 10 },
   emptyButton: { minHeight: 40, paddingHorizontal: 18 },
-  place: { fontFamily: fonts.sans, fontSize: 16, lineHeight: 22, color: colors.accent },
+  place: { fontFamily: fonts.sans, fontSize: 14.5, lineHeight: 20, color: colors.accent },
   legendWrap: { position: 'absolute', left: space.lg, gap: 8, alignItems: 'flex-start' },
   legend: {
     flexDirection: 'row',

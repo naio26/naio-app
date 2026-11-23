@@ -39,7 +39,12 @@ export function AvatarStack({ people, max = 3 }: { people: Person[]; max?: numbe
       <View style={styles.stack}>
         {shown.map((p, i) => (
           <View key={p.id} style={[styles.stackItem, { marginLeft: i === 0 ? 0 : -10, zIndex: max - i }]}>
-            <Avatar initials={p.initials} size={34} color={p.id === 'me' ? colors.accent : p.avatarColor} />
+            <Avatar
+              initials={p.initials}
+              size={34}
+              color={p.id === 'me' ? colors.accent : p.avatarColor}
+              photo={p.photo}
+            />
           </View>
         ))}
         {extra > 0 && (
@@ -52,6 +57,29 @@ export function AvatarStack({ people, max = 3 }: { people: Person[]; max?: numbe
         {names}
       </Txt>
     </View>
+  );
+}
+
+/** "2 people · Maya (host), Leo": the number in bold, the names in regular terracotta. */
+export function GoingLine({ people, hostId, style }: { people: Person[]; hostId: string; style?: object }) {
+  const names = people
+    .map((p) => `${p.id === 'me' ? 'You' : p.firstName}${p.id === hostId ? ' (host)' : ''}`)
+    .join(', ');
+  return (
+    <Txt style={[styles.goingCount, style]}>
+      {people.length} {people.length === 1 ? 'person' : 'people'}
+      <Txt style={styles.goingNames}> · {names}</Txt>
+    </Txt>
+  );
+}
+
+/** Small line under the place: "Exact point is shared after joining", or the exact point once you're in. */
+export function PointNote({ plan, status }: { plan: Plan; status: MyStatus }) {
+  const open = status === 'accepted' || status === 'host';
+  return (
+    <Txt variant="caption" color={open ? colors.green : colors.muted}>
+      {open ? `Exact point: ${plan.exactPoint}` : 'Exact point is shared after joining'}
+    </Txt>
   );
 }
 
@@ -185,6 +213,8 @@ export function PlanBadge({ status }: { status: MyStatus }) {
 }
 
 const styles = StyleSheet.create({
+  goingCount: { fontFamily: fonts.sansBold, fontSize: 15, lineHeight: 22, color: colors.dark },
+  goingNames: { fontFamily: fonts.sans, color: colors.accent },
   facts: { flexDirection: 'row', gap: 8 },
   fact: {
     flex: 1,

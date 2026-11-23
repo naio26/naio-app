@@ -49,6 +49,8 @@ export type Person = {
   interests: string[];
   languages: Language[];
   avatarColor?: string;
+  /** Profile photo URL (later). Until then the coloured initial is shown. */
+  photo?: string;
   /** Set when the person shows up on the map as "Available" without a plan (screen 28). */
   available?: {
     until: string; // 24h "HH:mm"

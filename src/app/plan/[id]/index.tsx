@@ -4,11 +4,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   Avatar,
   BackButton,
+  GoingLine,
   HostingNote,
   InfoBox,
-  MeetingPoint,
   PlanActions,
   PlanBadge,
+  PointNote,
   Txt,
   VerifiedBadge,
 } from '@/components';
@@ -37,11 +38,8 @@ export default function PlanDetails() {
       ? { label: 'Exact meeting point', value: `${plan.exactPoint} · ${plan.distanceKm} km` }
       : { label: 'Meet near', value: `${plan.meetNear} · ${plan.distanceKm} km` },
     { label: 'Language', value: plan.language },
-    {
-      label: 'Who is going',
-      value: `${memberIds.length} ${memberIds.length === 1 ? 'person' : 'people'} · ${left ? `${left} ${left === 1 ? 'spot' : 'spots'} left` : 'full'}`,
-    },
   ];
+  const spots = left ? `${left} ${left === 1 ? 'spot' : 'spots'} left` : 'Full';
 
   return (
     <View style={styles.root}>
@@ -59,19 +57,26 @@ export default function PlanDetails() {
             <Txt>
               {plan.area} · {plan.distanceKm} km
             </Txt>
+            <PointNote plan={plan} status={status} />
           </View>
         </View>
 
         <View style={styles.body}>
-          <Txt style={{ fontSize: 17, lineHeight: 25 }}>{plan.description}</Txt>
+          <Txt style={{ fontSize: 15, lineHeight: 22 }}>{plan.description}</Txt>
 
           <View style={{ marginTop: space.lg }}>
             {rows.map((r) => (
               <View key={r.label} style={styles.row}>
                 <Txt style={styles.rowLabel}>{r.label}</Txt>
-                <Txt variant="bodyStrong">{r.value}</Txt>
+                <Txt style={styles.rowValue}>{r.value}</Txt>
               </View>
             ))}
+            {/* "2 people" in bold, then the names in terracotta: "Maya (host), Leo". */}
+            <View style={styles.row}>
+              <Txt style={styles.rowLabel}>Who’s going</Txt>
+              <GoingLine people={members} hostId={plan.hostId} />
+              <Txt variant="caption">{spots}</Txt>
+            </View>
           </View>
 
           <View style={styles.people}>
@@ -82,16 +87,17 @@ export default function PlanDetails() {
                   size={52}
                   color={m.id === 'me' ? colors.accent : m.avatarColor}
                   verified={m.verified}
+                  photo={m.photo}
                 />
                 <Txt variant="label" style={{ fontSize: 14 }}>
                   {m.id === 'me' ? 'You' : m.firstName}
                 </Txt>
+                <Txt variant="caption">{m.ageRange}</Txt>
                 {m.id === plan.hostId && <Txt style={styles.host}>Host</Txt>}
               </View>
             ))}
           </View>
 
-          <MeetingPoint plan={plan} status={status} />
           {status === 'host' && <HostingNote />}
           {status === 'requested' && (
             <InfoBox
@@ -122,6 +128,8 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: colors.muted,
   },
+  // Titles in bold (above), the text under them in regular weight.
+  rowValue: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.dark },
   people: { flexDirection: 'row', flexWrap: 'wrap', gap: 18 },
   person: { alignItems: 'center', gap: 6, minWidth: 56 },
   host: {

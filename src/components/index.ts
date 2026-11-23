@@ -19,7 +19,16 @@ export { UpToCard } from './UpToCard';
 export { NaioMap, MapMarker } from './NaioMap';
 export { PlanPin, PersonPin, YouDot, PIN_SIZE } from './MapPins';
 export { BottomSheet } from './BottomSheet';
-export { PlanFacts, AvatarStack, MeetingPoint, PlanActions, PlanBadge, HostingNote } from './PlanBits';
+export {
+  PlanFacts,
+  AvatarStack,
+  MeetingPoint,
+  PlanActions,
+  PlanBadge,
+  HostingNote,
+  GoingLine,
+  PointNote,
+} from './PlanBits';
 export { PlanForm, emptyDraft, draftFromPlan } from './PlanForm';
 export { ResultScreen } from './ResultScreen';
 export { PlanArt, PlanCard } from './PlanCard';

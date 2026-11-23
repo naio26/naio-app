@@ -23,8 +23,9 @@ export function BalancedTags({ items }: { items: string[] }) {
           {items.map((i) => (
             <View
               key={i}
+              style={styles.measureItem}
               onLayout={(e) => {
-                const w = e.nativeEvent.layout.width;
+                const w = Math.ceil(e.nativeEvent.layout.width);
                 setSizes((s) => (s[i] === w ? s : { ...s, [i]: w }));
               }}
             >
@@ -82,10 +83,22 @@ function fillRows(items: string[], sizes: Record<string, number>, max: number): 
 }
 
 const styles = StyleSheet.create({
-  measure: { position: 'absolute', opacity: 0, flexDirection: 'row', alignItems: 'flex-start' },
+  // Lots of room and no shrinking, so each tag is measured at its true width on every phone.
+  measure: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: 5000,
+    opacity: 0,
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    alignItems: 'flex-start',
+  },
+  measureItem: { flexShrink: 0, flexGrow: 0, alignSelf: 'flex-start' },
   row: { flexDirection: 'row', justifyContent: 'flex-start', gap: GAP },
   justified: { justifyContent: 'space-between' },
   tag: {
+    flexShrink: 0,
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderRadius: 999,

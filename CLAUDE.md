@@ -47,6 +47,7 @@ naio. (always lowercase, always with the period) is a mobile app where people wh
 - Filters include an "Age range" two-handle slider (`RangeSlider`) that snaps to the official ranges; `filters.ages = { from, to }` or `null` = any age. It applies to plan hosts and to people open to plans.
 - You host the mock plan "Coffee and a wander?" (`hostId: 'me'`, Today 5:00 PM, Monastiraki) and Leo has asked to join it (39–41). You start already accepted in "Morning walk on Philopappou" so a chat has messages.
 - Sign in with Apple/Google, face check, ID check, map, chat and push notifications are fake: screens with mock behaviour only. Never integrate paid or external services.
+- People in plans: coloured initials for now, but `Avatar` takes an optional `photo` (and `Person.photo`), so real photos can be added later without changing screens. Plan details show each person's age range under their name. "Who's going" uses `GoingLine` everywhere: "2 people" bold + " · names" in regular `accent`, host as "Maya (host)". Under a plan's place, `PointNote` shows "Exact point is shared after joining" (or the exact point once you're in), in small text.
 - Bottom tabs: Map, Plans, big "+" in the middle, Alerts, Profile.
 
 ## Publishing a preview (EAS Update, opens in Expo Go without the Codespace)
