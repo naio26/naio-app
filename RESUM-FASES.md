@@ -1,7 +1,7 @@
 
 # Resum de fases — naio.
 
-Última actualització: 19 de novembre de 2026 (mapa real, filtre d'edat i canvis de disseny; nova pantalla «You're all set.» després de crear el perfil, amb la ubicació obligatòria; les quatre fases estan fetes)
+Última actualització: 23 de novembre de 2026 (versió de prova v3 publicada; propostes A i B de «My kind of plans»)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -357,6 +357,17 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **«First things first»:** l'etiqueta i el títol «What are you up to?» estan centrats.
   - **Pendent de la teva resposta:** com ha de ser «My kind of plans» al perfil (t'he proposat dues opcions més tranquil·les).
 
+- **«My kind of plans»: dues propostes per comparar (23 de novembre de 2026):**
+  - La pestanya Profile **no ha canviat** (continua amb les boletes de color). Les dues propostes només es veuen des de **Profile → ⚙︎ Settings → Demo**:
+    - **«My kind of plans - A»:** només les paraules, en text fosc normal i separades per «·». Sense caixes ni colors.
+    - **«My kind of plans - B»:** etiquetes petites amb una vora fina de color sorra, sense fons, text fosc normal, alineades a l'esquerra.
+  - Quan triïs A o B, la posaré al perfil i esborraré l'altra.
+
+- **Versió de prova v3 publicada (23 de novembre de 2026):**
+  - Té tots els canvis des de la v2: la ubicació obligatòria i «You're all set!», el logo igual a tot arreu, el mapa real, el filtre d'edat, els canvis de disseny i les dues propostes de «My kind of plans».
+  - **Com obrir-la:** escaneja amb la Càmera de l'iPhone el QR de `docs/expo-go-preview-v3-2026-11-23.png` (o toca l'enllaç de `docs/PREVIEW.md`). S'obre a Expo Go.
+  - La v1 i la v2 continuen igual, amb els seus QR.
+
 ## 2. PROPERAMENT
 
 Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan vulguis, podem decidir junts què ve ara. Algunes idees (cap no està decidida):
@@ -369,7 +380,7 @@ Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan v
 
 ### El que necessito de tu
 
-- **«My kind of plans» al perfil:** tria una de les dues propostes (o cap) i la faré.
+- **«My kind of plans» al perfil:** mira les opcions A i B a Settings → Demo (també a la v3) i digues-me quina et quedes.
 - **Unir la versió desada amb la branca principal:** la versió està desada a GitHub en una branca a part, `phases-1-4`. Quan vulguis, la puc unir amb la branca principal (`main`).
 - **Les decisions de les fases 3 i 4:** el rellotge de prova, el pla «Coffee and a wander?» com a teu, el mapa dibuixat i els camps nous de «Create a plan» (zona i estat d'ànim). Digues-me si en vols canviar alguna.
 - **Textos legals:** les «Terms» i les «Safety Guidelines» encara no tenen text. A «Settings → Terms & privacy» de moment hi ha un resum curt fet per mi. Quan tinguis els textos de debò, me'ls pots passar.

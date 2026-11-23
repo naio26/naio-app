@@ -24,7 +24,7 @@ export { PlanForm, emptyDraft, draftFromPlan } from './PlanForm';
 export { ResultScreen } from './ResultScreen';
 export { PlanArt, PlanCard } from './PlanCard';
 export { SettingsRow, SettingsSection } from './SettingsRow';
-export { ProfileView } from './ProfileView';
+export { ProfileView, type PlansLook } from './ProfileView';
 export { Icon, type IconName } from './Icon';
 export { VerifiedBadge } from './VerifiedBadge';
 export { AllSet, askLocation } from './AllSet';

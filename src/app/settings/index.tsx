@@ -62,6 +62,16 @@ export default function Settings() {
       {/* Demo only: clears everything saved on this phone and starts again from the intro. */}
       <SettingsSection title="Demo" />
       <SettingsRow
+        title="My kind of plans - A"
+        sub="Your profile with a quiet line of words"
+        onPress={() => router.push('/settings/plans-look?v=A')}
+      />
+      <SettingsRow
+        title="My kind of plans - B"
+        sub="Your profile with soft outline tags"
+        onPress={() => router.push('/settings/plans-look?v=B')}
+      />
+      <SettingsRow
         title="Test the location question"
         sub="The pop-up after “Create profile”: try Allow or Don’t allow"
         onPress={() => router.push('/setup/welcome?demo=ask')}
