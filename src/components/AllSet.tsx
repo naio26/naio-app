@@ -33,10 +33,10 @@ export function askLocation(onAnswer: (a: 'granted' | 'denied') => void) {
 }
 
 /**
- * Screen 21 — opened right after the location pop-up of "Create profile" (20). naio can't be used without location:
+ * Screen 21 — opened by "Create profile" (20). naio can't be used without location:
+ *  - first our explanation ("Plans near you", why we need it) with "Continue"; only that button shows the pop-up,
  *  - allowed → "You're all set!" + "Welcome to {city}, {name}." → "Find plans nearby" → map with "First things first",
  *  - not allowed → a blocking screen: "Turn on location" opens the phone settings; coming back = on (demo),
- *  - not answered yet (app closed while the pop-up was open) → a short "Plans near you" screen that asks again.
  * Cream background (option A1, chosen by the owner). From Settings → Demo it opens with
  * ?demo=ask|granted|denied: a preview that doesn't change what's saved.
  */
@@ -60,14 +60,8 @@ export function AllSet() {
     [preview, setLocationAccess],
   );
 
-  // Only if the question wasn't answered yet (app closed while the pop-up was open, or Demo → test the question).
+  // The system pop-up only shows when "Continue" is tapped (never automatically), so there's time to read.
   const ask = useCallback(() => askLocation(answer), [answer]);
-  useEffect(() => {
-    if (step !== 'ask') return;
-    const t = setTimeout(ask, 500);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Blocking screen: "Turn on location" opens the phone settings. Demo: coming back counts as turned on.
   const wentToSettings = useRef(false);
@@ -113,7 +107,7 @@ export function AllSet() {
       icon: 'map-pin',
       title: 'Plans near you',
       text: 'naio needs your location to show plans and people nearby. Only an approximate area is used.',
-      button: { title: 'Allow location', onPress: ask },
+      button: { title: 'Continue', onPress: ask },
     },
     granted: {
       icon: 'check',

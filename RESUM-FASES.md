@@ -322,15 +322,15 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **La ubicació és obligatòria.** Sense ubicació no es pot continuar: el mapa i les pestanyes no s'obren fins que la permets. Si tanques l'app sense haver-la permès, en tornar-la a obrir torna a aquesta pantalla.
   - **Com funciona (l'ordre final, de la fi del perfil fins al mapa):**
     1. **«Review profile»:** veus el teu perfil tal com el veuran els altres i toques «Create profile».
-    2. **De seguida surt l'avís del mòbil** «Allow “naio.” to use your location?», amb el motiu («naio shows plans and people near you…»), i les opcions «Allow while using the app» o «Don't allow».
+    2. **Primer, la nostra explicació:** surt la pantalla «Plans near you», que explica per què necessitem la ubicació («naio needs your location to show plans and people nearby. Only an approximate area is used.»), amb el botó «Continue». **L'avís del mòbil no surt sol ni amb temps:** només quan toques «Continue» surt «Allow “naio.” to use your location?», amb «Allow while using the app» o «Don't allow». (Canviat el 23 de novembre de 2026 perquè tinguis temps de llegir l'explicació.)
     3. **Si la permets → «You're all set!»:** a dalt la marca ✓ i «PROFILE CREATED»; el títol «You're all set!»; a sota, en un terracota més suau, «Welcome to Athens, (el teu nom).» (la ciutat surt de la ubicació, el nom del teu perfil); i «See who's around and join a plan today.». Ja no cal esperar: el botó «Find plans nearby →» obre el mapa.
     4. **Mapa amb la targeta «First things first»** («What are you up to?»).
     - **Si no la permets → pantalla que bloqueja:** «naio. needs your location to show plans nearby», amb el text de sota més petit, i el botó «Turn on location», que obre la configuració del mòbil. No es pot anar enlloc més. Quan tornes a l'app, passa al punt 3.
-    - Si tanques l'app amb l'avís obert, en tornar-la a obrir surt una pantalla curta «Plans near you» i l'avís torna a sortir.
+    - Si tanques l'app abans de respondre, en tornar-la a obrir surt de nou l'explicació «Plans near you» amb «Continue».
   - **De moment és de mentida:** no es llegeix cap ubicació real. A la demo, en tornar de la configuració del mòbil, l'app fa com si l'haguessis activat.
   - **Color:** has triat la **A1, amb fons crema**. La versió terracota (A2) s'ha esborrat.
   - **Per provar-ho (Profile → Settings →** baixa fins a **Demo):**
-    - «Test the location question»: surt l'avís; pots provar «Allow» i «Don't allow».
+    - «Test the location question»: surt l'explicació; en tocar «Continue» surt l'avís, i pots provar «Allow» i «Don't allow».
     - «Preview “You're all set!”»: la pantalla final.
     - «Test “location denied” screen»: la pantalla que bloqueja.
     - Aquestes proves no canvien el que hi ha desat: la teva ubicació continua permesa.
@@ -367,6 +367,7 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **Com obrir-la:** escaneja amb la Càmera de l'iPhone el QR de `docs/expo-go-preview-v3-2026-11-23.png` (o toca l'enllaç de `docs/PREVIEW.md`). S'obre a Expo Go.
   - La v1 i la v2 continuen igual, amb els seus QR.
   - **Actualitzada el 23 de novembre de 2026** amb l'opció B de «My kind of plans», alineada com un text justificat (mateix QR i mateix enllaç).
+  - **Actualitzada de nou el 23 de novembre de 2026:** l'avís de la ubicació ja no surt sol; primer surt l'explicació i l'avís només apareix en tocar «Continue».
 
 ## 2. PROPERAMENT
 
