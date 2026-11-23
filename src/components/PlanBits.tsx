@@ -205,10 +205,10 @@ export function PlanBadge({ status }: { status: MyStatus }) {
   const look = {
     requested: { text: 'Request sent', fg: colors.accent, icon: 'clock' as const },
     accepted: { text: 'You’re in', fg: colors.green, icon: 'check' as const },
-    host: { text: 'Your plan', fg: colors.mapMineInk, icon: 'star' as const },
+    host: { text: 'Your plan', fg: colors.white, icon: 'star' as const },
   }[status];
   return (
-    // Your own plan: a light green label that only says "Your plan" (never a day or time).
+    // Your own plan: white bold text on the lighter green fill, only "Your plan" (never a day or time).
     <View style={[styles.badge, status === 'host' && styles.badgeMine]}>
       <Icon name={look.icon} size={14} color={look.fg} />
       <Txt style={[styles.badgeText, { color: look.fg }]}>{look.text}</Txt>

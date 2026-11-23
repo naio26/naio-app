@@ -419,6 +419,7 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
 - **«Your plan» en verd clar i fitxa del pla B (23 de novembre de 2026):**
   - **El teu pla:** l'etiqueta només diu «★ Your plan», mai «Now», «Today» ni «Tomorrow», i és de color **verd clar** perquè es distingeixi dels altres plans. Surt així al mapa (la marca del teu pla), a la fitxa del mapa, a la pantalla del pla i a la llista de «My plans». L'hora del pla continua a la seva línia de sempre («TODAY · 5:00 PM»).
   - **Fitxa del pla al mapa: has triat la B.** «Going», «Spots» i «Language» ja no van en caixes: són dues línies tranquil·les amb una icona fina («**4 going** · 3 spots left» i l'idioma), i a sota les inicials amb els noms. L'opció A, les caixes antigues i les seves files del menú Demo s'han esborrat.
+  - **Després, corregit:** el verd era massa clar. Ara l'etiqueta «★ Your plan» té la mateixa lletra i el mateix color de text (blanc) que les altres marques verdes, només que el fons és d'un verd més clar (#4A9878), prou fosc perquè el text blanc es llegeixi bé.
   - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.
 
 ## 2. PROPERAMENT

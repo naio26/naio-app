@@ -16,7 +16,7 @@ export const PIN_SIZE = {
 
 /**
  * A plan: green pill with only "Now", "Today" or "Tomorrow".
- * Yours: a LIGHT GREEN pill that only says ★ "Your plan" (no day or time), to set it apart.
+ * Yours: the same pill and white text, filled with a lighter green, that only says ★ "Your plan" (no day or time).
  */
 export function PlanPin({ when, mine, selected }: { when: string; mine?: boolean; selected?: boolean }) {
   return (
@@ -24,8 +24,8 @@ export function PlanPin({ when, mine, selected }: { when: string; mine?: boolean
       <View style={[styles.pill, styles.pillShort, mine && styles.pillMine, selected && styles.selected]}>
         {mine ? (
           <View style={styles.pillTop}>
-            <Icon name="star" size={12} color={colors.mapMineInk} />
-            <Txt numberOfLines={1} style={[styles.pillTime, { color: colors.mapMineInk }]}>
+            <Icon name="star" size={12} color={colors.white} />
+            <Txt numberOfLines={1} style={styles.pillTime}>
               Your plan
             </Txt>
           </View>
