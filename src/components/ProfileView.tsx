@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   where: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: space.xs },
   card: { marginTop: space.xl, padding: 26, borderRadius: 30, gap: 0, ...shadow.soft, shadowOpacity: 0.05 },
   block: { gap: 12, marginBottom: space.lg },
-  // Everything in the profile card is regular weight (no bold).
+  // The content in the profile card is regular weight (no bold).
   value: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.dark },
   level: { fontFamily: fonts.sans, fontSize: 13, color: colors.accent },
   row: {
@@ -84,8 +84,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: colors.border,
   },
+  // Section titles in bold; the content under them stays regular.
   rowLabel: {
-    fontFamily: fonts.sans,
+    fontFamily: fonts.sansBold,
     fontSize: 13,
     letterSpacing: 1.2,
     textTransform: 'uppercase',

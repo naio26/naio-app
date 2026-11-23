@@ -377,6 +377,7 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **Filtres:** a «When?», «Now», «Today» i «Tomorrow» van en negreta i terracota. A l'idioma, el text diu exactament «Leave empty for any language. Suggested languages considering your location.» i s'ha tret l'etiqueta de sota.
   - **El meu perfil:** tot el que hi ha a la targeta (About me, My kind of plans, Languages, Your situation) va en lletra normal, sense negreta. Al costat de la franja d'edat surt el gènere que has triat (per exemple «25-30 · Female»).
   - **Punt blau del mapa:** l'etiqueta «You (approximate)» ara només surt quan toques el punt blau, i s'amaga sola al cap de 3 segons o si toques el mapa. Abans, al mòbil, el toc del punt també comptava com un toc al mapa i l'etiqueta desapareixia de seguida (i a l'iPhone un segon toc no funcionava). Provat en un navegador de proves: no surt abans de tocar, surt en tocar, s'amaga als 3 segons, torna a sortir amb un segon toc i s'amaga en tocar el mapa. **Cal comprovar-ho al mòbil**, perquè el mapa real només funciona allà.
+  - **Després:** al perfil, els títols de cada apartat («About me», «My kind of plans», «Languages», «Your situation») van en negreta; el contingut de sota continua en lletra normal.
   - La versió de prova v3 s'ha actualitzat amb aquests canvis (mateix QR i mateix enllaç).
 
 ## 2. PROPERAMENT
