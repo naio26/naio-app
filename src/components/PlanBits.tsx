@@ -8,9 +8,22 @@ import { colors, fonts, radius, space } from '@/theme';
 import { Avatar } from './Avatar';
 import { Button } from './Button';
 import { Txt } from './Txt';
+import { useMineColours } from '@/state/look';
 
 /** Overlapping initials + "Maya, Leo, Nora +1". */
-export function AvatarStack({ people, max = 3, hostId }: { people: Person[]; max?: number; hostId?: string }) {
+export function AvatarStack({
+  people,
+  max = 3,
+  hostId,
+  plain,
+}: {
+  people: Person[];
+  max?: number;
+  /** Adds "(host)" after the host's name. */
+  hostId?: string;
+  /** Names in regular weight instead of bold. */
+  plain?: boolean;
+}) {
   const shown = people.slice(0, max);
   const extra = people.length - shown.length;
   const names = goingNames(shown, hostId ?? '') + (extra > 0 ? ` +${extra}` : '');
@@ -33,7 +46,7 @@ export function AvatarStack({ people, max = 3, hostId }: { people: Person[]; max
           </View>
         )}
       </View>
-      <Txt variant="label" style={{ flex: 1 }}>
+      <Txt variant="label" style={[{ flex: 1 }, plain && { fontFamily: fonts.sans }]}>
         {names}
       </Txt>
     </View>
@@ -45,8 +58,8 @@ export const goingNames = (people: Person[], hostId: string) =>
   people.map((p) => `${p.id === 'me' ? 'You' : p.firstName}${p.id === hostId ? ' (host)' : ''}`).join(', ');
 
 /**
- * "Who's going": "4 people" in bold · "3 spots left" in regular terracotta,
- * then the names below in the normal text colour ("Maya (host), Leo…").
+ * "Who's going": "4 people" in bold · "3 spots left" in regular terracotta (same size),
+ * then the names below in the normal text colour, "(host)" in italics.
  */
 export function GoingLine({
   people,
@@ -60,14 +73,26 @@ export function GoingLine({
   small?: boolean;
 }) {
   const left = Math.max(capacity - people.length, 0);
-  const size = small ? { fontSize: 13, lineHeight: 18 } : null;
+  // Nested texts get the size too (otherwise they'd fall back to the bigger body size).
+  const size = small ? { fontSize: 13, lineHeight: 18 } : { fontSize: 15, lineHeight: 22 };
   return (
     <View style={{ gap: 4 }}>
       <Txt style={[styles.goingCount, size]}>
         {people.length} {people.length === 1 ? 'person' : 'people'}
-        <Txt style={styles.goingSpots}> · {left ? `${left} ${left === 1 ? 'spot' : 'spots'} left` : 'full'}</Txt>
+        <Txt style={[styles.goingSpots, size]}>
+          {' '}
+          · {left ? `${left} ${left === 1 ? 'spot' : 'spots'} left` : 'full'}
+        </Txt>
       </Txt>
-      <Txt style={[styles.goingNames, size]}>{goingNames(people, hostId)}</Txt>
+      <Txt style={[styles.goingNames, size]}>
+        {people.map((p, i) => (
+          <Txt key={p.id} style={[styles.goingNames, size]}>
+            {i > 0 ? ', ' : ''}
+            {p.id === 'me' ? 'You' : p.firstName}
+            {p.id === hostId && <Txt style={[styles.goingNames, size, styles.italic]}> (host)</Txt>}
+          </Txt>
+        ))}
+      </Txt>
     </View>
   );
 }
@@ -201,15 +226,16 @@ export function HostingNote() {
 
 /** Small label above a plan title: "Request sent", "You're in", or "★ Your plan" (light green, never a day or time). */
 export function PlanBadge({ status }: { status: MyStatus }) {
+  const own = useMineColours();
   if (status === 'none') return null;
   const look = {
     requested: { text: 'Request sent', fg: colors.accent, icon: 'clock' as const },
     accepted: { text: 'You’re in', fg: colors.green, icon: 'check' as const },
-    host: { text: 'Your plan', fg: colors.white, icon: 'star' as const },
+    host: { text: 'Your plan', fg: own.fg, icon: 'star' as const },
   }[status];
   return (
     // Your own plan: white bold text on the lighter green fill, only "Your plan" (never a day or time).
-    <View style={[styles.badge, status === 'host' && styles.badgeMine]}>
+    <View style={[styles.badge, status === 'host' && [styles.badgeMine, { backgroundColor: own.bg }]]}>
       <Icon name={look.icon} size={14} color={look.fg} />
       <Txt style={[styles.badgeText, { color: look.fg }]}>{look.text}</Txt>
     </View>
@@ -220,6 +246,7 @@ const styles = StyleSheet.create({
   goingCount: { fontFamily: fonts.sansBold, fontSize: 15, lineHeight: 22, color: colors.dark },
   goingSpots: { fontFamily: fonts.sans, color: colors.accent },
   goingNames: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.dark },
+  italic: { fontFamily: fonts.sansItalic },
   pointNote: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   stackRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   stack: { flexDirection: 'row' },
@@ -239,6 +266,6 @@ const styles = StyleSheet.create({
   pair: { flexDirection: 'row', gap: 10 },
   waiting: { flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: 44 },
   badge: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', gap: 6, marginBottom: space.xs },
-  badgeMine: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999, backgroundColor: colors.mapMine },
+  badgeMine: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999 },
   badgeText: { fontFamily: fonts.sansBold, fontSize: 12 },
 });

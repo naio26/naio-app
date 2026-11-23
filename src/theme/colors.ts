@@ -42,7 +42,9 @@ export const colors = {
 
   // Map colour code (25–28). FUNCTIONAL colours: keep them on the map whatever the theme.
   mapPlan: '#2E7D61', // GREEN = "Plan to join": plan markers and legend dot
-  mapMine: '#4A9878', // LIGHTER GREEN = your own plan (marker and "Your plan" label), same white bold text as other plans (3.5:1)
+  // Your own plan (marker and "Your plan" label). The owner is comparing A (lighter green, white text) and B (yellow, dark text).
+  mapMine: '#5FAA8A',
+  mapMineYellow: '#F4C95D',
   mapOpen: '#E8893A', // ORANGE = "Open to plans": people markers and legend dot
   // The drawn map (25–28).
   mapLand: '#ECE7DF',

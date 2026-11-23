@@ -3,6 +3,7 @@ import { Icon } from './Icon';
 import { colors, fonts, shadow } from '@/theme';
 import { Avatar } from './Avatar';
 import { Txt } from './Txt';
+import { useMineColours } from '@/state/look';
 
 // What the map markers look like. Where they sit (and taps) is handled by <MapMarker> in NaioMap.
 // Map colour code: GREEN = "Plan to join" (every plan, yours too), ORANGE = "Open to plans".
@@ -19,13 +20,14 @@ export const PIN_SIZE = {
  * Yours: the same pill and white text, filled with a lighter green, that only says ★ "Your plan" (no day or time).
  */
 export function PlanPin({ when, mine, selected }: { when: string; mine?: boolean; selected?: boolean }) {
+  const own = useMineColours();
   return (
     <View style={styles.planWrap}>
-      <View style={[styles.pill, styles.pillShort, mine && styles.pillMine, selected && styles.selected]}>
+      <View style={[styles.pill, styles.pillShort, mine && { backgroundColor: own.bg }, selected && styles.selected]}>
         {mine ? (
           <View style={styles.pillTop}>
-            <Icon name="star" size={12} color={colors.white} />
-            <Txt numberOfLines={1} style={styles.pillTime}>
+            <Icon name="star" size={12} color={own.fg} />
+            <Txt numberOfLines={1} style={[styles.pillTime, { color: own.fg }]}>
               Your plan
             </Txt>
           </View>
@@ -35,7 +37,7 @@ export function PlanPin({ when, mine, selected }: { when: string; mine?: boolean
           </Txt>
         )}
       </View>
-      <View style={[styles.tip, mine && { borderTopColor: colors.mapMine }]} />
+      <View style={[styles.tip, mine && { borderTopColor: own.bg }]} />
     </View>
   );
 }
@@ -101,7 +103,6 @@ const styles = StyleSheet.create({
     ...shadow.soft,
   },
   pillShort: { height: 36, minWidth: 64 },
-  pillMine: { backgroundColor: colors.mapMine },
   selected: { borderColor: colors.white },
   pillTop: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   pillDay: {

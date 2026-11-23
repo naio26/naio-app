@@ -422,6 +422,21 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **Després, corregit:** el verd era massa clar. Ara l'etiqueta «★ Your plan» té la mateixa lletra i el mateix color de text (blanc) que les altres marques verdes, només que el fons és d'un verd més clar (#4A9878), prou fosc perquè el text blanc es llegeixi bé.
   - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.
 
+- **Fitxa del pla, detalls i color de «Your plan» (23 de novembre de 2026):**
+  - **«Your plan» més clar o groc:** l'etiqueta del teu pla ara té dues opcions per comparar al menú Demo: **A**, un verd més clar amb text blanc, i **B**, un groc agradable amb text fosc (en groc el text blanc no es llegiria). Quan en tries una, canvia al mapa, a la fitxa, a la pantalla del pla i a «My plans». L'app comença amb la A.
+  - **Fitxa del pla (en tocar una marca verda):**
+    - El lloc va en terracota, en una sola línia: «Lycabettus Hill, Athens (📍 Exact point is shared after joining)». La línia separada de sota s'ha tret. Quan ja hi ets, entre parèntesis surt el punt exacte.
+    - **«Going», «spots» i «language»: dues opcions al menú Demo.** **A:** una caixa amb «4/7 going · 3 spots left» i, al costat, una caixa amb l'idioma. **B (proposta meva):** una sola fila amb un puntet per cada plaça (ple = ocupada), «3 spots left» i l'idioma a la dreta. Fins que triïs, el mapa continua amb les dues línies d'ara.
+    - Els noms de la gent van en lletra normal i sense «host». Les inicials de colors continuen (més endavant, fotos).
+    - **Botons:** ja no hi ha «Join plan». Només «View details», perquè sempre has de veure els detalls abans d'apuntar-te. Quan ja t'han acceptat, surt «Open the group chat». Al teu pla, els botons de sempre.
+  - **Pantalla de detalls:**
+    - «Exact point is shared after joining» en terracota.
+    - S'ha tret «Meet near», perquè el lloc ja surt sota el títol.
+    - «3 spots left» ara té la mateixa mida que «4 people» (abans semblava més gran perquè agafava la mida del text normal).
+    - A «Who's going», «(host)» va en cursiva, i sota la inicial de l'amfitrió surt una etiqueta petita «HOST».
+  - **Per veure les opcions:** Profile → ⚙︎ Settings → baixa fins a **Demo**.
+  - La versió de prova (v3 i l'enllaç «latest») s'ha actualitzat amb aquests canvis.
+
 ## 2. PROPERAMENT
 
 Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan vulguis, podem decidir junts què ve ara. Algunes idees (cap no està decidida):
@@ -434,6 +449,8 @@ Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan v
 
 ### El que necessito de tu
 
+- **Fitxa del pla:** tria A o B per a «going / spots / language» (menú Demo).
+- **Color de «Your plan»:** tria A (verd més clar) o B (groc) (menú Demo).
 - **Descripció del pla quan ja t'han acceptat:** tria l'opció A o B (al menú Demo).
 - **Unir la versió desada amb la branca principal:** la versió està desada a GitHub en una branca a part, `phases-1-4`. Quan vulguis, la puc unir amb la branca principal (`main`).
 - **Les decisions de les fases 3 i 4:** el rellotge de prova, el pla «Coffee and a wander?» com a teu, el mapa dibuixat i els camps nous de «Create a plan» (zona i estat d'ànim). Digues-me si en vols canviar alguna.

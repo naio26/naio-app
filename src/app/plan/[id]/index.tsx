@@ -33,10 +33,9 @@ export default function PlanDetails() {
   const host = members.find((m) => m.id === plan.hostId);
   const inside = status === 'accepted' || status === 'host';
 
+  // No "Meet near": the place is already under the title. Once you're in, the exact point is shown.
   const rows = [
-    inside
-      ? { label: 'Exact meeting point', value: `${plan.exactPoint} · ${plan.distanceKm} km` }
-      : { label: 'Meet near', value: `${plan.meetNear} · ${plan.distanceKm} km` },
+    ...(inside ? [{ label: 'Exact meeting point', value: `${plan.exactPoint} · ${plan.distanceKm} km` }] : []),
     { label: 'Language', value: plan.language },
   ];
 
@@ -115,7 +114,7 @@ export default function PlanDetails() {
                   {m.id === 'me' ? 'You' : m.firstName}
                 </Txt>
                 <Txt variant="caption">{m.ageRange}</Txt>
-                {m.id === plan.hostId && <Txt style={styles.host}>(host)</Txt>}
+                {m.id === plan.hostId && <Txt style={styles.host}>Host</Txt>}
               </View>
             ))}
           </View>
@@ -158,6 +157,14 @@ const styles = StyleSheet.create({
   rowValue: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.dark },
   people: { flexDirection: 'row', flexWrap: 'wrap', gap: 18 },
   person: { alignItems: 'center', gap: 6, minWidth: 56 },
-  host: { fontFamily: fonts.sans, fontSize: 12, color: colors.accent, marginTop: -4 },
+  // Small "HOST" label under the host's initial.
+  host: {
+    fontFamily: fonts.sansBold,
+    fontSize: 10,
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+    color: colors.accent,
+    marginTop: -4,
+  },
   footer: { paddingHorizontal: space.gutter, paddingTop: space.md, gap: space.sm, backgroundColor: colors.cream },
 });

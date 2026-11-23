@@ -39,4 +39,4 @@ export { VerifiedBadge } from './VerifiedBadge';
 export { AllSet, askLocation } from './AllSet';
 export { RangeSlider } from './RangeSlider';
 export { BalancedTags } from './BalancedTags';
-export { PlanSheet } from './PlanSheet';
+export { PlanSheet, type FactsLook } from './PlanSheet';
