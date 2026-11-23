@@ -359,14 +359,14 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
 
 - **«My kind of plans»: has triat l'opció B (23 de novembre de 2026):**
   - Al perfil (i a la vista prèvia abans de crear-lo), els interessos són etiquetes petites amb una vora fina de color sorra, sense fons i amb text fosc normal.
-  - **Files equilibrades:** l'app mesura cada etiqueta i les reparteix en el mínim de files possible, perquè totes les files tinguin més o menys la mateixa amplada. Si cal, canvia l'ordre de les etiquetes. Cada fila va centrada, sense forats grans.
+  - **Alineades com un text justificat:** cada fila comença al marge esquerre i arriba fins al marge dret, amb les etiquetes repartides per igual, de manera que els dos costats queden rectes. L'última fila, si és més curta, queda a l'esquerra. L'app mesura cada etiqueta i tria quines van a cada fila perquè quedin ben plenes (si cal, canvia l'ordre).
   - L'opció A, la versió antiga (boletes de color) i les dues files del menú Demo s'han esborrat.
 
 - **Versió de prova v3 publicada (23 de novembre de 2026):**
   - Té tots els canvis des de la v2: la ubicació obligatòria i «You're all set!», el logo igual a tot arreu, el mapa real, el filtre d'edat, els canvis de disseny i les dues propostes de «My kind of plans».
   - **Com obrir-la:** escaneja amb la Càmera de l'iPhone el QR de `docs/expo-go-preview-v3-2026-11-23.png` (o toca l'enllaç de `docs/PREVIEW.md`). S'obre a Expo Go.
   - La v1 i la v2 continuen igual, amb els seus QR.
-  - **Actualitzada el 23 de novembre de 2026** amb l'opció B de «My kind of plans» (mateix QR i mateix enllaç).
+  - **Actualitzada el 23 de novembre de 2026** amb l'opció B de «My kind of plans», alineada com un text justificat (mateix QR i mateix enllaç).
 
 ## 2. PROPERAMENT
 

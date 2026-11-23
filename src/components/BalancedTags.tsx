@@ -6,14 +6,14 @@ import { Txt } from './Txt';
 const GAP = 8;
 
 /**
- * Soft outline tags ("My kind of plans") laid out in balanced rows: as few rows as fit,
- * rows of about the same width (items may be reordered for that), each row centred. No big gaps.
+ * Soft outline tags ("My kind of plans") laid out like justified text: every row starts at the left edge and
+ * reaches the right edge (items spread evenly); the last row stays on the left. Items may be reordered so rows fill well.
  */
 export function BalancedTags({ items }: { items: string[] }) {
   const [width, setWidth] = useState(0);
   const [sizes, setSizes] = useState<Record<string, number>>({});
   const measured = width > 0 && items.every((i) => sizes[i] !== undefined);
-  const rows = measured ? balance(items, sizes, width) : [];
+  const rows = measured ? fillRows(items, sizes, width) : [];
 
   return (
     <View onLayout={(e: LayoutChangeEvent) => setWidth(e.nativeEvent.layout.width)}>
@@ -35,7 +35,7 @@ export function BalancedTags({ items }: { items: string[] }) {
       )}
       <View style={{ gap: GAP }}>
         {rows.map((row, r) => (
-          <View key={r} style={styles.row}>
+          <View key={r} style={[styles.row, r < rows.length - 1 && row.length > 1 && styles.justified]}>
             {row.map((i) => (
               <Tag key={i} label={i} />
             ))}
@@ -56,36 +56,35 @@ function Tag({ label }: { label: string }) {
   );
 }
 
-/** Fewest rows that fit; within them, put each tag (widest first) on the shortest row it fits in. */
-function balance(items: string[], sizes: Record<string, number>, max: number): string[][] {
-  const sorted = [...items].sort((a, b) => sizes[b] - sizes[a]);
-  for (let count = 1; count <= items.length; count++) {
-    const rows: { items: string[]; w: number }[] = Array.from({ length: count }, () => ({ items: [], w: 0 }));
-    let ok = true;
-    for (const it of sorted) {
-      const need = (row: { items: string[]; w: number }) => row.w + (row.items.length ? GAP : 0) + sizes[it];
-      const fits = rows.filter((row) => need(row) <= max).sort((a, b) => a.w - b.w);
-      if (!fits.length) {
-        ok = false;
-        break;
+/**
+ * Fill each row as full as possible (best combination of the remaining tags, so the justified gaps stay small);
+ * whatever is left becomes the last row. Inside a row the original order is kept.
+ */
+function fillRows(items: string[], sizes: Record<string, number>, max: number): string[][] {
+  const rows: string[][] = [];
+  let left = [...items];
+  while (left.length) {
+    let best: string[] = [left[0]];
+    let bestW = -1;
+    // At most 8 interests, so trying every combination is instant.
+    for (let mask = 1; mask < 1 << left.length; mask++) {
+      const pick = left.filter((_, i) => mask & (1 << i));
+      const w = pick.reduce((t, i) => t + sizes[i], 0) + GAP * (pick.length - 1);
+      if (w <= max && (w > bestW || (w === bestW && pick.length > best.length))) {
+        best = pick;
+        bestW = w;
       }
-      fits[0].w = need(fits[0]);
-      fits[0].items.push(it);
     }
-    if (ok) {
-      // Keep the original order inside each row where possible, and the fullest rows first.
-      return rows
-        .filter((r) => r.items.length)
-        .sort((a, b) => b.w - a.w)
-        .map((r) => items.filter((i) => r.items.includes(i)));
-    }
+    rows.push(best);
+    left = left.filter((i) => !best.includes(i));
   }
-  return items.map((i) => [i]);
+  return rows;
 }
 
 const styles = StyleSheet.create({
   measure: { position: 'absolute', opacity: 0, flexDirection: 'row', alignItems: 'flex-start' },
-  row: { flexDirection: 'row', justifyContent: 'center', gap: GAP },
+  row: { flexDirection: 'row', justifyContent: 'flex-start', gap: GAP },
+  justified: { justifyContent: 'space-between' },
   tag: {
     paddingHorizontal: 12,
     paddingVertical: 5,
