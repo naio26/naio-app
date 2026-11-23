@@ -409,6 +409,13 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     - El mapa i les pantalles normals continuen igual fins que triïs.
   - La versió de prova v3 s'ha actualitzat amb aquests canvis (mateix QR i mateix enllaç).
 
+- **Enllaç «latest»: sempre la versió més nova (23 de novembre de 2026):**
+  - L'entrada «naioali/naio» de la llista de projectes d'Expo Go no pot triar versió sola: obre l'última adreça que hi vas fer servir (una versió antiga o el `npm start` del Codespace, que només funciona amb el Codespace obert). Per això no hi veies cap llista.
+  - He creat un enllaç fix nou, **«latest»**, que **sempre obre la versió més nova** (ara la v3). Quan publiqui una versió nova (v4…), el faré apuntar a la nova. L'enllaç i el QR no canviaran mai.
+  - **QR:** `docs/expo-go-preview-latest.png` (també a dalt de tot de `docs/PREVIEW.md`).
+  - **Com fer-ho servir:** escaneja aquest QR una vegada amb la Càmera de l'iPhone. A partir d'aleshores, a Expo Go, toca l'entrada que surt a «Recently opened»: sempre carregarà la versió més nova. Si veus una versió antiga, tanca Expo Go del tot i torna'l a obrir (de vegades dues vegades).
+  - Els QR de la v1, v2 i v3 continuen funcionant igual, per si vols obrir una versió concreta.
+
 ## 2. PROPERAMENT
 
 Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan vulguis, podem decidir junts què ve ara. Algunes idees (cap no està decidida):

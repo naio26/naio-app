@@ -3,7 +3,14 @@
 Each preview version has its own link and QR code, so older versions can still be opened.
 Scan the QR code with the iPhone Camera, or tap the link on the phone. It opens in Expo Go.
 
-## v3 - 23 Nov 2026 (latest)
+## Latest: always the newest version (use this one)
+
+exp://u.expo.dev/69984178-632d-4299-99a2-3328d3585b14?runtime-version=exposdk%3A58.0.0&channel-name=latest
+
+QR code: `expo-go-preview-latest.png` (EAS channel `latest`, which always points to the newest version's branch; now `v3-2026-11-23`).
+Scan it once; after that, Expo Go's "Recently opened" entry for it always loads the newest version.
+
+## v3 - 23 Nov 2026
 
 exp://u.expo.dev/69984178-632d-4299-99a2-3328d3585b14?runtime-version=exposdk%3A58.0.0&channel-name=v3-2026-11-23
 
