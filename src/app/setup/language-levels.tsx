@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.accentSoft,
   },
   pillEmpty: { backgroundColor: colors.white, borderWidth: 1.5, borderColor: colors.accentLine },
-  pillText: { fontFamily: fonts.sansBold, fontSize: 14, color: colors.accent },
+  pillText: { fontFamily: fonts.sansBold, fontSize: 12.5, color: colors.accent },
   menu: {
     position: 'absolute',
     top: 88,
@@ -134,5 +134,5 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   itemOn: { backgroundColor: colors.accentSoft },
-  itemText: { fontFamily: fonts.sansBold, fontSize: 15, color: colors.dark },
+  itemText: { fontFamily: fonts.sansBold, fontSize: 14, color: colors.dark },
 });

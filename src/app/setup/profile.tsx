@@ -4,7 +4,6 @@ import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
 import { Button, Input, ProfilePhoto, Screen, ScreenHeader, SelectField, Txt } from '@/components';
 import { GENDERS } from '@/data/types';
-import { useCity } from '@/state/city';
 import { useProfile } from '@/state/profile';
 import { useSession } from '@/state/session';
 import { colors, fonts, radius, space } from '@/theme';
@@ -12,7 +11,6 @@ import { goBack } from '@/components';
 
 // Screen 09 — the profile checklist. Every field opens its own step and comes back here.
 export default function ProfileSetup() {
-  const city = useCity();
   const { account } = useSession();
   const { profile, update, missing, created } = useProfile();
   const [more, setMore] = useState(!!(profile.about || profile.from || profile.situation));
@@ -200,7 +198,7 @@ export default function ProfileSetup() {
           </View>
           <SelectField
             label="Your situation"
-            placeholder={`How are you experiencing ${city.name}?`}
+            placeholder="What’s your situation?"
             value={profile.situation}
             icon="chevron-right"
             onPress={() => router.push('/setup/situation')}
@@ -254,7 +252,7 @@ const styles = StyleSheet.create({
   about: { height: 96, paddingTop: 14, textAlignVertical: 'top' },
   privacy: { marginTop: space.lg },
   langLine: { fontFamily: fonts.sans, fontSize: 16, lineHeight: 22, color: colors.dark },
-  langLevel: { fontFamily: fonts.sansItalic, color: colors.accent },
+  langLevel: { fontFamily: fonts.sansItalic, fontSize: 14, color: colors.accent },
   dropdown: {
     marginTop: 6,
     borderRadius: radius.md,

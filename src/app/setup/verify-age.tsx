@@ -44,8 +44,8 @@ export default function VerifyAge() {
         <Txt style={styles.rangeValue}>{profile.ageRange ?? '—'}</Txt>
       </Card>
 
-      <Txt variant="intro" center>
-        Use an official document to confirm that your date of birth matches this range.
+      <Txt variant="intro" center style={styles.useDoc}>
+        Use an official document to confirm that{'\n'}your date of birth matches this range.
       </Txt>
 
       <View style={{ gap: 12 }}>
@@ -113,6 +113,8 @@ export default function VerifyAge() {
 }
 
 const styles = StyleSheet.create({
+  // Centred on two lines, smaller, not the full width.
+  useDoc: { fontSize: 13, lineHeight: 19, maxWidth: 290, alignSelf: 'center' },
   content: { paddingTop: space.xl, paddingBottom: space.xl, gap: space.lg },
   range: {
     flexDirection: 'row',

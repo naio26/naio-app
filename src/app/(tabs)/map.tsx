@@ -49,8 +49,8 @@ export default function MapTab() {
   const available = (useLoad(listAvailablePeople, []) ?? []).filter(
     (p) => !blocked.includes(p.id) && personMatches(p, filters),
   );
-  // "You (approximate)" only shows for a few seconds after tapping the blue dot.
-  const [youLabel, setYouLabel] = useState(false);
+  // "You (approximate)" only shows after tapping the blue dot, for 3 seconds (each tap starts the 3 s again).
+  const [youLabel, setYouLabel] = useState<number | false>(false);
   useEffect(() => {
     if (!youLabel) return;
     const t = setTimeout(() => setYouLabel(false), 3000);
@@ -103,8 +103,13 @@ export default function MapTab() {
             />
           </MapMarker>
         ))}
-        <MapMarker location={MY_AREA} size={PIN_SIZE.you} label="You (approximate)" onPress={() => setYouLabel(true)}>
-          <YouDot showLabel={youLabel} />
+        <MapMarker
+          location={MY_AREA}
+          size={PIN_SIZE.you}
+          label="You (approximate)"
+          onPress={() => setYouLabel(Date.now())}
+        >
+          <YouDot showLabel={youLabel !== false} />
         </MapMarker>
         {visible.map((p) => {
           const on = selected?.kind === 'plan' && selected.plan.id === p.id;

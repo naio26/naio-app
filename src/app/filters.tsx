@@ -145,9 +145,8 @@ export default function FiltersSheet() {
           Which language do you want the activity to be in?
         </Txt>
         <Txt variant="caption" style={{ marginTop: -6 }}>
-          Leave empty for any language. Suggested languages adapt to your location.
+          Leave empty for any language. Suggested languages considering your location.
         </Txt>
-        <Txt style={styles.groupLabel}>Suggested languages for your location</Txt>
         <View style={styles.chips}>
           {langChips.map((l) => (
             <Chip
@@ -281,10 +280,9 @@ const styles = StyleSheet.create({
   boxTitleOn: { fontFamily: fonts.sansBold, color: colors.accent },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   moreLangs: { padding: 12, borderRadius: radius.md, backgroundColor: colors.mist },
-  groupLabel: { fontFamily: fonts.sansMedium, fontSize: 13, color: colors.muted, marginBottom: -4 },
   whenGroup: { gap: 8 },
   whenRow: { flexDirection: 'row', gap: 10 },
-  day: { fontFamily: fonts.sansBold, fontSize: 14, color: colors.dark },
+  day: { fontFamily: fonts.sansBold, fontSize: 14, color: colors.accent },
   // Same border width on and off, so a selected box doesn't shrink its text.
   slot: { flex: 1, height: 64, gap: 3, paddingHorizontal: 6, borderWidth: 1.5 },
   slotTitle: { fontFamily: fonts.sans, fontSize: 14, color: colors.dark },

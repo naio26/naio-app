@@ -80,9 +80,12 @@ export function YouDot({ showLabel }: { showLabel: boolean }) {
       <View style={styles.halo}>
         <View style={styles.dot} />
       </View>
-      <View style={[styles.youTag, !showLabel && { opacity: 0 }]}>
-        <Txt style={styles.youText}>You (approximate)</Txt>
-      </View>
+      {/* Only there after tapping the dot (not just hidden), so it can't show by itself. */}
+      {showLabel && (
+        <View style={styles.youTag}>
+          <Txt style={styles.youText}>You (approximate)</Txt>
+        </View>
+      )}
     </View>
   );
 }

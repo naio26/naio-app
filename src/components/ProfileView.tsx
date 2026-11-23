@@ -17,7 +17,8 @@ export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: (
       <View style={styles.hero}>
         <ProfilePhoto name={profile.firstName} size={150} />
         <Txt style={styles.name}>{profile.firstName}</Txt>
-        <Txt style={{ fontSize: 17 }}>{profile.ageRange}</Txt>
+        {/* Age range and the gender you chose, e.g. "25-30 · Female". */}
+        <Txt style={{ fontSize: 17 }}>{[profile.ageRange, profile.gender].filter(Boolean).join(' · ')}</Txt>
         {!!from && (
           <View style={styles.where}>
             <Icon name="map-pin" color={colors.muted} />
@@ -29,14 +30,14 @@ export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: (
       <Card style={styles.card}>
         {!!profile.about.trim() && (
           <View style={styles.block}>
-            <Txt variant="section">About me</Txt>
-            <Txt style={{ fontSize: 15, lineHeight: 22 }}>{profile.about.trim()}</Txt>
+            <Txt style={styles.rowLabel}>About me</Txt>
+            <Txt style={styles.value}>{profile.about.trim()}</Txt>
           </View>
         )}
 
         <View style={styles.block}>
           <Txt style={styles.rowLabel}>My kind of plans</Txt>
-          {/* Option B (chosen by the owner): soft outline tags in balanced, centred rows. */}
+          {/* Option B (chosen by the owner): soft outline tags, justified rows. */}
           <BalancedTags items={profile.interests} />
         </View>
 
@@ -44,7 +45,7 @@ export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: (
           <Txt style={styles.rowLabel}>Languages</Txt>
           <View style={{ alignItems: 'flex-end', gap: 4, flexShrink: 1 }}>
             {profile.languages.map((l) => (
-              <Txt key={l.code} variant="label" style={{ textAlign: 'right' }}>
+              <Txt key={l.code} style={[styles.value, { textAlign: 'right' }]}>
                 {l.name}
                 {l.level && <Txt style={styles.level}> · {l.level}</Txt>}
               </Txt>
@@ -55,7 +56,7 @@ export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: (
         {profile.situation && (
           <View style={styles.row}>
             <Txt style={styles.rowLabel}>Your situation</Txt>
-            <Txt variant="label">{profile.situation}</Txt>
+            <Txt style={styles.value}>{profile.situation}</Txt>
           </View>
         )}
 
@@ -72,7 +73,9 @@ const styles = StyleSheet.create({
   where: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: space.xs },
   card: { marginTop: space.xl, padding: 26, borderRadius: 30, gap: 0, ...shadow.soft, shadowOpacity: 0.05 },
   block: { gap: 12, marginBottom: space.lg },
-  level: { fontFamily: fonts.sans, color: colors.accent },
+  // Everything in the profile card is regular weight (no bold).
+  value: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.dark },
+  level: { fontFamily: fonts.sans, fontSize: 13, color: colors.accent },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',

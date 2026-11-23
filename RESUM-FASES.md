@@ -369,6 +369,16 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **Actualitzada el 23 de novembre de 2026** amb l'opció B de «My kind of plans», alineada com un text justificat (mateix QR i mateix enllaç).
   - **Actualitzada de nou el 23 de novembre de 2026:** l'avís de la ubicació ja no surt sol; primer surt l'explicació i l'avís només apareix en tocar «Continue».
 
+- **Petits canvis i punt blau del mapa arreglat (23 de novembre de 2026):**
+  - **Nivells d'idioma** (Native, Fluent, Conversational…): una mica més petits a tot arreu (pantalla «Add your level», «Your profile» i el perfil).
+  - **«Verify your range»:** la frase «Use an official document…» és més petita, centrada i en dues línies, sense ocupar tota l'amplada.
+  - **«Your situation»:** a «Add more about you», el camp ja no diu «How are you experiencing Athens?», sinó «What's your situation?» (com el títol de la pantalla). Aquest text antic ja no surt enlloc de l'app.
+  - **«First things first»:** «Customize your experience / to set the perfect plan.» va centrat en dues línies equilibrades, i «Skip for now» és més petit.
+  - **Filtres:** a «When?», «Now», «Today» i «Tomorrow» van en negreta i terracota. A l'idioma, el text diu exactament «Leave empty for any language. Suggested languages considering your location.» i s'ha tret l'etiqueta de sota.
+  - **El meu perfil:** tot el que hi ha a la targeta (About me, My kind of plans, Languages, Your situation) va en lletra normal, sense negreta. Al costat de la franja d'edat surt el gènere que has triat (per exemple «25-30 · Female»).
+  - **Punt blau del mapa:** l'etiqueta «You (approximate)» ara només surt quan toques el punt blau, i s'amaga sola al cap de 3 segons o si toques el mapa. Abans, al mòbil, el toc del punt també comptava com un toc al mapa i l'etiqueta desapareixia de seguida (i a l'iPhone un segon toc no funcionava). Provat en un navegador de proves: no surt abans de tocar, surt en tocar, s'amaga als 3 segons, torna a sortir amb un segon toc i s'amaga en tocar el mapa. **Cal comprovar-ho al mòbil**, perquè el mapa real només funciona allà.
+  - La versió de prova v3 s'ha actualitzat amb aquests canvis (mateix QR i mateix enllaç).
+
 ## 2. PROPERAMENT
 
 Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan vulguis, podem decidir junts què ve ara. Algunes idees (cap no està decidida):

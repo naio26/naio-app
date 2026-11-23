@@ -22,10 +22,10 @@ export function UpToCard({ visible, onSetFilters, onSkip }: Props) {
             What are you{'\n'}up to?
           </Txt>
           <Txt style={styles.sub} center>
-            Customize your experience to set the perfect plan.
+            Customize your experience{'\n'}to set the perfect plan.
           </Txt>
           <Button title="Set filters" arrow onPress={onSetFilters} style={styles.cta} />
-          <Button title="Skip for now" variant="link" onPress={onSkip} />
+          <Button title="Skip for now" variant="link" small onPress={onSkip} />
           <Txt variant="caption" center style={{ marginTop: -6 }}>
             See all active nearby plans{'\n'}without personal filters.
           </Txt>

@@ -18,6 +18,8 @@ type Props = {
   disabled?: boolean;
   loading?: boolean;
   style?: StyleProp<ViewStyle>;
+  /** Smaller text (e.g. "Skip for now" links). */
+  small?: boolean;
 };
 
 const looks: Record<Variant, { bg: string; fg: string; border?: string }> = {
@@ -29,7 +31,7 @@ const looks: Record<Variant, { bg: string; fg: string; border?: string }> = {
   link: { bg: 'transparent', fg: colors.muted },
 };
 
-export function Button({ title, onPress, variant = 'primary', arrow, icon, disabled, loading, style }: Props) {
+export function Button({ title, onPress, variant = 'primary', arrow, icon, disabled, loading, style, small }: Props) {
   const look = looks[variant];
   const isSolid = variant === 'primary' || variant === 'danger';
   const bg = disabled && isSolid ? colors.disabled : look.bg;
@@ -77,6 +79,7 @@ export function Button({ title, onPress, variant = 'primary', arrow, icon, disab
                 variant === 'outline' && { fontSize: 17 },
                 variant === 'link' && { fontFamily: fonts.sans, fontSize: 17 },
                 variant === 'glow' && { fontSize: 20 },
+                small && { fontSize: 15 },
               ]}
             >
               {title}
