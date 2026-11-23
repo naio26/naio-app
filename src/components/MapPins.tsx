@@ -14,29 +14,21 @@ export const PIN_SIZE = {
   you: { height: 76, anchorY: 24 }, // the centre of the blue dot
 };
 
-/** A plan: green pill, "Today" / "Tomorrow" on top and the time below. Yours adds ★ "Your plan". */
-export function PlanPin({
-  day,
-  time,
-  mine,
-  selected,
-}: {
-  day: string;
-  time: string;
-  mine?: boolean;
-  selected?: boolean;
-}) {
+/** A plan: green pill with only "Now", "Today" or "Tomorrow". Yours adds ★ "Your plan" on top. */
+export function PlanPin({ when, mine, selected }: { when: string; mine?: boolean; selected?: boolean }) {
   return (
     <View style={styles.planWrap}>
-      <View style={[styles.pill, selected && styles.selected]}>
-        <View style={styles.pillTop}>
-          {mine && <Icon name="star" size={10} color={colors.white} />}
-          <Txt numberOfLines={1} style={styles.pillDay}>
-            {mine ? `Your plan · ${day}` : day}
-          </Txt>
-        </View>
+      <View style={[styles.pill, !mine && styles.pillShort, selected && styles.selected]}>
+        {mine && (
+          <View style={styles.pillTop}>
+            <Icon name="star" size={10} color={colors.white} />
+            <Txt numberOfLines={1} style={styles.pillDay}>
+              Your plan
+            </Txt>
+          </View>
+        )}
         <Txt numberOfLines={1} style={styles.pillTime}>
-          {time}
+          {when}
         </Txt>
       </View>
       <View style={styles.tip} />
@@ -104,6 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     ...shadow.soft,
   },
+  pillShort: { height: 36, minWidth: 64 },
   selected: { borderColor: colors.white },
   pillTop: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   pillDay: {

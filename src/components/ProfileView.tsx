@@ -35,7 +35,8 @@ export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: (
           </View>
         )}
 
-        <View style={styles.block}>
+        {/* Same divider as above "Languages" when "About me" is shown above. */}
+        <View style={[styles.block, !!profile.about.trim() && styles.divided]}>
           <Txt style={styles.rowLabel}>My kind of plans</Txt>
           {/* Option B (chosen by the owner): soft outline tags, justified rows. */}
           <BalancedTags items={profile.interests} />
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
   where: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: space.xs },
   card: { marginTop: space.xl, padding: 26, borderRadius: 30, gap: 0, ...shadow.soft, shadowOpacity: 0.05 },
   block: { gap: 12, marginBottom: space.lg },
+  divided: { paddingTop: 18, borderTopWidth: 1, borderTopColor: colors.border },
   // The content in the profile card is regular weight (no bold).
   value: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.dark },
   level: { fontFamily: fonts.sans, fontSize: 13, color: colors.accent },

@@ -380,6 +380,14 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **Després:** al perfil, els títols de cada apartat («About me», «My kind of plans», «Languages», «Your situation») van en negreta; el contingut de sota continua en lletra normal.
   - La versió de prova v3 s'ha actualitzat amb aquests canvis (mateix QR i mateix enllaç).
 
+- **Mapa: marques, avís de «sense resultats» i fitxa del pla (23 de novembre de 2026):**
+  - **Marques verdes:** només diuen «Now», «Today» o «Tomorrow», sense l'hora. El teu pla diu «★ Your plan» a dalt i, a sota, només «Now», «Today» o «Tomorrow».
+  - **Quan cap pla coincideix amb els teus filtres:** el text és el mateix, però els dos botons («Change filters» i «Show all») ara tenen el mateix estil (vora terracota, sense fons), són més petits i van centrats. «Show all» esborra tots els filtres.
+  - **Fitxa del pla (en tocar una marca verda):** igual que abans, però el lloc («Psyrri · 1.1 km») va en lletra normal i de color terracota.
+  - **Pendent de la teva resposta:** com mostrar «Going», «Spots» i «Language» a la fitxa (t'he proposat dues opcions més senzilles).
+  - **Perfil:** hi ha una línia separadora entre «About me» i «My kind of plans», igual que la de sobre de «Languages» (mateix estil, color i espai).
+  - La versió de prova v3 s'ha actualitzat amb tots aquests canvis (mateix QR i mateix enllaç).
+
 ## 2. PROPERAMENT
 
 Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan vulguis, podem decidir junts què ve ara. Algunes idees (cap no està decidida):
@@ -392,6 +400,7 @@ Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan v
 
 ### El que necessito de tu
 
+- **Fitxa del pla al mapa:** tria com vols «Going», «Spots» i «Language» (opció A o B).
 - **Unir la versió desada amb la branca principal:** la versió està desada a GitHub en una branca a part, `phases-1-4`. Quan vulguis, la puc unir amb la branca principal (`main`).
 - **Les decisions de les fases 3 i 4:** el rellotge de prova, el pla «Coffee and a wander?» com a teu, el mapa dibuixat i els camps nous de «Create a plan» (zona i estat d'ànim). Digues-me si en vols canviar alguna.
 - **Textos legals:** les «Terms» i les «Safety Guidelines» encara no tenen text. A «Settings → Terms & privacy» de moment hi ha un resum curt fet per mi. Quan tinguis els textos de debò, me'ls pots passar.

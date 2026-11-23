@@ -113,18 +113,18 @@ export default function MapTab() {
         </MapMarker>
         {visible.map((p) => {
           const on = selected?.kind === 'plan' && selected.plan.id === p.id;
-          const day = p.day === 'today' ? 'Today' : 'Tomorrow';
-          const time = isNow(p) ? 'Now' : formatTime(p.time);
+          // Only "Now", "Today" or "Tomorrow" on the marker (no time).
+          const when = isNow(p) ? 'Now' : p.day === 'today' ? 'Today' : 'Tomorrow';
           return (
             <MapMarker
               key={p.id}
               location={p.location}
               size={PIN_SIZE.plan}
-              label={`Plan, ${day} ${time}`}
+              label={`Plan, ${when}`}
               z={on ? 6 : 2}
               onPress={() => setSelected({ kind: 'plan', plan: p })}
             >
-              <PlanPin day={day} time={time} mine={statusOf(p) === 'host'} selected={on} />
+              <PlanPin when={when} mine={statusOf(p) === 'host'} selected={on} />
             </MapMarker>
           );
         })}
@@ -197,14 +197,22 @@ export default function MapTab() {
             <View style={styles.empty}>
               <Txt variant="bodyStrong">No plans match your filters right now.</Txt>
               <Txt variant="small">Try a wider distance or another time.</Txt>
-              <View style={{ flexDirection: 'row', gap: 10, marginTop: 6 }}>
+              {/* Two small buttons in the same style, centred. "Show all" resets the filters. */}
+              <View style={styles.emptyButtons}>
                 <Button
                   title="Change filters"
                   variant="outline"
+                  small
                   onPress={() => router.push('/filters')}
-                  style={{ flex: 1, minHeight: 46 }}
+                  style={styles.emptyButton}
                 />
-                <Button title="Show all" onPress={() => setFilters(NO_FILTERS)} style={{ flex: 1, minHeight: 46 }} />
+                <Button
+                  title="Show all"
+                  variant="outline"
+                  small
+                  onPress={() => setFilters(NO_FILTERS)}
+                  style={styles.emptyButton}
+                />
               </View>
             </View>
           )
@@ -245,7 +253,7 @@ function PlanSheet({ plan }: { plan: Plan }) {
           {planWhen(plan)}
         </Txt>
         <Txt variant="h1">{plan.title}</Txt>
-        <Txt variant="bodyStrong">
+        <Txt style={styles.place}>
           {plan.area} · {plan.distanceKm} km
         </Txt>
         <Txt style={{ marginTop: 4 }}>{plan.tagline}</Txt>
@@ -351,6 +359,9 @@ const styles = StyleSheet.create({
     ...shadow.soft,
   },
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  emptyButtons: { flexDirection: 'row', justifyContent: 'center', gap: 10, marginTop: 10 },
+  emptyButton: { minHeight: 40, paddingHorizontal: 18 },
+  place: { fontFamily: fonts.sans, fontSize: 16, lineHeight: 22, color: colors.accent },
   legendWrap: { position: 'absolute', left: space.lg, gap: 8, alignItems: 'flex-start' },
   legend: {
     flexDirection: 'row',
