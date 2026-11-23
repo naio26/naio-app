@@ -4,26 +4,12 @@ import { MyProfile } from '@/data/types';
 import { colors, fonts, shadow, space } from '@/theme';
 import { Button } from './Button';
 import { Card } from './Card';
-import { Chip } from './Chip';
+import { BalancedTags } from './BalancedTags';
 import { ProfilePhoto } from './ProfilePhoto';
 import { Txt } from './Txt';
 
-/**
- * How "My kind of plans" looks. 'chips' = the current version.
- * 'A' and 'B' are calmer test versions, only shown from Settings → Demo until the owner chooses.
- */
-export type PlansLook = 'chips' | 'A' | 'B';
-
 /** Your profile as other people see it: preview (20) and Profile tab (42). */
-export function ProfileView({
-  profile,
-  onEdit,
-  plansLook = 'chips',
-}: {
-  profile: MyProfile;
-  onEdit: () => void;
-  plansLook?: PlansLook;
-}) {
+export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: () => void }) {
   // Where you're FROM (optional, asked in "Add more about you"). We don't show where you are now.
   const from = profile.from.trim();
   return (
@@ -50,36 +36,8 @@ export function ProfileView({
 
         <View style={styles.block}>
           <Txt style={styles.rowLabel}>My kind of plans</Txt>
-          {plansLook === 'A' ? (
-            // A · quiet line: just the words, separated by "·". No boxes, no colour.
-            // Each word keeps its "·" so a line never starts with one.
-            <View style={styles.quietRow}>
-              {profile.interests.map((i, n) => (
-                <Txt key={i} style={styles.quietLine}>
-                  {i}
-                  {n < profile.interests.length - 1 ? '  ·' : ''}
-                </Txt>
-              ))}
-            </View>
-          ) : plansLook === 'B' ? (
-            // B · soft tags: thin sand outline, no fill, regular dark text, left-aligned.
-            <View style={styles.softTags}>
-              {profile.interests.map((i) => (
-                <View key={i} style={styles.softTag}>
-                  <Txt style={styles.softTagText}>{i}</Txt>
-                </View>
-              ))}
-            </View>
-          ) : (
-            // Current version: two columns, each chip centred in its column.
-            <View style={styles.chips}>
-              {profile.interests.map((i) => (
-                <View key={i} style={styles.chipCell}>
-                  <Chip label={i} selected />
-                </View>
-              ))}
-            </View>
-          )}
+          {/* Option B (chosen by the owner): soft outline tags in balanced, centred rows. */}
+          <BalancedTags items={profile.interests} />
         </View>
 
         <View style={styles.row}>
@@ -114,19 +72,6 @@ const styles = StyleSheet.create({
   where: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: space.xs },
   card: { marginTop: space.xl, padding: 26, borderRadius: 30, gap: 0, ...shadow.soft, shadowOpacity: 0.05 },
   block: { gap: 12, marginBottom: space.lg },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', rowGap: 10 },
-  chipCell: { width: '50%', alignItems: 'center', paddingHorizontal: 4 },
-  quietRow: { flexDirection: 'row', flexWrap: 'wrap', columnGap: 10 },
-  quietLine: { fontFamily: fonts.sans, fontSize: 16, lineHeight: 26, color: colors.dark },
-  softTags: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  softTag: {
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 999,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  softTagText: { fontFamily: fonts.sans, fontSize: 14, lineHeight: 19, color: colors.dark },
   level: { fontFamily: fonts.sans, color: colors.accent },
   row: {
     flexDirection: 'row',
