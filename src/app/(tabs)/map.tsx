@@ -4,7 +4,6 @@ import { router } from 'expo-router';
 import { Icon } from '@/components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
-  AvatarStack,
   BottomSheet,
   Button,
   Chip,
@@ -13,11 +12,8 @@ import {
   NaioMap,
   PersonPin,
   PIN_SIZE,
-  PlanActions,
-  PlanBadge,
-  PlanFacts,
   PlanPin,
-  PointNote,
+  PlanSheet,
   Txt,
   UpToCard,
   YouDot,
@@ -25,7 +21,7 @@ import {
 import { listAvailablePeople } from '@/data/api';
 import { useLoad } from '@/data/hooks';
 import { MY_AREA, personMatches, planMatches } from '@/data/match';
-import { formatTime, isNow, planWhen } from '@/data/time';
+import { formatTime, isNow } from '@/data/time';
 import { Person, Plan } from '@/data/types';
 import { countActive, NO_FILTERS, useFilters } from '@/state/filters';
 import { usePeople } from '@/state/people';
@@ -237,45 +233,6 @@ export default function MapTab() {
   );
 }
 
-/** Screen 26 — a plan tapped on the map. */
-function PlanSheet({ plan }: { plan: Plan }) {
-  const { statusOf, membersOf } = usePlans();
-  const status = statusOf(plan);
-  const memberIds = membersOf(plan);
-  const members = usePeople(memberIds);
-  const host = members.find((m) => m.id === plan.hostId);
-
-  return (
-    <View style={{ gap: space.lg }}>
-      <View style={{ gap: 6 }}>
-        <PlanBadge status={status} />
-        {/* More room between the day/time and the title. */}
-        <Txt variant="eyebrow" style={{ letterSpacing: 1.2, marginBottom: 6 }}>
-          {planWhen(plan)}
-        </Txt>
-        <Txt variant="h1">{plan.title}</Txt>
-        <Txt style={styles.place}>
-          {plan.area} · {plan.distanceKm} km
-        </Txt>
-        <PointNote plan={plan} status={status} />
-        <Txt style={{ marginTop: 6 }}>{plan.tagline}</Txt>
-      </View>
-      <PlanFacts plan={plan} going={memberIds.length} />
-      <AvatarStack people={members} />
-      <PlanActions
-        plan={plan}
-        status={status}
-        host={host}
-        going={memberIds.length}
-        secondary={{
-          title: 'View details',
-          onPress: () => router.push({ pathname: '/plan/[id]', params: { id: plan.id } }),
-        }}
-      />
-    </View>
-  );
-}
-
 /** Screen 28 — someone available without a plan. You can't message them. */
 function PersonSheet({ person }: { person: Person }) {
   const a = person.available!;
@@ -362,7 +319,6 @@ const styles = StyleSheet.create({
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   emptyButtons: { flexDirection: 'row', justifyContent: 'center', gap: 10, marginTop: 10 },
   emptyButton: { minHeight: 40, paddingHorizontal: 18 },
-  place: { fontFamily: fonts.sans, fontSize: 14.5, lineHeight: 20, color: colors.accent },
   legendWrap: { position: 'absolute', left: space.lg, gap: 8, alignItems: 'flex-start' },
   legend: {
     flexDirection: 'row',

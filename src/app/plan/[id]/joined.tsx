@@ -54,8 +54,8 @@ export default function YoureIn() {
             {plan.exactPoint} · {plan.distanceKm} km
           </Txt>
         </View>
-        {/* "2 people" in bold, then the names in terracotta. */}
-        <GoingLine people={members} hostId={plan.hostId} style={{ fontSize: 13, lineHeight: 18 }} />
+        {/* "3 people" bold · "3 spots left" terracotta, then the names. */}
+        <GoingLine people={members} hostId={plan.hostId} capacity={plan.capacity} small />
         <Txt variant="small">{plan.language}</Txt>
       </Card>
 

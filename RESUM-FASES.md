@@ -397,6 +397,18 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **Pendent de la teva resposta:** com vols que es vegi la descripció del pla quan ja t'han acceptat (t'he proposat dues opcions).
   - La versió de prova v3 s'ha actualitzat amb aquests canvis (mateix QR i mateix enllaç).
 
+- **Correccions a les pantalles dels plans i propostes al menú Demo (23 de novembre de 2026):**
+  - **Host entre parèntesis** a totes les pantalles: «Nora (host)» (també sota la inicial, a «View details», i al costat de les inicials de la fitxa del mapa).
+  - **«Who's going»:** primera línia «4 people» en negreta i «· 3 spots left» en lletra normal i terracota. A sota, els noms en el color normal del text («Maya, Leo, Nora (host), Jonas»). Igual a «View details» i a «You're in».
+  - **«Exact point is shared after joining»:** amb una petita icona de punt de mapa davant, i tota la línia en terracota (fitxa del mapa i «View details»). Quan ja hi ets, mostra el punt exacte en verd.
+  - **Propostes per comparar (Profile → ⚙︎ Settings → Demo):**
+    - «Plan sheet (Going, Spots, Language) - A»: una sola línia sense caixes, amb les inicials i «Maya, Leo, Nora (host) +1 · 3 spots left · English».
+    - «Plan sheet (Going, Spots, Language) - B»: dues línies amb una icona fina («4 going · 3 spots left» i «English»), sense caixes, i les inicials a sota.
+    - «Plan description (after joining) - A»: la descripció dins d'un requadre suau de color mantega amb el títol «ABOUT THIS PLAN».
+    - «Plan description (after joining) - B»: la descripció com una nota de l'amfitriona: la seva inicial, «Sofia says» i el text en cursiva amb una línia fina terracota.
+    - El mapa i les pantalles normals continuen igual fins que triïs.
+  - La versió de prova v3 s'ha actualitzat amb aquests canvis (mateix QR i mateix enllaç).
+
 ## 2. PROPERAMENT
 
 Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan vulguis, podem decidir junts què ve ara. Algunes idees (cap no està decidida):
@@ -409,8 +421,8 @@ Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan v
 
 ### El que necessito de tu
 
-- **Descripció del pla quan ja t'han acceptat:** tria l'opció A o B.
-- **Fitxa del pla al mapa:** tria com vols «Going», «Spots» i «Language» (opció A o B).
+- **Descripció del pla quan ja t'han acceptat:** tria l'opció A o B (al menú Demo).
+- **Fitxa del pla al mapa:** tria com vols «Going», «Spots» i «Language» (A o B, al menú Demo).
 - **Unir la versió desada amb la branca principal:** la versió està desada a GitHub en una branca a part, `phases-1-4`. Quan vulguis, la puc unir amb la branca principal (`main`).
 - **Les decisions de les fases 3 i 4:** el rellotge de prova, el pla «Coffee and a wander?» com a teu, el mapa dibuixat i els camps nous de «Create a plan» (zona i estat d'ànim). Digues-me si en vols canviar alguna.
 - **Textos legals:** les «Terms» i les «Safety Guidelines» encara no tenen text. A «Settings → Terms & privacy» de moment hi ha un resum curt fet per mi. Quan tinguis els textos de debò, me'ls pots passar.

@@ -27,6 +27,7 @@ export {
   PlanBadge,
   HostingNote,
   GoingLine,
+  goingNames,
   PointNote,
 } from './PlanBits';
 export { PlanForm, emptyDraft, draftFromPlan } from './PlanForm';
@@ -39,3 +40,4 @@ export { VerifiedBadge } from './VerifiedBadge';
 export { AllSet, askLocation } from './AllSet';
 export { RangeSlider } from './RangeSlider';
 export { BalancedTags } from './BalancedTags';
+export { PlanSheet, type FactsLook } from './PlanSheet';

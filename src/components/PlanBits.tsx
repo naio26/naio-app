@@ -30,10 +30,10 @@ export function PlanFacts({ plan, going }: { plan: Plan; going: number }) {
 }
 
 /** Overlapping initials + "Maya, Leo, Nora +1". */
-export function AvatarStack({ people, max = 3 }: { people: Person[]; max?: number }) {
+export function AvatarStack({ people, max = 3, hostId }: { people: Person[]; max?: number; hostId?: string }) {
   const shown = people.slice(0, max);
   const extra = people.length - shown.length;
-  const names = shown.map((p) => (p.id === 'me' ? 'You' : p.firstName)).join(', ') + (extra > 0 ? ` +${extra}` : '');
+  const names = goingNames(shown, hostId ?? '') + (extra > 0 ? ` +${extra}` : '');
   return (
     <View style={styles.stackRow}>
       <View style={styles.stack}>
@@ -60,26 +60,49 @@ export function AvatarStack({ people, max = 3 }: { people: Person[]; max?: numbe
   );
 }
 
-/** "2 people · Maya (host), Leo": the number in bold, the names in regular terracotta. */
-export function GoingLine({ people, hostId, style }: { people: Person[]; hostId: string; style?: object }) {
-  const names = people
-    .map((p) => `${p.id === 'me' ? 'You' : p.firstName}${p.id === hostId ? ' (host)' : ''}`)
-    .join(', ');
+/** Names with the host in parentheses: "Maya (host), Leo, You". */
+export const goingNames = (people: Person[], hostId: string) =>
+  people.map((p) => `${p.id === 'me' ? 'You' : p.firstName}${p.id === hostId ? ' (host)' : ''}`).join(', ');
+
+/**
+ * "Who's going": "4 people" in bold · "3 spots left" in regular terracotta,
+ * then the names below in the normal text colour ("Maya (host), Leo…").
+ */
+export function GoingLine({
+  people,
+  hostId,
+  capacity,
+  small,
+}: {
+  people: Person[];
+  hostId: string;
+  capacity: number;
+  small?: boolean;
+}) {
+  const left = Math.max(capacity - people.length, 0);
+  const size = small ? { fontSize: 13, lineHeight: 18 } : null;
   return (
-    <Txt style={[styles.goingCount, style]}>
-      {people.length} {people.length === 1 ? 'person' : 'people'}
-      <Txt style={styles.goingNames}> · {names}</Txt>
-    </Txt>
+    <View style={{ gap: 4 }}>
+      <Txt style={[styles.goingCount, size]}>
+        {people.length} {people.length === 1 ? 'person' : 'people'}
+        <Txt style={styles.goingSpots}> · {left ? `${left} ${left === 1 ? 'spot' : 'spots'} left` : 'full'}</Txt>
+      </Txt>
+      <Txt style={[styles.goingNames, size]}>{goingNames(people, hostId)}</Txt>
+    </View>
   );
 }
 
-/** Small line under the place: "Exact point is shared after joining", or the exact point once you're in. */
+/** Small line under the place, with a pin: "Exact point is shared after joining" (terracotta), or the exact point once you're in. */
 export function PointNote({ plan, status }: { plan: Plan; status: MyStatus }) {
   const open = status === 'accepted' || status === 'host';
+  const color = open ? colors.green : colors.accent;
   return (
-    <Txt variant="caption" color={open ? colors.green : colors.muted}>
-      {open ? `Exact point: ${plan.exactPoint}` : 'Exact point is shared after joining'}
-    </Txt>
+    <View style={styles.pointNote}>
+      <Icon name="map-pin" size={14} color={color} />
+      <Txt variant="caption" color={color} style={{ flexShrink: 1 }}>
+        {open ? `Exact point: ${plan.exactPoint}` : 'Exact point is shared after joining'}
+      </Txt>
+    </View>
   );
 }
 
@@ -214,7 +237,9 @@ export function PlanBadge({ status }: { status: MyStatus }) {
 
 const styles = StyleSheet.create({
   goingCount: { fontFamily: fonts.sansBold, fontSize: 15, lineHeight: 22, color: colors.dark },
-  goingNames: { fontFamily: fonts.sans, color: colors.accent },
+  goingSpots: { fontFamily: fonts.sans, color: colors.accent },
+  goingNames: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.dark },
+  pointNote: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   facts: { flexDirection: 'row', gap: 8 },
   fact: {
     flex: 1,

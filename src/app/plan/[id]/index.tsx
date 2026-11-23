@@ -20,7 +20,8 @@ import { colors, fonts, space } from '@/theme';
 
 // Screen 27 — plan details.
 export default function PlanDetails() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  // ?desc=A|B: test versions of the description, only from Settings → Demo until the owner chooses.
+  const { id, desc } = useLocalSearchParams<{ id: string; desc?: string }>();
   const insets = useSafeAreaInsets();
   const plan = usePlan(id);
   const { statusOf, membersOf } = usePlans();
@@ -30,7 +31,6 @@ export default function PlanDetails() {
 
   const status = statusOf(plan);
   const host = members.find((m) => m.id === plan.hostId);
-  const left = Math.max(plan.capacity - memberIds.length, 0);
   const inside = status === 'accepted' || status === 'host';
 
   const rows = [
@@ -39,7 +39,6 @@ export default function PlanDetails() {
       : { label: 'Meet near', value: `${plan.meetNear} · ${plan.distanceKm} km` },
     { label: 'Language', value: plan.language },
   ];
-  const spots = left ? `${left} ${left === 1 ? 'spot' : 'spots'} left` : 'Full';
 
   return (
     <View style={styles.root}>
@@ -62,7 +61,31 @@ export default function PlanDetails() {
         </View>
 
         <View style={styles.body}>
-          <Txt style={{ fontSize: 15, lineHeight: 22 }}>{plan.description}</Txt>
+          {desc === 'A' ? (
+            // A · soft box: a small bold title and the text in a light butter box.
+            <View style={styles.descBox}>
+              <Txt style={styles.rowLabel}>About this plan</Txt>
+              <Txt style={styles.rowValue}>{plan.description}</Txt>
+            </View>
+          ) : desc === 'B' ? (
+            // B · from the host: their initial, "Sofia says", the text in italics with a thin terracotta line.
+            <View style={styles.descHost}>
+              {host && (
+                <Avatar
+                  initials={host.initials}
+                  size={32}
+                  color={host.id === 'me' ? colors.accent : host.avatarColor}
+                  photo={host.photo}
+                />
+              )}
+              <View style={styles.descQuote}>
+                <Txt variant="caption">{host?.id === 'me' ? 'You said' : `${host?.firstName ?? 'The host'} says`}</Txt>
+                <Txt style={styles.descItalic}>{plan.description}</Txt>
+              </View>
+            </View>
+          ) : (
+            <Txt style={{ fontSize: 15, lineHeight: 22 }}>{plan.description}</Txt>
+          )}
 
           <View style={{ marginTop: space.lg }}>
             {rows.map((r) => (
@@ -71,11 +94,10 @@ export default function PlanDetails() {
                 <Txt style={styles.rowValue}>{r.value}</Txt>
               </View>
             ))}
-            {/* "2 people" in bold, then the names in terracotta: "Maya (host), Leo". */}
+            {/* "4 people" bold · "3 spots left" terracotta, then the names: "Maya (host), Leo". */}
             <View style={styles.row}>
               <Txt style={styles.rowLabel}>Who’s going</Txt>
-              <GoingLine people={members} hostId={plan.hostId} />
-              <Txt variant="caption">{spots}</Txt>
+              <GoingLine people={members} hostId={plan.hostId} capacity={plan.capacity} />
             </View>
           </View>
 
@@ -93,7 +115,7 @@ export default function PlanDetails() {
                   {m.id === 'me' ? 'You' : m.firstName}
                 </Txt>
                 <Txt variant="caption">{m.ageRange}</Txt>
-                {m.id === plan.hostId && <Txt style={styles.host}>Host</Txt>}
+                {m.id === plan.hostId && <Txt style={styles.host}>(host)</Txt>}
               </View>
             ))}
           </View>
@@ -128,17 +150,14 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: colors.muted,
   },
+  descBox: { gap: 8, padding: 18, borderRadius: 18, backgroundColor: colors.mist },
+  descHost: { flexDirection: 'row', gap: 12, alignItems: 'flex-start' },
+  descQuote: { flex: 1, gap: 4, paddingLeft: 12, borderLeftWidth: 2, borderLeftColor: colors.accentLine },
+  descItalic: { fontFamily: fonts.sansItalic, fontSize: 15, lineHeight: 22, color: colors.dark },
   // Titles in bold (above), the text under them in regular weight.
   rowValue: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.dark },
   people: { flexDirection: 'row', flexWrap: 'wrap', gap: 18 },
   person: { alignItems: 'center', gap: 6, minWidth: 56 },
-  host: {
-    fontFamily: fonts.sansBold,
-    fontSize: 10,
-    letterSpacing: 1,
-    textTransform: 'uppercase',
-    color: colors.accent,
-    marginTop: -4,
-  },
+  host: { fontFamily: fonts.sans, fontSize: 12, color: colors.accent, marginTop: -4 },
   footer: { paddingHorizontal: space.gutter, paddingTop: space.md, gap: space.sm, backgroundColor: colors.cream },
 });
