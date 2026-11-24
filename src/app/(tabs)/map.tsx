@@ -4,9 +4,10 @@ import { router } from 'expo-router';
 import { Icon } from '@/components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
+  BalancedTags,
   BottomSheet,
   Button,
-  Chip,
+  FromLine,
   InfoBox,
   MapMarker,
   NaioMap,
@@ -14,6 +15,8 @@ import {
   PIN_SIZE,
   PlanPin,
   PlanSheet,
+  ProfileBlock,
+  profileText,
   Txt,
   UpToCard,
   YouDot,
@@ -250,17 +253,22 @@ function PersonSheet({ person }: { person: Person }) {
         <Txt variant="h1">
           {person.firstName}, {person.ageRange}
         </Txt>
+        {/* Stay and time come from the person's data (the city is the current city's name there). */}
         <Txt variant="small" style={{ fontSize: 14 }}>
-          {a.stay} · until {formatTime(a.until)}
+          {a.stay} · Available until {formatTime(a.until)}
         </Txt>
+        <FromLine from={person.from} />
       </View>
-      {person.about && <Txt>{person.about}</Txt>}
-      <View style={styles.tags}>
-        {person.interests.map((i) => (
-          <Chip key={i} label={i} size="sm" selected />
-        ))}
-      </View>
-      <Txt variant="bodyStrong">{person.languages.map((l) => l.name).join(' · ')}</Txt>
+      {!!person.about?.trim() && <Txt style={profileText}>{person.about.trim()}</Txt>}
+      {/* Two titled sections, like the short profile card of people in a plan. */}
+      {person.interests.length > 0 && (
+        <ProfileBlock label="My kind of plans">
+          <BalancedTags items={person.interests} align="left" />
+        </ProfileBlock>
+      )}
+      {person.languages.length > 0 && (
+        <ProfileBlock label="Languages">{person.languages.map((l) => l.name).join(' · ')}</ProfileBlock>
+      )}
       <InfoBox
         text={`${person.firstName} hasn’t created a plan but seems to be in a similar mood. You can’t message them directly. They’ll be notified when a nearby plan matches their filters.`}
       />
@@ -321,7 +329,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.cream,
     ...shadow.soft,
   },
-  tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   emptyButtons: { flexDirection: 'row', justifyContent: 'center', gap: 10, marginTop: 10 },
   emptyButton: { minHeight: 40, paddingHorizontal: 18 },
   legendWrap: { position: 'absolute', left: space.lg, gap: 8, alignItems: 'flex-start' },

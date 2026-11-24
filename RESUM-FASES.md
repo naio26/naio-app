@@ -1,7 +1,7 @@
 
 # Resum de fases — naio.
 
-Última actualització: 24 de novembre de 2026 (idiomes, àrea i missatge de «Create a plan», colors de My plans per tipus amb una sola regla, fitxa verda suau al mapa per als plans on ets, pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
+Última actualització: 24 de novembre de 2026 (fitxa de les persones en taronja, idiomes, àrea i missatge de «Create a plan», colors de My plans per tipus amb una sola regla, fitxa verda suau al mapa per als plans on ets, pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -501,6 +501,11 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     - **Languages** funciona exactament igual que a Filters (és la mateixa peça): primer els idiomes suggerits per a la ciutat on ets (a Atenes, grec i anglès), i després «+ Add another language», que obre el cercador amb la lupa i una llista fixa (no es pot escriure lliurement). Pots triar-ne un o més; «Pick one or more languages.» continua just a sota del títol.
     - **Area:** el text ara diu «Without choosing one, people will see just Athens.» (el nom de la ciutat surt de la ciutat actual, mai escrit a mà).
     - **Missatge de sota:** només diu el que falta, amb «and» abans de l'últim, i acaba amb «to continue». Per exemple: «Add an activity to continue.», «Add an activity and a meeting point to continue.».
+  - **Persones en taronja al mapa («Open to plans»), en tocar-les:**
+    - La línia ara diu «In Athens for 4 days · **Available until** 8:00 PM» (la ciutat i l'hora surten de les dades, mai escrites a mà).
+    - A sota hi surt d'on és la persona («From Lisbon, Portugal»), amb el mateix estil que a la fitxa curta de les persones d'un pla.
+    - El text que la descriu és una mica més petit, com a la resta de l'app.
+    - Els interessos i els idiomes ara van separats en dues seccions amb títol, com a la fitxa curta: **«MY KIND OF PLANS»** i **«LANGUAGES»**.
   - **«You're in» (prova):** la caixa té el fons d'un verd més clar i una vora verda una mica més marcada. Digues-me si t'agrada.
   - **Fitxa del pla (en tocar un pla al mapa), nou ordre:** el títol; la descripció just a sota; una línia fina; el lloc en terracota amb «Exact point is shared after joining» **a la seva pròpia línia** a sota (en cursiva i fosc); i després la resta com abans. Quan ja hi ets, aquella línia mostra l'adreça exacta en verd, i si la toques et dona les indicacions.
   - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.

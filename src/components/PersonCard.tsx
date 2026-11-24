@@ -32,12 +32,7 @@ export function PersonCard({ person, host }: { person: Person; host?: boolean })
         <Txt style={styles.name}>{me ? 'You' : person.firstName}</Txt>
         {host && <Txt style={styles.host}>(HOST)</Txt>}
         <Txt style={styles.age}>{person.ageRange}</Txt>
-        {!!person.from && (
-          <View style={styles.from}>
-            <Icon name="map-pin" size={16} color={colors.muted} />
-            <Txt style={styles.fromText}>From {person.from}</Txt>
-          </View>
-        )}
+        <FromLine from={person.from} />
       </View>
 
       {!!about && (
@@ -64,6 +59,30 @@ export function PersonCard({ person, host }: { person: Person; host?: boolean })
   );
 }
 
+/** "From Barcelona" with a small pin (profile card, and orange people on the map). */
+export function FromLine({ from }: { from?: string }) {
+  if (!from) return null;
+  return (
+    <View style={styles.from}>
+      <Icon name="map-pin" size={16} color={colors.muted} />
+      <Txt style={styles.fromText}>From {from}</Txt>
+    </View>
+  );
+}
+
+/** A titled section ("ABOUT ME", "LANGUAGES", "MY KIND OF PLANS") with a thin sand line on top. */
+export function ProfileBlock({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <View style={styles.block}>
+      <Txt style={styles.label}>{label}</Txt>
+      {typeof children === 'string' ? <Txt style={styles.value}>{children}</Txt> : children}
+    </View>
+  );
+}
+
+/** Text style for what someone wrote about themselves (same size everywhere). */
+export const profileText = { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.dark };
+
 const styles = StyleSheet.create({
   root: { gap: space.lg },
   hero: { alignItems: 'center', gap: 4 },
@@ -80,5 +99,5 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: colors.muted,
   },
-  value: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.dark },
+  value: profileText,
 });
