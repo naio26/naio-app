@@ -4,14 +4,14 @@ import { areaText } from '@/data/catalog';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
-import { Avatar, Button, Card, PlanBadge, PlanCard, Screen, Txt } from '@/components';
+import { Avatar, Button, Card, PlanBadge, PlanCard, planKindColor, Screen, SwipeToRemove, Txt } from '@/components';
 import { listPastPlans } from '@/data/api';
 import { useLoad } from '@/data/hooks';
 import { planWhen, toMinutes } from '@/data/time';
 import { Plan } from '@/data/types';
 import { usePeople } from '@/state/people';
 import { usePlans } from '@/state/plans';
-import { colors, fonts, planTints, radius, space } from '@/theme';
+import { colors, fonts, planKindColors, radius, space } from '@/theme';
 
 type Tab = 'upcoming' | 'requests' | 'past';
 
@@ -60,9 +60,9 @@ export default function MyPlans() {
       <View style={styles.body}>
         {tab === 'upcoming' && (
           <>
-            {/* Each card gets the next colour of the same warm range. */}
-            {upcoming.map((p, i) => (
-              <UpcomingCard key={p.id} plan={p} tint={planTints[i % planTints.length]} />
+            {/* Block colour by type: your plan, Now, Today or Tomorrow (same colours everywhere). */}
+            {upcoming.map((p) => (
+              <UpcomingCard key={p.id} plan={p} />
             ))}
             {gone.map((p) => (
               <CancelledCard key={p.id} plan={p} />
@@ -105,16 +105,16 @@ export default function MyPlans() {
 
         {tab === 'past' && (
           <>
-            {past.map((p, i) => (
+            {past.map((p) => (
               <PlanCard
                 key={p.id}
-                tint={planTints[i % planTints.length]}
+                tint={planKindColors.past}
                 eyebrow={`Past · ${p.when}`}
                 title={p.title}
                 line={`${p.area} · ${p.people.slice(0, 3).join(', ')}${p.people.length > 3 ? ` +${p.people.length - 3}` : ''}`}
                 footer={
                   <Txt variant="small" color={colors.dark}>
-                    Plan information only · chat closed
+                    Plan information only · <Txt style={styles.closed}>chat closed</Txt>
                   </Txt>
                 }
               />
@@ -127,27 +127,32 @@ export default function MyPlans() {
   );
 }
 
-// Cancelled: grey block and greyed out like a watermark (no longer on). No red border in this list.
+// Cancelled: smaller, grey block and greyed out like a watermark (no longer on). No red border in this list.
+// Swipe it to the left to "Remove" it from the list.
 function CancelledCard({ plan }: { plan: Plan }) {
   const city = useCity();
+  const { removeCancelled } = usePlans();
   return (
-    <PlanCard
-      eyebrow={planWhen(plan)}
-      title={plan.title}
-      tint={colors.cancelTint}
-      faded
-      line={areaText(plan.area, city.name)}
-      footer={
-        <Txt variant="label" color={colors.muted} style={{ fontSize: 13, marginTop: 4 }}>
-          Cancelled
-        </Txt>
-      }
-      onPress={() => router.push({ pathname: '/plan/[id]/cancelled', params: { id: plan.id } })}
-    />
+    <SwipeToRemove onRemove={() => removeCancelled(plan.id)}>
+      <PlanCard
+        eyebrow={planWhen(plan)}
+        title={plan.title}
+        tint={planKindColors.cancelled}
+        faded
+        compact
+        line={areaText(plan.area, city.name)}
+        footer={
+          <Txt variant="label" color={colors.muted} style={{ fontSize: 13, marginTop: 4 }}>
+            Cancelled
+          </Txt>
+        }
+        onPress={() => router.push({ pathname: '/plan/[id]/cancelled', params: { id: plan.id } })}
+      />
+    </SwipeToRemove>
   );
 }
 
-function UpcomingCard({ plan, tint }: { plan: Plan; tint: string }) {
+function UpcomingCard({ plan }: { plan: Plan }) {
   const { statusOf, membersOf } = usePlans();
   const city = useCity();
   const members = usePeople(membersOf(plan));
@@ -156,7 +161,7 @@ function UpcomingCard({ plan, tint }: { plan: Plan; tint: string }) {
     <PlanCard
       eyebrow={planWhen(plan)}
       title={plan.title}
-      tint={tint}
+      tint={planKindColor(plan)}
       line={`${areaText(plan.area, city.name)} · ${names.length ? names.slice(0, 3).join(', ') + (names.length > 3 ? ` +${names.length - 3}` : '') : 'Only you so far'}`}
       footer={
         <View style={{ marginTop: 4 }}>
@@ -235,6 +240,7 @@ function Empty({
 }
 
 const styles = StyleSheet.create({
+  closed: { fontFamily: fonts.sansItalic, fontSize: 13, lineHeight: 18, color: colors.dark },
   title: { paddingHorizontal: space.gutter, marginTop: space.xxl, marginBottom: space.lg },
   tabs: {
     flexDirection: 'row',

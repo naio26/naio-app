@@ -7,6 +7,7 @@ import {
   getPlan,
   leavePlan as apiLeavePlan,
   listCancelledPlans,
+  removeCancelledPlan,
   listJoinRequests,
   listMyJoinedPlans,
   listPeople,
@@ -48,6 +49,8 @@ type PlansState = {
   createPlan: (d: PlanDraft) => Promise<Plan>;
   updatePlan: (id: string, d: PlanDraft) => Promise<void>;
   cancelPlan: (id: string) => Promise<void>;
+  /** My plans: swipe a cancelled plan away. */
+  removeCancelled: (id: string) => Promise<void>;
 };
 
 const PlansContext = createContext<PlansState | null>(null);
@@ -217,6 +220,11 @@ export function PlansProvider({ children, initial }: { children: ReactNode; init
     [refresh, alerts],
   );
 
+  const removeCancelled = useCallback(async (id: string) => {
+    setCancelled((list) => list.filter((p) => p.id !== id));
+    await removeCancelledPlan(id);
+  }, []);
+
   const value = useMemo<PlansState>(
     () => ({
       plans,
@@ -235,6 +243,7 @@ export function PlansProvider({ children, initial }: { children: ReactNode; init
       createPlan,
       updatePlan,
       cancelPlan,
+      removeCancelled,
     }),
     [
       plans,
@@ -251,6 +260,7 @@ export function PlansProvider({ children, initial }: { children: ReactNode; init
       createPlan,
       updatePlan,
       cancelPlan,
+      removeCancelled,
     ],
   );
 

@@ -59,7 +59,17 @@ export const colors = {
   youHalo: 'rgba(63, 140, 196, 0.22)',
 } as const;
 
-/** Colour blocks on the left of plan cards in My plans: one per card, in turn, all from the same warm range. */
-export const planTints = ['#F6CDA8', '#F8DED0', '#EDB08A', '#FBE3C4', '#E9B9A0', '#F3D3B8'] as const;
+/**
+ * Colour block on the left of a plan card (My plans), by type of plan. Soft, one family; use these everywhere.
+ * Your plan = the same light green as the "Your plan" label.
+ */
+export const planKindColors = {
+  mine: colors.mapMine,
+  now: '#EDB08A', // soft terracotta: happening now
+  today: '#F6CDA8', // peach
+  tomorrow: '#FBE3C4', // butter
+  past: '#EADBD0', // sand
+  cancelled: colors.cancelTint, // grey
+} as const;
 
 export type ColorName = keyof typeof colors;

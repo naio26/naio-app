@@ -120,7 +120,15 @@ export async function listPlans(): Promise<Plan[]> {
 /** Cancelled plans (still shown, with a red border, in My plans until they would have happened). */
 export async function listCancelledPlans(): Promise<Plan[]> {
   await wait(100);
-  return clone(db.plans.filter((p) => p.cancelled));
+  return clone(db.plans.filter((p) => p.cancelled && !p.removed));
+}
+
+/** My plans: swipe a cancelled plan away ("Remove"). */
+export async function removeCancelledPlan(id: string): Promise<void> {
+  await wait(100);
+  const plan = db.plans.find((p) => p.id === id);
+  if (plan) plan.removed = true;
+  persist();
 }
 
 /** One plan, even if cancelled (so "Plan cancelled" can still show it). */

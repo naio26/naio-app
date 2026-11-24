@@ -83,7 +83,8 @@ export type Plan = {
   memberIds: string[]; // includes the host
   moods: string[];
   location: { latitude: number; longitude: number }; // approximate
-  cancelled?: boolean; // cancelled plans vanish from the map and lists
+  cancelled?: boolean; // cancelled plans vanish from the map; My plans shows them greyed out
+  removed?: boolean; // a cancelled plan you swiped away in My plans
 };
 
 /** What the current user sees about their own relation to a plan. */

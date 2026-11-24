@@ -31,7 +31,8 @@ export {
 } from './PlanBits';
 export { PlanForm, emptyDraft, draftFromPlan } from './PlanForm';
 export { ResultScreen } from './ResultScreen';
-export { PlanCard } from './PlanCard';
+export { PlanCard, planKindColor } from './PlanCard';
+export { SwipeToRemove } from './SwipeToRemove';
 export { SettingsRow, SettingsSection } from './SettingsRow';
 export { ProfileView } from './ProfileView';
 export { Icon, type IconName } from './Icon';

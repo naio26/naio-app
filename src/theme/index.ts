@@ -2,7 +2,7 @@ import { TextStyle } from 'react-native';
 import { colors } from './colors';
 import { fonts } from './fonts';
 
-export { colors, planTints } from './colors';
+export { colors, planKindColors } from './colors';
 export { fonts, fontAssets } from './fonts';
 
 export const space = {
