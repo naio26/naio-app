@@ -1,7 +1,7 @@
 
 # Resum de fases — naio.
 
-Última actualització: 23 de novembre de 2026 (versió de prova v3 publicada i actualitzada; «My kind of plans» amb l'opció B)
+Última actualització: 24 de novembre de 2026 (fitxa del pla: has triat la caixa A amb l'idioma de la B; versió de prova v3 actualitzada)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -437,6 +437,11 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **Per veure les opcions:** Profile → ⚙︎ Settings → baixa fins a **Demo**.
   - La versió de prova (v3 i l'enllaç «latest») s'ha actualitzat amb aquests canvis.
 
+- **Fitxa del pla: has triat la A amb l'idioma de la B (24 de novembre de 2026):**
+  - En tocar una marca verda, «going / spots / language» surt en una sola fila: a l'esquerra la caixa de l'opció A amb «**3/7 going** · 4 spots left» (les places que queden en terracota) i, a la dreta, l'idioma com a l'opció B: una icona fina de bafarada i l'idioma en gris càlid, sense caixa.
+  - Les dues files «Plan sheet - A / B» del menú Demo i la pantalla de prova s'han esborrat.
+  - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquest canvi.
+
 ## 2. PROPERAMENT
 
 Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan vulguis, podem decidir junts què ve ara. Algunes idees (cap no està decidida):
@@ -449,7 +454,6 @@ Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan v
 
 ### El que necessito de tu
 
-- **Fitxa del pla:** tria A o B per a «going / spots / language» (menú Demo).
 - **Color de «Your plan»:** tria A (verd més clar) o B (groc) (menú Demo).
 - **Descripció del pla quan ja t'han acceptat:** tria l'opció A o B (al menú Demo).
 - **Unir la versió desada amb la branca principal:** la versió està desada a GitHub en una branca a part, `phases-1-4`. Quan vulguis, la puc unir amb la branca principal (`main`).

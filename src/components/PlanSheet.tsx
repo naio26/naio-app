@@ -11,14 +11,8 @@ import { Icon } from './Icon';
 import { AvatarStack, PlanActions, PlanBadge } from './PlanBits';
 import { Txt } from './Txt';
 
-/**
- * How "going / spots / language" look on the sheet. 'lines' = the current two icon lines.
- * 'A' (two boxes) and 'B' (seat dots) are test versions, only from Settings → Demo until the owner chooses.
- */
-export type FactsLook = 'lines' | 'A' | 'B';
-
 /** Screen 26 — a plan tapped on the map (bottom sheet content). */
-export function PlanSheet({ plan, factsLook = 'lines' }: { plan: Plan; factsLook?: FactsLook }) {
+export function PlanSheet({ plan }: { plan: Plan }) {
   const city = useCity();
   const { statusOf, membersOf } = usePlans();
   const status = statusOf(plan);
@@ -51,51 +45,21 @@ export function PlanSheet({ plan, factsLook = 'lines' }: { plan: Plan; factsLook
         <Txt style={{ marginTop: 6 }}>{plan.tagline}</Txt>
       </View>
 
-      {factsLook === 'A' ? (
-        // A · two boxes side by side: "3/7 going · 4 spots left" and the language.
-        <View style={styles.boxes}>
-          <View style={[styles.box, { flex: 1.6 }]}>
-            <Txt style={styles.boxText}>
-              <Txt style={[styles.boxText, styles.bold]}>
-                {going}/{plan.capacity} going
-              </Txt>
-              <Txt style={[styles.boxText, { color: colors.accent }]}> · {spots}</Txt>
+      {/* The owner's choice: the box "3/7 going · 4 spots left", and the language on the right (thin icon, no box). */}
+      <View style={styles.factsRow}>
+        <View style={styles.box}>
+          <Txt style={styles.boxText}>
+            <Txt style={[styles.boxText, styles.bold]}>
+              {going}/{plan.capacity} going
             </Txt>
-          </View>
-          <View style={[styles.box, { flex: 1 }]}>
-            <Txt style={styles.boxText}>{plan.language}</Txt>
-          </View>
+            <Txt style={[styles.boxText, { color: colors.accent }]}> · {spots}</Txt>
+          </Txt>
         </View>
-      ) : factsLook === 'B' ? (
-        // B · one clean row: a dot per spot (filled = taken), "4 spots left", and the language on the right.
-        <View style={styles.seatRow}>
-          <View style={styles.seats}>
-            {Array.from({ length: plan.capacity }, (_, i) => (
-              <View key={i} style={[styles.seat, i < going && styles.seatTaken]} />
-            ))}
-          </View>
-          <Txt style={[styles.lineText, { color: colors.accent }]}>{spots}</Txt>
-          <View style={styles.lang}>
-            <Icon name="message-circle" size={16} color={colors.muted} />
-            <Txt style={styles.lineMuted}>{plan.language}</Txt>
-          </View>
+        <View style={styles.lang}>
+          <Icon name="message-circle" size={16} color={colors.muted} />
+          <Txt style={[styles.boxText, { color: colors.muted }]}>{plan.language}</Txt>
         </View>
-      ) : (
-        // Current: two quiet lines with a thin icon.
-        <View style={{ gap: 10 }}>
-          <View style={styles.iconLine}>
-            <Icon name="user" color={colors.muted} />
-            <Txt style={styles.lineText}>
-              <Txt style={[styles.lineText, styles.bold]}>{going} going</Txt>
-              <Txt style={[styles.lineText, styles.lineMuted]}> · {spots}</Txt>
-            </Txt>
-          </View>
-          <View style={styles.iconLine}>
-            <Icon name="message-circle" color={colors.muted} />
-            <Txt style={styles.lineText}>{plan.language}</Txt>
-          </View>
-        </View>
-      )}
+      </View>
 
       {/* Names in regular weight, no "(host)" here. */}
       <AvatarStack people={members} plain />
@@ -125,11 +89,8 @@ export function PlanSheet({ plan, factsLook = 'lines' }: { plan: Plan; factsLook
 const styles = StyleSheet.create({
   place: { fontFamily: fonts.sans, fontSize: 14.5, lineHeight: 21, color: colors.accent },
   placeNote: { fontFamily: fonts.sans, fontSize: 12.5, lineHeight: 21, color: colors.accent },
-  lineText: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 21, color: colors.dark },
-  lineMuted: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 21, color: colors.muted },
   bold: { fontFamily: fonts.sansBold, color: colors.dark },
-  iconLine: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  boxes: { flexDirection: 'row', gap: 10 },
+  factsRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   box: {
     paddingHorizontal: 14,
     paddingVertical: 12,
@@ -140,9 +101,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   boxText: { fontFamily: fonts.sans, fontSize: 14, lineHeight: 19, color: colors.dark },
-  seatRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  seats: { flexDirection: 'row', gap: 4 },
-  seat: { width: 10, height: 10, borderRadius: 5, borderWidth: 1.5, borderColor: colors.accentLine },
-  seatTaken: { backgroundColor: colors.accentFill, borderColor: colors.accentFill },
-  lang: { marginLeft: 'auto', flexDirection: 'row', alignItems: 'center', gap: 6 },
+  lang: { flexShrink: 1, flexDirection: 'row', alignItems: 'center', gap: 6 },
 });

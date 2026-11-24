@@ -64,16 +64,6 @@ export default function Settings() {
       {/* Demo only: clears everything saved on this phone and starts again from the intro. */}
       <SettingsSection title="Demo" />
       <SettingsRow
-        title="Plan sheet (going, spots, language) - A"
-        sub="Two boxes: “3/7 going · 4 spots left” and the language"
-        onPress={() => router.push('/settings/plan-sheet-look?v=A')}
-      />
-      <SettingsRow
-        title="Plan sheet (going, spots, language) - B"
-        sub="One row: a dot per spot, spots left and the language"
-        onPress={() => router.push('/settings/plan-sheet-look?v=B')}
-      />
-      <SettingsRow
         title="“Your plan” colour - A"
         sub="Lighter green · then look at the map and My plans"
         onPress={() => setMineLook('green')}
