@@ -1,6 +1,6 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { Button, ResultScreen, Screen } from '@/components';
-import { formatTime } from '@/data/time';
+import { planWhen } from '@/data/time';
 import { usePlan } from '@/state/plans';
 import { colors } from '@/theme';
 
@@ -14,7 +14,7 @@ export default function PlanCancelled() {
       icon="x"
       title="Plan cancelled."
       cardTitle={plan.title}
-      lines={[`${plan.day === 'today' ? 'Today' : 'Tomorrow'} · ${formatTime(plan.time)}`, plan.exactPoint]}
+      lines={[planWhen(plan), plan.exactPoint]}
       note="The people who joined have been notified."
       cardStyle={{ borderColor: colors.cancelLine, borderWidth: 1.5 }}
       footer={

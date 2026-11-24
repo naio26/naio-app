@@ -21,7 +21,7 @@ import {
 import { listAvailablePeople } from '@/data/api';
 import { useLoad } from '@/data/hooks';
 import { MY_AREA, personMatches, planMatches } from '@/data/match';
-import { formatTime, isNow } from '@/data/time';
+import { dayKindLabel, formatTime } from '@/data/time';
 import { Person, Plan } from '@/data/types';
 import { countActive, NO_FILTERS, useFilters } from '@/state/filters';
 import { usePeople } from '@/state/people';
@@ -110,7 +110,7 @@ export default function MapTab() {
         {visible.map((p) => {
           const on = selected?.kind === 'plan' && selected.plan.id === p.id;
           // Only "Now", "Today" or "Tomorrow" on the marker (no time).
-          const when = isNow(p) ? 'Now' : p.day === 'today' ? 'Today' : 'Tomorrow';
+          const when = dayKindLabel(p);
           return (
             <MapMarker
               key={p.id}
@@ -214,7 +214,12 @@ export default function MapTab() {
           )
         ))}
 
-      <BottomSheet visible={!!selected} onClose={() => setSelected(null)}>
+      {/* A plan you're in ("You're in"): same sheet, very light green background. */}
+      <BottomSheet
+        visible={!!selected}
+        onClose={() => setSelected(null)}
+        tint={selected?.kind === 'plan' && statusOf(selected.plan) === 'accepted' ? colors.greenLight : undefined}
+      >
         {selected?.kind === 'plan' && <PlanSheet plan={selected.plan} />}
         {selected?.kind === 'person' && <PersonSheet person={selected.person} />}
       </BottomSheet>

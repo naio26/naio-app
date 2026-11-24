@@ -1,7 +1,7 @@
 
 # Resum de fases — naio.
 
-Última actualització: 24 de novembre de 2026 (pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
+Última actualització: 24 de novembre de 2026 (colors de My plans per tipus amb una sola regla, fitxa verda suau al mapa per als plans on ets, pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -494,6 +494,9 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     - **Corregit:** el color del bloc ara depèn **només del dia**: tots els plans del mateix dia tenen el mateix color. **Today** (també «Now» i el teu pla d'avui) en préssec, i **Tomorrow** en mantega. El teu pla continua marcat amb l'etiqueta verda «★ Your plan».
     - **Corregit de nou:** tornen els quatre tipus, ara amb colors pastís suaus però **clarament diferents**: **el teu pla** verd menta, **Now** coral, **Today** mel i **Tomorrow** lavanda. (Els passats, sorra; els cancel·lats, gris.)
     - **«Plans don't live forever»:** sense el fons groc; té el mateix fons que la pantalla, amb un marc fi.
+    - **Corregit (la lògica, no només els colors):** un pla que comença d'aquí a menys d'una hora es pintava com a «Now» (coral), però a la targeta posava «Today». Per això semblava que hi havia plans «Today» de dos colors. Ara hi ha **una sola regla** a tota l'app que decideix si un pla és «Now», «Today» o «Tomorrow», i la fan servir el text de la targeta («NOW · 4:30 PM»), el color del bloc i l'etiqueta del mapa. Així el text i el color sempre coincideixen: tots els «Today» mel, tots els «Tomorrow» lavanda, tots els «Now» coral, i el teu pla verd menta.
+    - **«Plans don't live forever», sense caixa:** ni fons ni marc, només la icona i el text sobre el fons de la pantalla.
+  - **Fitxa del pla al mapa, plans on ja ets («You're in»):** el mateix estil i disposició, però amb el fons d'un verd molt suau, per distingir-los. Els plans on no ets queden igual.
   - **«You're in» (prova):** la caixa té el fons d'un verd més clar i una vora verda una mica més marcada. Digues-me si t'agrada.
   - **Fitxa del pla (en tocar un pla al mapa), nou ordre:** el títol; la descripció just a sota; una línia fina; el lloc en terracota amb «Exact point is shared after joining» **a la seva pròpia línia** a sota (en cursiva i fosc); i després la resta com abans. Quan ja hi ets, aquella línia mostra l'adreça exacta en verd, i si la toques et dona les indicacions.
   - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.

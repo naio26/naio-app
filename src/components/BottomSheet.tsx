@@ -10,6 +10,7 @@ export function BottomSheet({
   children,
   backdrop,
   grabber = true,
+  tint,
 }: {
   visible: boolean;
   onClose: () => void;
@@ -18,6 +19,8 @@ export function BottomSheet({
   backdrop?: boolean;
   /** The small drag line at the top. Off on the profile card (swipe down still closes it). */
   grabber?: boolean;
+  /** Background colour instead of the normal white (e.g. very light green for a plan you're in). */
+  tint?: string;
 }) {
   const y = useRef(new Animated.Value(600)).current;
   const [mounted, setMounted] = useState(visible);
@@ -59,7 +62,7 @@ export function BottomSheet({
           style={[StyleSheet.absoluteFill, styles.backdrop, !visible && { opacity: 0 }]}
         />
       )}
-      <Animated.View style={[styles.sheet, { transform: [{ translateY: y }] }]} {...pan.panHandlers}>
+      <Animated.View style={[styles.sheet, tint ? { backgroundColor: tint } : null, { transform: [{ translateY: y }] }]} {...pan.panHandlers}>
         {grabber && <View style={styles.grabber} />}
         <Pressable
           accessibilityRole="button"

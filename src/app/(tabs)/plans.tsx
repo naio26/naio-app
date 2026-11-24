@@ -60,7 +60,8 @@ export default function MyPlans() {
       <View style={styles.body}>
         {tab === 'upcoming' && (
           <>
-            {/* Block colour by type: your plan, Now, Today or Tomorrow (same colours everywhere). */}
+            {/* Block colour by type (planKind): your plan, Now, Today or Tomorrow. The card's
+                "Now/Today/Tomorrow · time" line uses the same rule, so label and colour always match. */}
             {upcoming.map((p) => (
               <UpcomingCard key={p.id} plan={p} />
             ))}
@@ -208,7 +209,7 @@ function SentRow({ plan }: { plan: Plan }) {
 
 function Forever() {
   return (
-    // No fill: same background as the screen, with a thin sand frame.
+    // No box at all: just the icon and text on the screen background.
     <View style={styles.forever}>
       <Icon name="clock" color={colors.muted} />
       <View style={{ flex: 1, gap: 4 }}>
@@ -293,11 +294,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 14,
-    padding: 20,
+    paddingVertical: 12,
     marginTop: space.sm,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
   },
   empty: { gap: 12, paddingVertical: space.lg },
 });

@@ -18,8 +18,6 @@ export function formatTime(hhmm: string, short = false) {
   return short && m === 0 ? `${h12} ${suffix}` : `${h12}:${String(m).padStart(2, '0')} ${suffix}`;
 }
 
-const dayLabel = (d: PlanDay) => (d === 'today' ? 'Today' : 'Tomorrow');
-
 /** Starting within the next hour (or started less than 30 min ago). */
 export function isNow(plan: Plan) {
   const now = demoNow();
@@ -28,8 +26,27 @@ export function isNow(plan: Plan) {
   return diff >= -30 && diff <= 60;
 }
 
-/** "Today · 6:00 PM" */
-export const planWhen = (plan: Plan) => `${dayLabel(plan.day)} · ${formatTime(plan.time)}`;
+/**
+ * The ONE place that decides a plan's type: your plan, Now, Today or Tomorrow.
+ * Map pins, My plans colours and every "Now/Today/Tomorrow · time" line use it, so a plan
+ * is never called "Today" in one place and "Now" in another.
+ */
+export type PlanKind = 'mine' | 'now' | 'today' | 'tomorrow';
+export function planKind(plan: Plan): PlanKind {
+  if (plan.hostId === 'me') return 'mine';
+  return dayKind(plan);
+}
+/** Now, Today or Tomorrow (ignores who hosts it). */
+export function dayKind(plan: Plan): Exclude<PlanKind, 'mine'> {
+  if (isNow(plan)) return 'now';
+  return plan.day === 'today' ? 'today' : 'tomorrow';
+}
+const kindLabel = { now: 'Now', today: 'Today', tomorrow: 'Tomorrow' } as const;
+/** "Now", "Today" or "Tomorrow". */
+export const dayKindLabel = (plan: Plan) => kindLabel[dayKind(plan)];
+
+/** "Today · 6:00 PM" ("Now · 4:30 PM" when it starts within the hour). */
+export const planWhen = (plan: Plan) => `${dayKindLabel(plan)} · ${formatTime(plan.time)}`;
 
 /** Map pin label: "NOW", "TODAY 6 PM", "TOMORROW 10 AM". */
 
