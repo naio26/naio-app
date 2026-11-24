@@ -211,7 +211,7 @@ export async function cancelPlan(id: string): Promise<Plan> {
 
 // ---- Joining someone else's plan (fake) ----
 
-/** "Join plan": sends a request to the host. Nothing is shared until they accept. */
+/** "Join plan": sends a request to the host. Nothing is shared until accepted. */
 export async function requestToJoin(planId: string): Promise<{ planId: string; status: 'requested' }> {
   await wait(500);
   return { planId, status: 'requested' };

@@ -82,7 +82,7 @@ export default function RequestSent() {
           {hostName} has your request.
         </Txt>
         <Txt variant="small" center style={{ fontSize: 15, lineHeight: 22 }}>
-          Once they accept, you’ll be active in the group chat and see the exact meeting point.
+          Once accepted, you’ll be active in the group chat and see the exact meeting point.
         </Txt>
       </View>
 

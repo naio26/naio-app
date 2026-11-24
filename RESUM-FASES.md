@@ -474,6 +474,7 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **Adreça exacta en blau d'enllaç:** l'adreça que es pot tocar (i obre Apple Maps / Google Maps) ara és del blau típic dels enllaços (#007AFF), perquè es vegi que es pot tocar. Després, s'ha tret la fletxeta blava de la dreta; l'adreça continua blava i es pot tocar.
   - **Xat del grup:** «Today» / «Tomorrow» és només text, sense fons. Per veure el pla, toca el nom del pla a dalt o «View plan» (a la dreta): obre la mateixa pantalla del pla que des de Plans.
   - **«Request sent»:** a la caixa del pla ara diu «Exact point is shared once accepted».
+  - **«once they accept» → «once accepted»:** l'únic lloc de l'app on sortia era el text de sota de «Request sent», que ara diu «Once accepted, you'll be active in the group chat and see the exact meeting point.»
   - **«You're in» (prova):** la caixa té el fons d'un verd més clar i una vora verda una mica més marcada. Digues-me si t'agrada.
   - **Fitxa del pla (en tocar un pla al mapa), nou ordre:** el títol; la descripció just a sota; una línia fina; el lloc en terracota amb «Exact point is shared after joining» **a la seva pròpia línia** a sota (en cursiva i fosc); i després la resta com abans. Quan ja hi ets, aquella línia mostra l'adreça exacta en verd, i si la toques et dona les indicacions.
   - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.
