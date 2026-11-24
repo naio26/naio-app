@@ -32,6 +32,7 @@ export const colors = {
   link: '#007AFF', // the usual link blue: the tappable exact address that opens a maps app
   danger: '#B8433A', // destructive actions (white text on top)
   cancelLine: '#E4A097', // soft red border around a cancelled plan
+  cancelTint: '#E6E1DD', // grey colour block of a cancelled plan (My plans)
 
   // Brand details
   brandDot: '#E0784A', // the period in the "naio." logo
@@ -57,5 +58,8 @@ export const colors = {
   you: '#3F8CC4', // "You · approximate" dot
   youHalo: 'rgba(63, 140, 196, 0.22)',
 } as const;
+
+/** Colour blocks on the left of plan cards in My plans: one per card, in turn, all from the same warm range. */
+export const planTints = ['#F6CDA8', '#F8DED0', '#EDB08A', '#FBE3C4', '#E9B9A0', '#F3D3B8'] as const;
 
 export type ColorName = keyof typeof colors;

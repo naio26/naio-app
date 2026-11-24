@@ -11,7 +11,7 @@ import { planWhen, toMinutes } from '@/data/time';
 import { Plan } from '@/data/types';
 import { usePeople } from '@/state/people';
 import { usePlans } from '@/state/plans';
-import { colors, fonts, radius, space } from '@/theme';
+import { colors, fonts, planTints, radius, space } from '@/theme';
 
 type Tab = 'upcoming' | 'requests' | 'past';
 
@@ -60,8 +60,9 @@ export default function MyPlans() {
       <View style={styles.body}>
         {tab === 'upcoming' && (
           <>
-            {upcoming.map((p) => (
-              <UpcomingCard key={p.id} plan={p} />
+            {/* Each card gets the next colour of the same warm range. */}
+            {upcoming.map((p, i) => (
+              <UpcomingCard key={p.id} plan={p} tint={planTints[i % planTints.length]} />
             ))}
             {gone.map((p) => (
               <CancelledCard key={p.id} plan={p} />
@@ -94,6 +95,7 @@ export default function MyPlans() {
             ))}
             {incoming.length + sent.length === 0 && (
               <Empty
+                small
                 title="No requests right now."
                 text="When someone asks to join your plan, or you ask to join one, it shows up here."
               />
@@ -103,9 +105,10 @@ export default function MyPlans() {
 
         {tab === 'past' && (
           <>
-            {past.map((p) => (
+            {past.map((p, i) => (
               <PlanCard
                 key={p.id}
+                tint={planTints[i % planTints.length]}
                 eyebrow={`Past · ${p.when}`}
                 title={p.title}
                 line={`${p.area} · ${p.people.slice(0, 3).join(', ')}${p.people.length > 3 ? ` +${p.people.length - 3}` : ''}`}
@@ -124,18 +127,18 @@ export default function MyPlans() {
   );
 }
 
+// Cancelled: grey block and greyed out like a watermark (no longer on). No red border in this list.
 function CancelledCard({ plan }: { plan: Plan }) {
   const city = useCity();
   return (
     <PlanCard
       eyebrow={planWhen(plan)}
       title={plan.title}
-      time={plan.time}
-      moods={plan.moods}
+      tint={colors.cancelTint}
+      faded
       line={areaText(plan.area, city.name)}
-      style={styles.cancelled}
       footer={
-        <Txt variant="label" color={colors.danger} style={{ fontSize: 13, marginTop: 4 }}>
+        <Txt variant="label" color={colors.muted} style={{ fontSize: 13, marginTop: 4 }}>
           Cancelled
         </Txt>
       }
@@ -144,7 +147,7 @@ function CancelledCard({ plan }: { plan: Plan }) {
   );
 }
 
-function UpcomingCard({ plan }: { plan: Plan }) {
+function UpcomingCard({ plan, tint }: { plan: Plan; tint: string }) {
   const { statusOf, membersOf } = usePlans();
   const city = useCity();
   const members = usePeople(membersOf(plan));
@@ -153,8 +156,7 @@ function UpcomingCard({ plan }: { plan: Plan }) {
     <PlanCard
       eyebrow={planWhen(plan)}
       title={plan.title}
-      time={plan.time}
-      moods={plan.moods}
+      tint={tint}
       line={`${areaText(plan.area, city.name)} · ${names.length ? names.slice(0, 3).join(', ') + (names.length > 3 ? ` +${names.length - 3}` : '') : 'Only you so far'}`}
       footer={
         <View style={{ marginTop: 4 }}>
@@ -211,18 +213,28 @@ function Forever() {
   );
 }
 
-function Empty({ title, text, action }: { title: string; text: string; action?: React.ReactNode }) {
+function Empty({
+  title,
+  text,
+  action,
+  small,
+}: {
+  title: string;
+  text: string;
+  action?: React.ReactNode;
+  /** Quieter version (Requests), so it doesn't look bigger than the rest. */
+  small?: boolean;
+}) {
   return (
-    <View style={styles.empty}>
-      <Txt variant="h2">{title}</Txt>
-      <Txt>{text}</Txt>
+    <View style={[styles.empty, small && { gap: 6 }]}>
+      <Txt variant={small ? 'bodyStrong' : 'h2'}>{title}</Txt>
+      <Txt variant={small ? 'small' : undefined}>{text}</Txt>
       {action}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  cancelled: { borderColor: colors.cancelLine, borderWidth: 1.5 },
   title: { paddingHorizontal: space.gutter, marginTop: space.xxl, marginBottom: space.lg },
   tabs: {
     flexDirection: 'row',

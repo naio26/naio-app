@@ -123,7 +123,7 @@ export function PlanForm({
         />
       </Field>
 
-      <Field label="Day / time" hint={now ? 'Starts now.' : 'Plans are for today or tomorrow only.'}>
+      <Field label="Day / time" hint={now ? 'Next 2 hours' : undefined}>
         <View style={styles.row}>
           <Chip label="Now" selected={now} onPress={startNow} />
           {(['today', 'tomorrow'] as const).map((day) => (

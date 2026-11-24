@@ -483,6 +483,10 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     - **Mood:** pots triar fins a **3**.
     - «Short note» ara es diu **«Description»**.
   - **Plans cancel·lats amb vora vermella suau:** a la pantalla «Plan cancelled.», a **My plans** (els plans cancel·lats on eres o que organitzaves continuen sortint a «Upcoming», amb la vora vermella i «Cancelled») i a **Alerts** (quan cancel·les un pla teu, surt «You cancelled your plan», emmarcat en vermell suau; si el toques, obre la pantalla del pla cancel·lat).
+  - **«Create a plan» → Day / time:** si toques «Now», a sota diu «Next 2 hours». Amb «Today» o «Tomorrow» no surt res a sota (s'ha tret «Plans are for today or tomorrow only»).
+  - **My plans (Upcoming i Past):** la part esquerra de cada pla ara és només un bloc de color, sense res a dins. Cada pla de la llista té un color diferent, tots de la mateixa gamma càlida (préssec, terracota suau, mantega…), perquè quedin harmoniosos.
+  - **Requests buit:** el missatge «No requests right now.» ara és més petit, en proporció amb la resta.
+  - **Plans cancel·lats a My plans:** surten en gris i esvaïts, com una marca d'aigua, perquè ja no són vàlids. En aquesta llista ja no tenen la vora vermella (es manté a la pantalla «Plan cancelled.» i a Alerts).
   - **«You're in» (prova):** la caixa té el fons d'un verd més clar i una vora verda una mica més marcada. Digues-me si t'agrada.
   - **Fitxa del pla (en tocar un pla al mapa), nou ordre:** el títol; la descripció just a sota; una línia fina; el lloc en terracota amb «Exact point is shared after joining» **a la seva pròpia línia** a sota (en cursiva i fosc); i després la resta com abans. Quan ja hi ets, aquella línia mostra l'adreça exacta en verd, i si la toques et dona les indicacions.
   - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.

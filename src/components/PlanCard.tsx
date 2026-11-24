@@ -1,42 +1,15 @@
 import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { Icon, type IconName } from './Icon';
-import { toMinutes } from '@/data/time';
 import { colors, fonts, radius } from '@/theme';
 import { Txt } from './Txt';
 
-/** A little drawn "scene" for a plan, by time of day (My plans, 37). */
-export function PlanArt({ time, moods = [] }: { time?: string; moods?: string[] }) {
-  const m = time ? toMinutes(time) : 19 * 60;
-  const scene =
-    m < 12 * 60
-      ? { sky: '#FBEFD3', band: '#EDB08A', ground: '#A9B58C' }
-      : m < 18 * 60
-        ? { sky: '#F8DED0', band: '#E09470', ground: '#C9977A' }
-        : { sky: '#F6CDA8', band: '#D4744C', ground: '#A86B57' };
-  const icon: IconName = moods.some((x) => /coffee/i.test(x))
-    ? 'coffee'
-    : moods.some((x) => /night|food|drink/i.test(x))
-      ? 'moon'
-      : 'sun';
-  return (
-    <View style={styles.art}>
-      <View style={[styles.sky, { backgroundColor: scene.sky }]}>
-        <Icon name={icon} color={colors.dark} />
-      </View>
-      <View style={{ height: 22, backgroundColor: scene.band }} />
-      <View style={{ flex: 1, backgroundColor: scene.ground }} />
-    </View>
-  );
-}
-
-/** Plan card with art on the left (My plans, 37). */
+/** Plan card with a plain colour block on the left (My plans, 37). */
 export function PlanCard({
   eyebrow,
   title,
   line,
   footer,
-  time,
-  moods,
+  tint,
+  faded,
   onPress,
   style,
 }: {
@@ -44,8 +17,10 @@ export function PlanCard({
   title: string;
   line: string;
   footer?: React.ReactNode;
-  time?: string;
-  moods?: string[];
+  /** Colour of the block on the left (one per card from `planTints`). */
+  tint: string;
+  /** Greyed out, like a watermark: a cancelled plan that's no longer on. */
+  faded?: boolean;
   onPress?: () => void;
   /** e.g. the soft red border of a cancelled plan. */
   style?: StyleProp<ViewStyle>;
@@ -55,9 +30,9 @@ export function PlanCard({
       accessibilityRole={onPress ? 'button' : undefined}
       disabled={!onPress}
       onPress={onPress}
-      style={({ pressed }) => [styles.card, style, pressed && { opacity: 0.8 }]}
+      style={({ pressed }) => [styles.card, style, faded && styles.faded, pressed && { opacity: 0.8 }]}
     >
-      <PlanArt time={time} moods={moods} />
+      <View style={[styles.art, { backgroundColor: tint }]} />
       <View style={styles.body}>
         <Txt style={styles.eyebrow}>{eyebrow}</Txt>
         <Txt style={styles.title} numberOfLines={2}>
@@ -83,7 +58,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   art: { width: 104 },
-  sky: { flex: 1.4, alignItems: 'center', justifyContent: 'center' },
+  faded: { opacity: 0.5 },
   body: { flex: 1, padding: 16, gap: 6, justifyContent: 'center' },
   eyebrow: {
     fontFamily: fonts.sansBold,
