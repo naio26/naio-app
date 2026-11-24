@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { areaText } from '@/data/catalog';
 import { StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Avatar, BackButton, Button, Card, Chip, Screen, Txt } from '@/components';
 import { LANGUAGE_FLAGS } from '@/data/catalog';
 import { planWhen } from '@/data/time';
+import { useCity } from '@/state/city';
 import { usePeople } from '@/state/people';
 import { usePlans } from '@/state/plans';
 import { useProfile } from '@/state/profile';
@@ -20,6 +22,7 @@ export default function JoinRequestScreen() {
   const plan = plans.find((p) => p.id === request?.planId);
   const [person] = usePeople(request ? [request.personId] : []);
   const [busy, setBusy] = useState<'accept' | 'decline' | null>(null);
+  const city = useCity();
 
   if (!request || !plan || !person) {
     return (
@@ -57,7 +60,7 @@ export default function JoinRequestScreen() {
           <Txt style={styles.label}>Wants to join</Txt>
           <Txt variant="h2">{plan.title}</Txt>
           <Txt variant="small" color={colors.dark} style={{ fontSize: 15 }}>
-            {planWhen(plan)} · {plan.area}
+            {planWhen(plan)} · {areaText(plan.area, city.name)}
           </Txt>
         </View>
         {person.about && (

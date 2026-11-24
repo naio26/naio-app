@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
-import { languagesText } from '@/data/catalog';
+import { areaText, languagesText } from '@/data/catalog';
 import { Alert, Animated, Easing, StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Icon, type IconName } from '@/components';
 import { Button, Card, Logo, PointNote, Screen, Txt } from '@/components';
 import { planWhen } from '@/data/time';
+import { useCity } from '@/state/city';
 import { usePeople } from '@/state/people';
 import { usePlan, usePlans } from '@/state/plans';
 import { colors, fonts, icon, space } from '@/theme';
@@ -15,6 +16,7 @@ import { goBack } from '@/components';
 export default function RequestSent() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const plan = usePlan(id);
+  const city = useCity();
   const { statusOf, membersOf, cancelRequest } = usePlans();
   const members = usePeople(plan ? membersOf(plan) : []);
   const host = members.find((m) => m.id === plan?.hostId);
@@ -92,7 +94,7 @@ export default function RequestSent() {
         </Txt>
         <Txt variant="small">{planWhen(plan)}</Txt>
         <Txt variant="small">
-          Near {plan.meetNear} · {plan.distanceKm} km
+          Near {areaText(plan.meetNear, city.name)} · {plan.distanceKm} km
         </Txt>
         <Txt variant="small">
           {members.length} people · {languagesText(plan.languages)}

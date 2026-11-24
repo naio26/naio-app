@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
-import { languagesText } from '@/data/catalog';
+import { languagesText, placeText } from '@/data/catalog';
 import { planWhen } from '@/data/time';
 import { Plan } from '@/data/types';
 import { useCity } from '@/state/city';
@@ -41,9 +41,7 @@ export function PlanSheet({ plan }: { plan: Plan }) {
 
       {/* Divider, then the place in terracotta with the exact-point note on its own line below. */}
       <View style={styles.placeBlock}>
-        <Txt style={styles.place}>
-          {plan.area}, {city.name}
-        </Txt>
+        <Txt style={styles.place}>{placeText(plan.area, city.name)}</Txt>
         {inside ? (
           // Once you're in: the exact point in green, tap it for directions.
           <PointNote plan={plan} status={status} />

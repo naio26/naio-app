@@ -16,8 +16,9 @@ import {
   Txt,
   VerifiedBadge,
 } from '@/components';
-import { languagesText } from '@/data/catalog';
+import { areaText, languagesText } from '@/data/catalog';
 import { planWhen } from '@/data/time';
+import { useCity } from '@/state/city';
 import { usePeople } from '@/state/people';
 import { usePlan, usePlans } from '@/state/plans';
 import { colors, fonts, space } from '@/theme';
@@ -27,6 +28,7 @@ export default function PlanDetails() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
   const plan = usePlan(id);
+  const city = useCity();
   const { statusOf, membersOf } = usePlans();
   const memberIds = plan ? membersOf(plan) : [];
   const members = usePeople(memberIds);
@@ -56,7 +58,7 @@ export default function PlanDetails() {
               {plan.title}
             </Txt>
             <Txt>
-              {plan.area} · {plan.distanceKm} km
+              {areaText(plan.area, city.name)} · {plan.distanceKm} km
             </Txt>
             <PointNote plan={plan} status={status} hostName={host?.firstName} />
           </View>

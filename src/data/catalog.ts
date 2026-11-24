@@ -115,17 +115,6 @@ export function languagesFor(cityLanguages: string[]): Language[] {
   return [...local, ...LANGUAGES.filter((l) => !cityLanguages.includes(l.code))];
 }
 
-/** Neighbourhoods you can pick as the public area of a plan (29), with an approximate spot for the map. */
-export const AREAS: { name: string; location: { latitude: number; longitude: number } }[] = [
-  { name: 'Monastiraki', location: { latitude: 37.9761, longitude: 23.7257 } },
-  { name: 'Plaka', location: { latitude: 37.9722, longitude: 23.7296 } },
-  { name: 'Syntagma', location: { latitude: 37.9755, longitude: 23.7348 } },
-  { name: 'Psyrri', location: { latitude: 37.9779, longitude: 23.7236 } },
-  { name: 'Thiseio', location: { latitude: 37.9765, longitude: 23.7185 } },
-  { name: 'Koukaki', location: { latitude: 37.9643, longitude: 23.7247 } },
-  { name: 'Kolonaki', location: { latitude: 37.9794, longitude: 23.7426 } },
-];
-
 /** Languages offered when creating a plan. */
 export const PLAN_LANGUAGES = ['English', 'Spanish', 'Greek', 'French', 'Italian', 'German'];
 
@@ -134,6 +123,10 @@ export const MIN_SPOTS = 1;
 export const MAX_GROUP = 15;
 /** People who can join besides the host. */
 export const MAX_SPOTS = MAX_GROUP - 1;
+
+/** A plan's place: its area, or just the city when no area was chosen. With the city: "Psyrri, Athens". */
+export const areaText = (area: string, city: string) => area || city;
+export const placeText = (area: string, city: string) => (area ? `${area}, ${city}` : city);
 
 /** "English · Greek" */
 export const languagesText = (languages: string[]) => languages.join(' · ');

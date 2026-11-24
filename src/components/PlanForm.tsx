@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Icon, type IconName } from './Icon';
-import { AREAS, MAX_GROUP, MAX_SPOTS, MIN_SPOTS, MOODS, PLAN_LANGUAGES } from '@/data/catalog';
-import { formatTime, timeOptions } from '@/data/time';
+import { MAX_GROUP, MAX_SPOTS, MIN_SPOTS, MOODS, PLAN_LANGUAGES } from '@/data/catalog';
+import { useCity } from '@/state/city';
+import { formatTime, nowHHMM, timeOptions } from '@/data/time';
 import { Plan, PlanDay, PlanDraft } from '@/data/types';
 import { colors, fonts, radius, space } from '@/theme';
 import { BackButton } from './BackButton';
@@ -12,7 +13,7 @@ import { Input } from './Input';
 import { Screen } from './Screen';
 import { Txt } from './Txt';
 
-const MAX_MOODS = 2;
+const MAX_MOODS = 3;
 
 export function emptyDraft(): PlanDraft {
   return {
@@ -58,6 +59,9 @@ export function PlanForm({
   onSubmit: (d: PlanDraft) => Promise<void>;
 }) {
   const [d, setD] = useState<PlanDraft>(initial);
+  const city = useCity();
+  // "Now": today, starting at the current time (no time to pick).
+  const [now, setNow] = useState(false);
   const [saving, setSaving] = useState(false);
   const set = (c: Partial<PlanDraft>) => setD((x) => ({ ...x, ...c }));
   const times = useMemo(() => {
@@ -67,13 +71,17 @@ export function PlanForm({
   }, [d.day, d.time]);
 
   const setDay = (day: PlanDay) => {
+    setNow(false);
     const list = timeOptions(day);
     set({ day, time: list.includes(d.time) ? d.time : list[0] });
+  };
+  const startNow = () => {
+    setNow(true);
+    set({ day: 'today', time: nowHHMM() });
   };
 
   const missing = [
     !d.title.trim() && 'an activity',
-    !d.area && 'an area',
     !d.exactPoint.trim() && 'a meeting point',
     d.languages.length === 0 && 'a language',
     d.moods.length === 0 && 'a mood',
@@ -115,28 +123,28 @@ export function PlanForm({
         />
       </Field>
 
-      <Field label="Day / time" hint="Plans are for today or tomorrow only.">
+      <Field label="Day / time" hint={now ? 'Starts now.' : 'Plans are for today or tomorrow only.'}>
         <View style={styles.row}>
+          <Chip label="Now" selected={now} onPress={startNow} />
           {(['today', 'tomorrow'] as const).map((day) => (
             <Chip
               key={day}
               label={day === 'today' ? 'Today' : 'Tomorrow'}
-              selected={d.day === day}
+              selected={!now && d.day === day}
               onPress={() => setDay(day)}
             />
           ))}
         </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.times}>
-          {times.map((t) => (
-            <Chip key={t} size="sm" label={formatTime(t)} selected={d.time === t} onPress={() => set({ time: t })} />
-          ))}
-        </ScrollView>
+        {!now && (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.times}>
+            {times.map((t) => (
+              <Chip key={t} size="sm" label={formatTime(t)} selected={d.time === t} onPress={() => set({ time: t })} />
+            ))}
+          </ScrollView>
+        )}
       </Field>
 
-      <Field
-        label="Spots / languages"
-        hint={`Up to ${MAX_GROUP} people in total, you included. Pick one or more languages.`}
-      >
+      <Field label="Spots" hint={`Up to ${MAX_GROUP} people in total, you included.`}>
         <View style={styles.spots}>
           <Stepper
             value={d.spots}
@@ -148,6 +156,9 @@ export function PlanForm({
             {d.spots === 1 ? 'person can join' : 'people can join'}, besides you
           </Txt>
         </View>
+      </Field>
+
+      <Field label="Languages" sub="Pick one or more languages.">
         <View style={styles.wrap}>
           {PLAN_LANGUAGES.map((l) => {
             const on = d.languages.includes(l);
@@ -171,15 +182,19 @@ export function PlanForm({
         </View>
       </Field>
 
-      <Field label="Area" hint="Everyone sees the area. Pick a public neighbourhood.">
+      <Field
+        label="Area (optional)"
+        hint={`Neighbourhoods of ${city.name}. Everyone sees the area. Without one, people only see ${city.name}.`}
+      >
         <View style={styles.wrap}>
-          {AREAS.map((a) => (
+          {/* Neighbourhoods of the city you're in (from the current city, never typed here). Tap again to clear. */}
+          {city.areas.map((a) => (
             <Chip
               key={a.name}
               size="sm"
               label={a.name}
               selected={d.area === a.name}
-              onPress={() => set({ area: a.name })}
+              onPress={() => set({ area: d.area === a.name ? '' : a.name })}
             />
           ))}
         </View>
@@ -213,7 +228,7 @@ export function PlanForm({
         </View>
       </Field>
 
-      <Field label="Short note">
+      <Field label="Description">
         <Input
           placeholder="Coffee first, then a wander if we feel like it."
           value={d.note}
@@ -232,17 +247,31 @@ export function PlanForm({
           {d.title.trim() || 'Your activity'}
         </Txt>
         <Txt variant="small">
-          {d.day === 'today' ? 'Today' : 'Tomorrow'} · {formatTime(d.time)} · {d.area || 'Area'}
+          {now ? 'Now' : `${d.day === 'today' ? 'Today' : 'Tomorrow'} · ${formatTime(d.time)}`} · {d.area || city.name}
         </Txt>
       </View>
     </Screen>
   );
 }
 
-function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+function Field({
+  label,
+  sub,
+  hint,
+  children,
+}: {
+  label: string;
+  /** A short line right under the title. */
+  sub?: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
   return (
     <View style={{ gap: 10 }}>
-      <Txt style={styles.label}>{label}</Txt>
+      <View style={{ gap: 4 }}>
+        <Txt style={styles.label}>{label}</Txt>
+        {sub && <Txt variant="caption">{sub}</Txt>}
+      </View>
       {children}
       {hint && <Txt variant="caption">{hint}</Txt>}
     </View>

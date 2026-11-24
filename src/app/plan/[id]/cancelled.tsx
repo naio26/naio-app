@@ -2,6 +2,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Button, ResultScreen, Screen } from '@/components';
 import { formatTime } from '@/data/time';
 import { usePlan } from '@/state/plans';
+import { colors } from '@/theme';
 
 // Screen 34 — the plan is gone.
 export default function PlanCancelled() {
@@ -15,6 +16,7 @@ export default function PlanCancelled() {
       cardTitle={plan.title}
       lines={[`${plan.day === 'today' ? 'Today' : 'Tomorrow'} · ${formatTime(plan.time)}`, plan.exactPoint]}
       note="The people who joined have been notified."
+      cardStyle={{ borderColor: colors.cancelLine, borderWidth: 1.5 }}
       footer={
         <Button
           title="Go to my plans"

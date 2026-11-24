@@ -475,6 +475,14 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **Xat del grup:** «Today» / «Tomorrow» és només text, sense fons. Per veure el pla, toca el nom del pla a dalt o «View plan» (a la dreta): obre la mateixa pantalla del pla que des de Plans.
   - **«Request sent»:** a la caixa del pla ara diu «Exact point is shared once accepted».
   - **«once they accept» → «once accepted»:** l'únic lloc de l'app on sortia era el text de sota de «Request sent», que ara diu «Once accepted, you'll be active in the group chat and see the exact meeting point.»
+  - **Xat del grup:** el títol del pla de dalt surt sempre sencer, en dues línies si cal; mai tallat amb «…».
+  - **«Create a plan»:**
+    - «Pick one or more languages.» ara surt just a sota del títol «Languages» (que ara va separat de «Spots»).
+    - A «Day / time», a més de «Today» i «Tomorrow», hi ha **«Now»**: el pla comença ara mateix i no cal triar hora.
+    - **Area:** la llista són els barris de la ciutat on ets (a la demo, Atenes, que surt del valor de la ciutat actual, mai escrit a mà). Ara és **opcional**: pots crear el pla sense triar-ne cap (es toca un altre cop per treure'l), i llavors la gent només hi veu el nom de la ciutat.
+    - **Mood:** pots triar fins a **3**.
+    - «Short note» ara es diu **«Description»**.
+  - **Plans cancel·lats amb vora vermella suau:** a la pantalla «Plan cancelled.», a **My plans** (els plans cancel·lats on eres o que organitzaves continuen sortint a «Upcoming», amb la vora vermella i «Cancelled») i a **Alerts** (quan cancel·les un pla teu, surt «You cancelled your plan», emmarcat en vermell suau; si el toques, obre la pantalla del pla cancel·lat).
   - **«You're in» (prova):** la caixa té el fons d'un verd més clar i una vora verda una mica més marcada. Digues-me si t'agrada.
   - **Fitxa del pla (en tocar un pla al mapa), nou ordre:** el títol; la descripció just a sota; una línia fina; el lloc en terracota amb «Exact point is shared after joining» **a la seva pròpia línia** a sota (en cursiva i fosc); i després la resta com abans. Quan ja hi ets, aquella línia mostra l'adreça exacta en verd, i si la toques et dona les indicacions.
   - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.

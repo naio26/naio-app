@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { placeText } from '@/data/catalog';
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { Icon, type IconName } from './Icon';
@@ -138,7 +139,7 @@ export function PointNote({
       accessibilityRole="button"
       accessibilityLabel={`Directions to ${plan.exactPoint}`}
       accessibilityHint="Opens a maps app"
-      onPress={() => openDirections(`${plan.exactPoint}, ${plan.area}, ${city.name}`)}
+      onPress={() => openDirections(`${plan.exactPoint}, ${placeText(plan.area, city.name)}`)}
       hitSlop={8}
       style={({ pressed }) => [styles.pointNote, pressed && { opacity: 0.6 }]}
     >

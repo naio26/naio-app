@@ -6,6 +6,7 @@ import {
   createPlan as apiCreatePlan,
   getPlan,
   leavePlan as apiLeavePlan,
+  listCancelledPlans,
   listJoinRequests,
   listMyJoinedPlans,
   listPeople,
@@ -27,6 +28,8 @@ export type MyStatus = JoinStatus | 'host';
 
 type PlansState = {
   plans: Plan[]; // every plan that is still on
+  /** Cancelled plans, for My plans (shown with a red border). */
+  cancelled: Plan[];
   loaded: boolean;
   statusOf: (plan: Plan) => MyStatus;
   /** Member ids as you see them, plus you once accepted. */
@@ -58,6 +61,7 @@ export function PlansProvider({ children, initial }: { children: ReactNode; init
   const chat = useChat();
   const me = useMe();
   const [plans, setPlans] = useState<Plan[]>([]);
+  const [cancelled, setCancelled] = useState<Plan[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [status, setStatus] = useState<Record<string, JoinStatus>>(initial ?? {});
   useSaved(KEYS.plans, status);
@@ -76,6 +80,7 @@ export function PlansProvider({ children, initial }: { children: ReactNode; init
 
   const refresh = useCallback(async () => {
     setPlans(await listPlans());
+    setCancelled(await listCancelledPlans());
     setLoaded(true);
   }, []);
 
@@ -199,16 +204,23 @@ export function PlansProvider({ children, initial }: { children: ReactNode; init
 
   const cancelPlan = useCallback(
     async (id: string) => {
-      await apiCancelPlan(id);
+      const plan = await apiCancelPlan(id);
       setRequests((list) => list.filter((r) => r.planId !== id));
       await refresh();
+      alerts.add({
+        kind: 'cancelled',
+        title: 'You cancelled your plan',
+        subtitle: `${plan.title} · everyone who joined was told`,
+        planId: id,
+      });
     },
-    [refresh],
+    [refresh, alerts],
   );
 
   const value = useMemo<PlansState>(
     () => ({
       plans,
+      cancelled,
       loaded,
       statusOf: (plan) => (plan.hostId === 'me' ? 'host' : (status[plan.id] ?? 'none')),
       membersOf: (plan) =>
@@ -226,6 +238,7 @@ export function PlansProvider({ children, initial }: { children: ReactNode; init
     }),
     [
       plans,
+      cancelled,
       loaded,
       status,
       requestJoin,

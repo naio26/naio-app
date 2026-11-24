@@ -1,4 +1,5 @@
 import { Pressable, Share, StyleSheet, View } from 'react-native';
+import { placeText } from '@/data/catalog';
 import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
 import { Screen, ScreenHeader, Txt } from '@/components';
@@ -20,7 +21,7 @@ export default function SafetyCentre() {
   const share = () =>
     Share.share({
       message: next
-        ? `I'm meeting people from naio. — ${next.title}, ${planWhen(next)} at ${next.exactPoint} (${next.area}, ${city.name}).`
+        ? `I'm meeting people from naio. — ${next.title}, ${planWhen(next)} at ${next.exactPoint} (${placeText(next.area, city.name)}).`
         : `I'm using naio. to meet people in ${city.name}. I'll share my plan details when I have one.`,
     });
 

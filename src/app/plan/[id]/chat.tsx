@@ -63,9 +63,8 @@ export default function PlanChat() {
           onPress={viewPlan}
           style={({ pressed }) => [{ flex: 1, gap: 4 }, pressed && { opacity: 0.6 }]}
         >
-          <Txt style={styles.title} numberOfLines={1}>
-            {plan.title}
-          </Txt>
+          {/* Always the full title, on two lines if needed: never cut with "…". */}
+          <Txt style={styles.title}>{plan.title}</Txt>
           <View style={styles.meta}>
             <View style={styles.dot} />
             <Txt variant="small" numberOfLines={1} style={{ flex: 1 }}>

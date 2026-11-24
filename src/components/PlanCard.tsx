@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Icon, type IconName } from './Icon';
 import { toMinutes } from '@/data/time';
 import { colors, fonts, radius } from '@/theme';
@@ -38,6 +38,7 @@ export function PlanCard({
   time,
   moods,
   onPress,
+  style,
 }: {
   eyebrow: string;
   title: string;
@@ -46,13 +47,15 @@ export function PlanCard({
   time?: string;
   moods?: string[];
   onPress?: () => void;
+  /** e.g. the soft red border of a cancelled plan. */
+  style?: StyleProp<ViewStyle>;
 }) {
   return (
     <Pressable
       accessibilityRole={onPress ? 'button' : undefined}
       disabled={!onPress}
       onPress={onPress}
-      style={({ pressed }) => [styles.card, pressed && { opacity: 0.8 }]}
+      style={({ pressed }) => [styles.card, style, pressed && { opacity: 0.8 }]}
     >
       <PlanArt time={time} moods={moods} />
       <View style={styles.body}>

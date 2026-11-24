@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useCity } from '@/state/city';
+import { areaText } from '@/data/catalog';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
@@ -17,11 +19,13 @@ const order = (p: Plan) => (p.day === 'tomorrow' ? 24 * 60 : 0) + toMinutes(p.ti
 
 // Screen 37 — My plans. Upcoming and Requests are not in the designs (drawn in the same style).
 export default function MyPlans() {
-  const { plans, statusOf, requests } = usePlans();
+  const { plans, cancelled, statusOf, requests } = usePlans();
   const [tab, setTab] = useState<Tab>('upcoming');
   const past = useLoad(listPastPlans, []) ?? [];
 
   const upcoming = plans.filter((p) => statusOf(p) !== 'none').sort((a, b) => order(a) - order(b));
+  // Cancelled plans you hosted or were in: still listed, with a soft red border.
+  const gone = cancelled.filter((p) => statusOf(p) !== 'none').sort((a, b) => order(a) - order(b));
   const incoming = requests.filter((r) => r.status === 'pending' && plans.some((p) => p.id === r.planId));
   const sent = plans.filter((p) => statusOf(p) === 'requested');
   const counts = { upcoming: upcoming.length, requests: incoming.length + sent.length, past: 0 };
@@ -59,7 +63,10 @@ export default function MyPlans() {
             {upcoming.map((p) => (
               <UpcomingCard key={p.id} plan={p} />
             ))}
-            {upcoming.length === 0 && (
+            {gone.map((p) => (
+              <CancelledCard key={p.id} plan={p} />
+            ))}
+            {upcoming.length + gone.length === 0 && (
               <Empty
                 title="Nothing planned yet."
                 text="Join a plan on the map or post your own for today or tomorrow."
@@ -117,8 +124,29 @@ export default function MyPlans() {
   );
 }
 
+function CancelledCard({ plan }: { plan: Plan }) {
+  const city = useCity();
+  return (
+    <PlanCard
+      eyebrow={planWhen(plan)}
+      title={plan.title}
+      time={plan.time}
+      moods={plan.moods}
+      line={areaText(plan.area, city.name)}
+      style={styles.cancelled}
+      footer={
+        <Txt variant="label" color={colors.danger} style={{ fontSize: 13, marginTop: 4 }}>
+          Cancelled
+        </Txt>
+      }
+      onPress={() => router.push({ pathname: '/plan/[id]/cancelled', params: { id: plan.id } })}
+    />
+  );
+}
+
 function UpcomingCard({ plan }: { plan: Plan }) {
   const { statusOf, membersOf } = usePlans();
+  const city = useCity();
   const members = usePeople(membersOf(plan));
   const names = members.filter((m) => m.id !== 'me').map((m) => m.firstName);
   return (
@@ -127,7 +155,7 @@ function UpcomingCard({ plan }: { plan: Plan }) {
       title={plan.title}
       time={plan.time}
       moods={plan.moods}
-      line={`${plan.area} · ${names.length ? names.slice(0, 3).join(', ') + (names.length > 3 ? ` +${names.length - 3}` : '') : 'Only you so far'}`}
+      line={`${areaText(plan.area, city.name)} · ${names.length ? names.slice(0, 3).join(', ') + (names.length > 3 ? ` +${names.length - 3}` : '') : 'Only you so far'}`}
       footer={
         <View style={{ marginTop: 4 }}>
           <PlanBadge status={statusOf(plan)} />
@@ -194,6 +222,7 @@ function Empty({ title, text, action }: { title: string; text: string; action?: 
 }
 
 const styles = StyleSheet.create({
+  cancelled: { borderColor: colors.cancelLine, borderWidth: 1.5 },
   title: { paddingHorizontal: space.gutter, marginTop: space.xxl, marginBottom: space.lg },
   tabs: {
     flexDirection: 'row',

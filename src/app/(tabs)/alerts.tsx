@@ -8,7 +8,7 @@ import { useAlerts } from '@/state/alerts';
 import { usePeople } from '@/state/people';
 import { usePlans } from '@/state/plans';
 import { useSafety } from '@/state/safety';
-import { colors, fonts, space } from '@/theme';
+import { colors, fonts, radius, space } from '@/theme';
 
 const icons: Record<Notice['kind'], IconName> = {
   'join-request': 'user-plus',
@@ -61,13 +61,15 @@ function Row({ n }: { n: Notice }) {
     else if ((n.kind === 'message' || n.kind === 'accepted') && n.planId)
       router.push({ pathname: '/plan/[id]/chat', params: { id: n.planId } });
     else if (n.kind === 'match' && n.planId) router.push({ pathname: '/plan/[id]', params: { id: n.planId } });
+    else if (n.kind === 'cancelled' && n.planId)
+      router.push({ pathname: '/plan/[id]/cancelled', params: { id: n.planId } });
   };
 
   return (
     <Pressable
       accessibilityRole="button"
       onPress={open}
-      style={({ pressed }) => [styles.row, pressed && { opacity: 0.7 }]}
+      style={({ pressed }) => [styles.row, n.kind === 'cancelled' && styles.cancelled, pressed && { opacity: 0.7 }]}
     >
       {person ? (
         <Avatar initials={person.initials} size={56} color={person.avatarColor} serif />
@@ -93,6 +95,14 @@ function Row({ n }: { n: Notice }) {
 }
 
 const styles = StyleSheet.create({
+  // A cancelled plan: framed with a soft red border.
+  cancelled: {
+    borderWidth: 1.5,
+    borderColor: colors.cancelLine,
+    borderRadius: radius.lg,
+    paddingHorizontal: 14,
+    marginVertical: 6,
+  },
   content: { paddingBottom: space.xl, gap: space.xl },
   title: { marginTop: space.xxl },
   row: {

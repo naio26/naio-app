@@ -1,6 +1,6 @@
 // The single door to all app data. Today it reads mock data; later each function
 // can call Supabase instead, and no screen needs to change.
-import { AREAS, MAX_GROUP } from './catalog';
+import { MAX_GROUP } from './catalog';
 import { demoCity } from './mock/city';
 import { people } from './mock/people';
 import { plans } from './mock/plans';
@@ -117,6 +117,12 @@ export async function listPlans(): Promise<Plan[]> {
   return clone(db.plans.filter((p) => !p.cancelled));
 }
 
+/** Cancelled plans (still shown, with a red border, in My plans until they would have happened). */
+export async function listCancelledPlans(): Promise<Plan[]> {
+  await wait(100);
+  return clone(db.plans.filter((p) => p.cancelled));
+}
+
 /** One plan, even if cancelled (so "Plan cancelled" can still show it). */
 export async function getPlan(id: string): Promise<Plan | undefined> {
   await wait(100);
@@ -162,7 +168,8 @@ const toKm = (a: { latitude: number; longitude: number }, b: { latitude: number;
 const ME = { latitude: 37.9755, longitude: 23.7348 }; // approximate, Syntagma
 
 function applyDraft(plan: Plan, d: PlanDraft): Plan {
-  const area = AREAS.find((a) => a.name === d.area) ?? AREAS[0];
+  // The area is optional: without one, the plan sits at your approximate position and shows the city name.
+  const area = getCurrentCity().areas.find((a) => a.name === d.area) ?? { name: '', location: ME };
   return {
     ...plan,
     title: d.title.trim(),

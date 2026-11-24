@@ -24,7 +24,11 @@ export type City = {
   country: string;
   /** Language codes most spoken there, most common first. Shown first in language lists. */
   languages: string[];
+  /** Public neighbourhoods offered as the area of a plan ("Create a plan"). */
+  areas: CityArea[];
 };
+
+export type CityArea = { name: string; location: { latitude: number; longitude: number } };
 
 export type AuthProvider = 'apple' | 'google' | 'email';
 

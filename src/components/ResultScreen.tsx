@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
 import { Icon, type IconName } from './Icon';
 import { colors, icon as iconSize, space } from '@/theme';
 import { Card } from './Card';
@@ -16,6 +16,7 @@ export function ResultScreen({
   lines,
   note,
   footer,
+  cardStyle,
 }: {
   icon: IconName;
   eyebrow?: string;
@@ -24,6 +25,8 @@ export function ResultScreen({
   lines: string[];
   note: string;
   footer: ReactNode;
+  /** e.g. the soft red border of a cancelled plan. */
+  cardStyle?: StyleProp<ViewStyle>;
 }) {
   return (
     <Screen contentStyle={styles.content} footer={footer}>
@@ -41,7 +44,7 @@ export function ResultScreen({
           {title}
         </Txt>
       </View>
-      <Card style={styles.card}>
+      <Card style={[styles.card, cardStyle]}>
         <Txt variant="bodyStrong" style={{ fontSize: 18 }}>
           {cardTitle}
         </Txt>

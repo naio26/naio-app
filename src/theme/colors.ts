@@ -31,6 +31,7 @@ export const colors = {
   greenLine: '#8FC4A8', // green border that stands out ("You're in" plan box)
   link: '#007AFF', // the usual link blue: the tappable exact address that opens a maps app
   danger: '#B8433A', // destructive actions (white text on top)
+  cancelLine: '#E4A097', // soft red border around a cancelled plan
 
   // Brand details
   brandDot: '#E0784A', // the period in the "naio." logo
