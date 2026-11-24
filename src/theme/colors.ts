@@ -60,12 +60,14 @@ export const colors = {
 } as const;
 
 /**
- * Colour block on the left of a plan card (My plans), by DAY: every plan on the same day has the same colour
- * (Now, Today and your own plan today all share "today"). Soft, one family; use these everywhere.
+ * Colour block on the left of a plan card (My plans), by type of plan. Soft pastels from one family,
+ * but clearly different from each other. Use these everywhere.
  */
 export const planKindColors = {
-  today: '#F6CDA8', // peach
-  tomorrow: '#FBE3C4', // butter
+  mine: '#A3D2B8', // your plan: soft mint green (goes with the green "Your plan" label)
+  now: '#EE9E7E', // Now: soft coral
+  today: '#F6CB7F', // Today: soft honey
+  tomorrow: '#C9BEDF', // Tomorrow: soft lavender
   past: '#EADBD0', // sand
   cancelled: colors.cancelTint, // grey
 } as const;

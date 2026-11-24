@@ -4,7 +4,7 @@ import { areaText } from '@/data/catalog';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
-import { Avatar, Button, Card, PlanBadge, PlanCard, planKindColor, Screen, SwipeToRemove, Txt } from '@/components';
+import { Avatar, Button, PlanBadge, PlanCard, planKindColor, Screen, SwipeToRemove, Txt } from '@/components';
 import { listPastPlans } from '@/data/api';
 import { useLoad } from '@/data/hooks';
 import { planWhen, toMinutes } from '@/data/time';
@@ -208,13 +208,14 @@ function SentRow({ plan }: { plan: Plan }) {
 
 function Forever() {
   return (
-    <Card tone="muted" style={styles.forever}>
+    // No fill: same background as the screen, with a thin sand frame.
+    <View style={styles.forever}>
       <Icon name="clock" color={colors.muted} />
       <View style={{ flex: 1, gap: 4 }}>
         <Txt variant="label">Plans don’t live forever.</Txt>
         <Txt variant="caption">They disappear after they happen. Chats go with them.</Txt>
       </View>
-    </Card>
+    </View>
   );
 }
 
@@ -288,6 +289,15 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     backgroundColor: colors.white,
   },
-  forever: { flexDirection: 'row', alignItems: 'center', gap: 14, padding: 20, marginTop: space.sm },
+  forever: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    padding: 20,
+    marginTop: space.sm,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
   empty: { gap: 12, paddingVertical: space.lg },
 });
