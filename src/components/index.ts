@@ -4,6 +4,7 @@ export { Button } from './Button';
 export { Card } from './Card';
 export { Chip } from './Chip';
 export { Input } from './Input';
+export { SearchField } from './SearchField';
 export { Logo } from './Logo';
 export { ProviderSignIn } from './ProviderSignIn';
 export { Screen } from './Screen';

@@ -1,13 +1,12 @@
 import { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
-import { Icon, type IconName } from '@/components';
-import { Button, CodeBadge, Input, OptionRow, Screen, ScreenHeader, Txt } from '@/components';
+import { Button, CodeBadge, OptionRow, Screen, ScreenHeader, SearchField, Txt } from '@/components';
 import { LANGUAGES, languagesFor, POPULAR_LANGUAGES } from '@/data/catalog';
 import { Language } from '@/data/types';
 import { useCity } from '@/state/city';
 import { useProfile } from '@/state/profile';
-import { colors, space } from '@/theme';
+import { space } from '@/theme';
 
 // Screen 16 — pick the languages you speak. Levels come next (17).
 export default function Languages() {
@@ -45,19 +44,7 @@ export default function Languages() {
         />
       }
     >
-      <View>
-        <Input
-          placeholder="Search languages"
-          value={query}
-          onChangeText={setQuery}
-          autoCorrect={false}
-          returnKeyType="search"
-          style={styles.search}
-        />
-        <View pointerEvents="none" style={styles.searchIcon}>
-          <Icon name="search" color={colors.muted} />
-        </View>
-      </View>
+      <SearchField placeholder="Search languages" value={query} onChangeText={setQuery} />
 
       <Txt variant="caption" style={styles.heading}>
         {query ? 'Results' : 'Popular near you'}
@@ -85,7 +72,5 @@ export default function Languages() {
 
 const styles = StyleSheet.create({
   content: { paddingTop: space.xl, paddingBottom: space.xl, gap: space.md },
-  search: { paddingLeft: 46, height: 56 },
-  searchIcon: { position: 'absolute', left: 18, top: 19 },
   heading: { letterSpacing: 1.6, textTransform: 'uppercase', marginTop: space.md, marginBottom: space.xs },
 });

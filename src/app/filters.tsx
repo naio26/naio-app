@@ -1,6 +1,17 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { Button, Chip, goBack, RangeSlider, Screen, ScreenHeader, Txt } from '@/components';
+import {
+  Button,
+  Chip,
+  CodeBadge,
+  goBack,
+  OptionRow,
+  RangeSlider,
+  Screen,
+  ScreenHeader,
+  SearchField,
+  Txt,
+} from '@/components';
 import { DISTANCES, LANGUAGES, languagesFor, MOODS } from '@/data/catalog';
 import { AGE_RANGES, Filters, Gender, GENDERS, TimeWindow } from '@/data/types';
 import { useCity } from '@/state/city';
@@ -24,7 +35,9 @@ export default function FiltersSheet() {
     .slice(0, city.languages.length)
     .map((l) => l.name);
   const [draft, setDraft] = useState<Filters>(filters);
-  const [moreLangs, setMoreLangs] = useState(false);
+  // "+ Add another language": a search over the fixed list (no free text, so names stay consistent).
+  const [searching, setSearching] = useState(false);
+  const [query, setQuery] = useState('');
   const ageValue: [number, number] = draft.ages
     ? [AGE_RANGES.indexOf(draft.ages.from), AGE_RANGES.indexOf(draft.ages.to)]
     : [0, AGE_RANGES.length - 1];
@@ -37,9 +50,19 @@ export default function FiltersSheet() {
         ? 'Any distance, even more than 30 km'
         : `Up to ${draft.maxKm} km · includes every closer plan`;
 
-  // Suggested languages first, then any extra ones you added with "+ Add".
+  // Suggested languages first, then any extra ones you added with "+ Add another language".
   const langChips = [...suggested, ...draft.languages.filter((l) => !suggested.includes(l))];
-  const otherLangs = LANGUAGES.map((l) => l.name).filter((n) => !langChips.includes(n));
+  const q = query.trim().toLowerCase();
+  const matches = q
+    ? LANGUAGES.filter(
+        (l) => !langChips.includes(l.name) && (l.name.toLowerCase().includes(q) || l.code.toLowerCase() === q),
+      )
+    : [];
+  const addLanguage = (name: string) => {
+    set({ languages: [...draft.languages, name] });
+    setQuery('');
+    setSearching(false);
+  };
 
   return (
     <Screen
@@ -156,14 +179,32 @@ export default function FiltersSheet() {
               onPress={() => set({ languages: toggle(draft.languages, l) })}
             />
           ))}
-          <Chip label={moreLangs ? '− Less' : '+ Add'} onPress={() => setMoreLangs((v) => !v)} />
         </View>
-        {moreLangs && (
-          <View style={[styles.chips, styles.moreLangs]}>
-            {otherLangs.map((l) => (
-              <Chip key={l} size="sm" label={l} onPress={() => set({ languages: [...draft.languages, l] })} />
+        {searching ? (
+          <View style={{ gap: space.xs }}>
+            <SearchField placeholder="Search languages" value={query} onChangeText={setQuery} autoFocus />
+            {matches.map((l) => (
+              <OptionRow
+                key={l.code}
+                label={l.name}
+                selected={false}
+                idleIcon="plus"
+                leading={<CodeBadge code={l.code} />}
+                onPress={() => addLanguage(l.name)}
+              />
             ))}
+            {!!q && matches.length === 0 && (
+              <Txt variant="caption" style={{ paddingVertical: space.sm }}>
+                No language called “{query.trim()}” yet.
+              </Txt>
+            )}
           </View>
+        ) : (
+          <Pressable accessibilityRole="button" hitSlop={8} onPress={() => setSearching(true)} style={styles.addLang}>
+            <Txt variant="label" color={colors.accent}>
+              + Add another language
+            </Txt>
+          </Pressable>
         )}
       </View>
 
@@ -279,7 +320,7 @@ const styles = StyleSheet.create({
   boxTitle: { fontFamily: fonts.sans, fontSize: 14, color: colors.dark },
   boxTitleOn: { fontFamily: fonts.sansBold, color: colors.accent },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  moreLangs: { padding: 12, borderRadius: radius.md, backgroundColor: colors.mist },
+  addLang: { alignSelf: 'flex-start', paddingVertical: space.xs },
   whenGroup: { gap: 8 },
   whenRow: { flexDirection: 'row', gap: 10 },
   day: { fontFamily: fonts.sansBold, fontSize: 14, color: colors.accent },
