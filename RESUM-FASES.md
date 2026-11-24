@@ -1,7 +1,7 @@
 
 # Resum de fases — naio.
 
-Última actualització: 24 de novembre de 2026 (fitxa del pla: has triat la caixa A amb l'idioma de la B; versió de prova v3 actualitzada)
+Última actualització: 24 de novembre de 2026 (pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan»; versió de prova v3 actualitzada)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -442,6 +442,19 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - Les dues files «Plan sheet - A / B» del menú Demo i la pantalla de prova s'han esborrat.
   - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquest canvi.
 
+- **Pantalles dels plans, grups de 15, idiomes i «Leave plan» (24 de novembre de 2026):**
+  - **«Who's going» (detalls del pla):** ja no surt la llista de noms sota «3 people · 2 spots left»; les inicials ja ho diuen. L'etiqueta «HOST» continua sota la inicial de l'amfitrió.
+  - **Plans on ja hi ets:** la descripció surt en cursiva, només el text (no com si ho digués l'amfitrió). Les opcions A/B de la descripció i les seves files del menú Demo s'han esborrat.
+  - **Punt exacte (quan ja hi ets):** s'ha tret la fila «Exact meeting point» de sobre «Language». L'adreça en verd sota el títol ja no diu «Exact point:», va subratllada i es pot tocar: surt un menú per anar-hi amb **Apple Maps, Google Maps o Waze** (iPhone) o **Google Maps o «Other maps app»** (Android, que ensenya totes les apps de mapes del mòbil).
+  - **Fitxa del pla (abans d'apuntar-te):** «(📍 Exact point is shared after joining)» en cursiva i en color fosc.
+  - **«View details»:** la franja de color de dalt ara és **verda** (és un pla per unir-s'hi, com al mapa).
+  - **Marges:** el mateix espai a sobre i a sota de la descripció.
+  - **«Create a plan»:** pots triar **un o més idiomes** (com a mínim un). Es mostren així: «English · Greek». El filtre d'idioma troba el pla si coincideix qualsevol dels seus idiomes.
+  - **Grups de 15 com a màxim:** un pla pot tenir com a molt **15 persones en total, amfitrió inclòs**. A «Create a plan» i «Edit plan» el comptador no passa de 14 («people can join, besides you»), i a sota hi diu «Up to 15 people in total, you included». Els plans de prova ja hi complien (el més gran és de 7).
+  - **Sortir d'un pla:** en un pla on ja t'han acceptat, a sota d'«Open the group chat» hi ha un enllaç discret **«Leave plan»**. Abans surt «Leave this plan?» amb «Leave» i «Stay». Si el deixes: desapareix de My plans, ja no pots entrar al xat, la teva plaça queda lliure («spots left» puja un) i al xat surt «(nom) left the plan». Si la teva sol·licitud encara no està acceptada, en lloc de «Leave plan» hi ha **«Cancel request»**, que funciona igual.
+  - **L'avís a l'amfitrió:** l'app el desa per a l'amfitrió, però a la demo no el pots veure, perquè l'amfitrió és una persona de prova i a Alerts només hi surten els teus avisos. Per això, a la demo tu reps una línia a Alerts: «You left the plan · Maya has been told». Quan hi hagi una base de dades de debò, l'amfitrió el rebrà al seu Alerts.
+  - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.
+
 ## 2. PROPERAMENT
 
 Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan vulguis, podem decidir junts què ve ara. Algunes idees (cap no està decidida):
@@ -455,7 +468,6 @@ Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan v
 ### El que necessito de tu
 
 - **Color de «Your plan»:** tria A (verd més clar) o B (groc) (menú Demo).
-- **Descripció del pla quan ja t'han acceptat:** tria l'opció A o B (al menú Demo).
 - **Unir la versió desada amb la branca principal:** la versió està desada a GitHub en una branca a part, `phases-1-4`. Quan vulguis, la puc unir amb la branca principal (`main`).
 - **Les decisions de les fases 3 i 4:** el rellotge de prova, el pla «Coffee and a wander?» com a teu, el mapa dibuixat i els camps nous de «Create a plan» (zona i estat d'ànim). Digues-me si en vols canviar alguna.
 - **Textos legals:** les «Terms» i les «Safety Guidelines» encara no tenen text. A «Settings → Terms & privacy» de moment hi ha un resum curt fet per mi. Quan tinguis els textos de debò, me'ls pots passar.

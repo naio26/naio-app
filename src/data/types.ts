@@ -73,8 +73,8 @@ export type Plan = {
   meetNear: string; // public, approximate: "Lycabettus cable car"
   exactPoint: string; // hidden until the host accepts you
   distanceKm: number;
-  language: string;
-  capacity: number; // total people including host
+  languages: string[]; // one or more
+  capacity: number; // total people including host, never more than MAX_GROUP (15)
   hostId: string; // 'me' when you host it
   memberIds: string[]; // includes the host
   moods: string[];
@@ -99,8 +99,8 @@ export type PlanDraft = {
   title: string;
   day: PlanDay;
   time: string; // 24h "HH:mm"
-  spots: number; // people who can join, not counting you
-  language: string;
+  spots: number; // people who can join, not counting you (max MAX_SPOTS = 14)
+  languages: string[]; // one or more
   area: string; // public, e.g. "Monastiraki"
   exactPoint: string; // shared only with people you accept
   note: string;
@@ -119,7 +119,7 @@ export type JoinRequest = {
 /** A line in Alerts (39). Only joins, relevant plans and plan-chat messages: no noise. */
 export type Notice = {
   id: string;
-  kind: 'join-request' | 'message' | 'match' | 'accepted' | 'cancelled';
+  kind: 'join-request' | 'message' | 'match' | 'accepted' | 'cancelled' | 'left';
   title: string;
   subtitle: string;
   minutesAgo: number;

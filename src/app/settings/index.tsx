@@ -88,16 +88,6 @@ export default function Settings() {
         }
       />
       <SettingsRow
-        title="Plan description (after joining) - A"
-        sub="In a soft box with a small title"
-        onPress={() => router.push('/plan/philopappou-walk?desc=A')}
-      />
-      <SettingsRow
-        title="Plan description (after joining) - B"
-        sub="As a note from the host"
-        onPress={() => router.push('/plan/philopappou-walk?desc=B')}
-      />
-      <SettingsRow
         title="Test the location question"
         sub="The pop-up after “Create profile”: try Allow or Don’t allow"
         onPress={() => router.push('/setup/welcome?demo=ask')}

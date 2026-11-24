@@ -21,7 +21,6 @@ export { PlanPin, PersonPin, YouDot, PIN_SIZE } from './MapPins';
 export { BottomSheet } from './BottomSheet';
 export {
   AvatarStack,
-  MeetingPoint,
   PlanActions,
   PlanBadge,
   HostingNote,

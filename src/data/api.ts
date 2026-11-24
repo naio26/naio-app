@@ -1,12 +1,19 @@
 // The single door to all app data. Today it reads mock data; later each function
 // can call Supabase instead, and no screen needs to change.
-import { AREAS } from './catalog';
-import { demoCity } from './mock/city';
-import { people } from './mock/people';
-import { plans } from './mock/plans';
-import { autoReplies, joinedAtStart, messages, notices, pastPlans, requests } from './mock/social';
-import { nowHHMM } from './time';
-import { load, save } from '@/state/storage';
+import { AREAS, MAX_GROUP } from "./catalog";
+import { demoCity } from "./mock/city";
+import { people } from "./mock/people";
+import { plans } from "./mock/plans";
+import {
+  autoReplies,
+  joinedAtStart,
+  messages,
+  notices,
+  pastPlans,
+  requests,
+} from "./mock/social";
+import { nowHHMM } from "./time";
+import { load, save } from "@/state/storage";
 import {
   Account,
   City,
@@ -20,7 +27,7 @@ import {
   Person,
   Plan,
   PlanDraft,
-} from './types';
+} from "./types";
 
 /** Pretend network latency so loading states are visible. Also waits for the saved data to be read. */
 const wait = async (ms = 600) => {
@@ -36,34 +43,44 @@ export function getCurrentCity(): City {
 }
 
 export const mockAppleAccount = {
-  name: 'Alicia Morató',
-  privateEmail: 'alicia@privaterelay.appleid.com',
-  email: 'morato.alicia@gmail.com',
+  name: "Alicia Morató",
+  privateEmail: "alicia@privaterelay.appleid.com",
+  email: "morato.alicia@gmail.com",
 };
 
 export const mockGoogleAccount = {
-  name: 'Alicia Morató',
-  email: 'morato.alicia@gmail.com',
+  name: "Alicia Morató",
+  email: "morato.alicia@gmail.com",
 };
 
 export async function signInWithApple(hideEmail: boolean): Promise<Account> {
   await wait();
   return {
-    id: 'me',
+    id: "me",
     name: mockAppleAccount.name,
     email: hideEmail ? mockAppleAccount.privateEmail : mockAppleAccount.email,
-    provider: 'apple',
+    provider: "apple",
   };
 }
 
 export async function signInWithGoogle(): Promise<Account> {
   await wait();
-  return { id: 'me', name: mockGoogleAccount.name, email: mockGoogleAccount.email, provider: 'google' };
+  return {
+    id: "me",
+    name: mockGoogleAccount.name,
+    email: mockGoogleAccount.email,
+    provider: "google",
+  };
 }
 
 export async function signInWithEmail(email: string): Promise<Account> {
   await wait();
-  return { id: 'me', name: '', email: email.trim().toLowerCase(), provider: 'email' };
+  return {
+    id: "me",
+    name: "",
+    email: email.trim().toLowerCase(),
+    provider: "email",
+  };
 }
 
 // ---- In-memory "database" (demo) ----
@@ -76,12 +93,27 @@ const fresh = () => ({
   messages: clone(messages),
   notices: clone(notices),
   blocked: [] as string[],
+  /** Alerts for OTHER people (e.g. a host told that you left). Not shown in your Alerts; a real backend would push them. */
+  hostNotices: [] as { hostId: string; planId: string; text: string }[],
 });
 let db = fresh();
-const ready: Promise<void> = load<ReturnType<typeof fresh>>('db').then((saved) => {
-  if (saved) db = { ...fresh(), ...saved };
-});
-const persist = () => save('db', db);
+const ready: Promise<void> = load<ReturnType<typeof fresh>>("db").then(
+  (saved) => {
+    if (saved) {
+      db = { ...fresh(), ...saved };
+      // Older saved copies: one "language" per plan, and groups bigger than 15.
+      db.plans = db.plans.map((p) => {
+        const old = p as Plan & { language?: string };
+        return {
+          ...p,
+          languages: p.languages ?? [old.language ?? "English"],
+          capacity: Math.min(p.capacity, MAX_GROUP),
+        };
+      });
+    }
+  },
+);
+const persist = () => save("db", db);
 // Bumped by "Reset demo", so replies that were still on their way are dropped.
 let generation = 0;
 
@@ -96,7 +128,8 @@ export async function listBlocked(): Promise<string[]> {
   return [...db.blocked];
 }
 let counter = 0;
-const newId = (prefix: string) => `${prefix}-${Date.now().toString(36)}-${(counter++).toString(36)}`;
+const newId = (prefix: string) =>
+  `${prefix}-${Date.now().toString(36)}-${(counter++).toString(36)}`;
 
 // ---- People & plans ----
 
@@ -120,7 +153,9 @@ export async function getPlan(id: string): Promise<Plan | undefined> {
 
 export async function listPeople(ids: string[]): Promise<Person[]> {
   await wait(100);
-  return ids.map((id) => people.find((p) => p.id === id)).filter((p): p is Person => !!p);
+  return ids
+    .map((id) => people.find((p) => p.id === id))
+    .filter((p): p is Person => !!p);
 }
 
 /** Everyone in the demo except you (for "Block someone" and reports). */
@@ -148,7 +183,10 @@ export async function listMyJoinedPlans(): Promise<string[]> {
 
 // ---- Your own plans (29–36) ----
 
-const toKm = (a: { latitude: number; longitude: number }, b: { latitude: number; longitude: number }) => {
+const toKm = (
+  a: { latitude: number; longitude: number },
+  b: { latitude: number; longitude: number },
+) => {
   const dx = (a.longitude - b.longitude) * 88; // km per degree at Athens' latitude
   const dy = (a.latitude - b.latitude) * 111;
   return Math.round(Math.sqrt(dx * dx + dy * dy) * 10) / 10;
@@ -167,8 +205,8 @@ function applyDraft(plan: Plan, d: PlanDraft): Plan {
     area: area.name,
     meetNear: area.name,
     exactPoint: d.exactPoint.trim(),
-    language: d.language,
-    capacity: d.spots + 1,
+    languages: d.languages,
+    capacity: Math.min(d.spots + 1, MAX_GROUP),
     moods: d.moods,
     location: area.location,
     distanceKm: Math.max(0.2, toKm(area.location, ME)),
@@ -180,9 +218,9 @@ export async function createPlan(d: PlanDraft): Promise<Plan> {
   await wait(700);
   const plan = applyDraft(
     {
-      id: newId('plan'),
-      hostId: 'me',
-      memberIds: ['me'],
+      id: newId("plan"),
+      hostId: "me",
+      memberIds: ["me"],
     } as Plan,
     d,
   );
@@ -213,22 +251,64 @@ export async function cancelPlan(id: string): Promise<Plan> {
 // ---- Joining someone else's plan (fake) ----
 
 /** "Join plan": sends a request to the host. Nothing is shared until they accept. */
-export async function requestToJoin(planId: string): Promise<{ planId: string; status: 'requested' }> {
+export async function requestToJoin(
+  planId: string,
+): Promise<{ planId: string; status: "requested" }> {
   await wait(500);
-  return { planId, status: 'requested' };
+  return { planId, status: "requested" };
 }
 
 /** Demo only: the host "accepts" a few seconds after the request. */
-export async function waitForHostReply(planId: string): Promise<{ planId: string; status: 'accepted' } | null> {
+export async function waitForHostReply(
+  planId: string,
+): Promise<{ planId: string; status: "accepted" } | null> {
   const gen = generation;
   await wait(5000);
   if (gen !== generation) return null; // "Reset demo" happened meanwhile
-  return { planId, status: 'accepted' };
+  return { planId, status: "accepted" };
 }
 
-export async function cancelJoinRequest(planId: string): Promise<{ planId: string; status: 'none' }> {
+/** "Cancel request" (before the host answered). The host is told. */
+export async function cancelJoinRequest(
+  planId: string,
+  myName = "Someone",
+): Promise<{ planId: string; status: "none" }> {
   await wait(300);
-  return { planId, status: 'none' };
+  const plan = db.plans.find((p) => p.id === planId);
+  if (plan)
+    db.hostNotices.push({
+      hostId: plan.hostId,
+      planId,
+      text: `${myName} cancelled their request`,
+    });
+  persist();
+  return { planId, status: "none" };
+}
+
+/** "Leave plan" (after being accepted): your spot is free again, you leave the chat and the host is told. */
+export async function leavePlan(
+  planId: string,
+  myName = "Someone",
+): Promise<{ planId: string; status: "none" }> {
+  await wait(400);
+  const plan = db.plans.find((p) => p.id === planId);
+  if (plan) {
+    plan.memberIds = plan.memberIds.filter((m) => m !== "me");
+    db.messages.push({
+      id: newId("msg"),
+      planId,
+      authorId: "system",
+      text: `${myName} left the plan`,
+      time: nowHHMM(),
+    });
+    db.hostNotices.push({
+      hostId: plan.hostId,
+      planId,
+      text: `${myName} left the plan`,
+    });
+  }
+  persist();
+  return { planId, status: "none" };
 }
 
 // ---- Requests to YOUR plans (39–41) ----
@@ -239,18 +319,22 @@ export async function listJoinRequests(): Promise<JoinRequest[]> {
 }
 
 /** Accept or decline. Accepting adds them to the group and opens the chat for them. */
-export async function answerJoinRequest(id: string, accept: boolean): Promise<JoinRequest> {
+export async function answerJoinRequest(
+  id: string,
+  accept: boolean,
+): Promise<JoinRequest> {
   await wait(500);
   const r = db.requests.find((x) => x.id === id)!;
-  r.status = accept ? 'accepted' : 'declined';
+  r.status = accept ? "accepted" : "declined";
   if (accept) {
     const plan = db.plans.find((p) => p.id === r.planId)!;
     if (!plan.memberIds.includes(r.personId)) plan.memberIds.push(r.personId);
-    const name = people.find((p) => p.id === r.personId)?.firstName ?? 'Someone';
+    const name =
+      people.find((p) => p.id === r.personId)?.firstName ?? "Someone";
     db.messages.push({
-      id: newId('msg'),
+      id: newId("msg"),
       planId: plan.id,
-      authorId: 'system',
+      authorId: "system",
       text: `${name} joined the plan`,
       time: nowHHMM(),
     });
@@ -260,7 +344,10 @@ export async function answerJoinRequest(id: string, accept: boolean): Promise<Jo
 }
 
 /** Host only (screen 36): removes someone from your plan. They lose the chat and the exact point. */
-export async function removeFromPlan(planId: string, personId: string): Promise<Plan> {
+export async function removeFromPlan(
+  planId: string,
+  personId: string,
+): Promise<Plan> {
   await wait(400);
   const plan = db.plans.find((p) => p.id === planId)!;
   plan.memberIds = plan.memberIds.filter((m) => m !== personId);
@@ -275,23 +362,35 @@ export async function listMessages(planId: string): Promise<Message[]> {
   return clone(db.messages.filter((m) => m.planId === planId));
 }
 
-export async function sendMessage(planId: string, text: string): Promise<Message> {
+export async function sendMessage(
+  planId: string,
+  text: string,
+): Promise<Message> {
   await wait(200);
-  const msg: Message = { id: newId('msg'), planId, authorId: 'me', text: text.trim(), time: nowHHMM() };
+  const msg: Message = {
+    id: newId("msg"),
+    planId,
+    authorId: "me",
+    text: text.trim(),
+    time: nowHHMM(),
+  };
   db.messages.push(msg);
   persist();
   return clone(msg);
 }
 
 /** Demo only: someone in the group answers a couple of seconds later. */
-export async function waitForReply(planId: string, fromIds: string[]): Promise<Message | null> {
+export async function waitForReply(
+  planId: string,
+  fromIds: string[],
+): Promise<Message | null> {
   const gen = generation;
   await wait(2500);
   if (gen !== generation) return null;
-  const others = fromIds.filter((id) => id !== 'me');
+  const others = fromIds.filter((id) => id !== "me");
   if (!others.length) return null;
   const msg: Message = {
-    id: newId('msg'),
+    id: newId("msg"),
     planId,
     authorId: others[Math.floor(Math.random() * others.length)],
     text: autoReplies[Math.floor(Math.random() * autoReplies.length)],
@@ -303,9 +402,18 @@ export async function waitForReply(planId: string, fromIds: string[]): Promise<M
 }
 
 /** A line in a chat like "You joined the plan". */
-export async function addSystemMessage(planId: string, text: string): Promise<Message> {
+export async function addSystemMessage(
+  planId: string,
+  text: string,
+): Promise<Message> {
   await ready;
-  const msg: Message = { id: newId('msg'), planId, authorId: 'system', text, time: nowHHMM() };
+  const msg: Message = {
+    id: newId("msg"),
+    planId,
+    authorId: "system",
+    text,
+    time: nowHHMM(),
+  };
   db.messages.push(msg);
   persist();
   return clone(msg);
@@ -318,9 +426,16 @@ export async function listNotices(): Promise<Notice[]> {
   return clone(db.notices);
 }
 
-export async function addNotice(n: Omit<Notice, 'id' | 'read' | 'minutesAgo'>): Promise<Notice> {
+export async function addNotice(
+  n: Omit<Notice, "id" | "read" | "minutesAgo">,
+): Promise<Notice> {
   await ready;
-  const notice: Notice = { ...n, id: newId('notice'), read: false, minutesAgo: 0 };
+  const notice: Notice = {
+    ...n,
+    id: newId("notice"),
+    read: false,
+    minutesAgo: 0,
+  };
   db.notices.unshift(notice);
   persist();
   return clone(notice);
@@ -350,7 +465,12 @@ export async function unblockPerson(id: string): Promise<string[]> {
 }
 
 /** Reports are private and reviewed by people (demo: nothing is sent). */
-export async function sendReport(r: { personId?: string; planId?: string; reason: string; details: string }) {
+export async function sendReport(r: {
+  personId?: string;
+  planId?: string;
+  reason: string;
+  details: string;
+}) {
   await wait(800);
   return { ok: true as const, ...r };
 }

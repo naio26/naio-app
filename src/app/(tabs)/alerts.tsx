@@ -16,6 +16,7 @@ const icons: Record<Notice['kind'], IconName> = {
   match: 'map-pin',
   accepted: 'check',
   cancelled: 'x',
+  left: 'log-out',
 };
 
 // Screen 39 — Notifications. Only joins, relevant nearby plans and plan-chat messages.

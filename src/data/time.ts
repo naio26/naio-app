@@ -43,7 +43,7 @@ function slot(plan: Plan): TimeWindow {
 export function matchesFilters(plan: Plan, f: Filters, hostGender?: Gender) {
   if (f.maxKm !== null && plan.distanceKm > f.maxKm) return false;
   if (f.moods.length && !plan.moods.some((m) => f.moods.includes(m))) return false;
-  if (f.languages.length && !f.languages.includes(plan.language)) return false;
+  if (f.languages.length && !plan.languages.some((l) => f.languages.includes(l))) return false;
   if (f.genders.length && !(hostGender && f.genders.includes(hostGender))) return false;
   if (f.when.length && !(f.when.includes(slot(plan)) || (f.when.includes('now') && isNow(plan)))) return false;
   return true;

@@ -130,7 +130,13 @@ export const AREAS: { name: string; location: { latitude: number; longitude: num
 export const PLAN_LANGUAGES = ['English', 'Spanish', 'Greek', 'French', 'Italian', 'German'];
 
 export const MIN_SPOTS = 1;
-export const MAX_SPOTS = 10;
+/** A plan holds at most 15 people in total, the host included. */
+export const MAX_GROUP = 15;
+/** People who can join besides the host. */
+export const MAX_SPOTS = MAX_GROUP - 1;
+
+/** "English · Greek" */
+export const languagesText = (languages: string[]) => languages.join(' · ');
 
 export const REPORT_REASONS = [
   'Made me feel unsafe',
