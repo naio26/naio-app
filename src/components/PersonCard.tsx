@@ -1,4 +1,5 @@
 import { StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Person } from '@/data/types';
 import { colors, fonts, space } from '@/theme';
 import { Avatar } from './Avatar';
@@ -12,11 +13,13 @@ import { Txt } from './Txt';
  */
 export function PersonCard({ person, host }: { person: Person; host?: boolean }) {
   const me = person.id === 'me';
+  // Room at the bottom so the content doesn't sit on the edge (or under the iPhone's home bar).
+  const insets = useSafeAreaInsets();
   const about = person.about?.trim();
   const languages = person.languages.map((l) => l.name).join(' · ');
   const interests = person.interests.slice(0, 4);
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, { paddingBottom: insets.bottom + space.lg }]}>
       <View style={styles.hero}>
         <Avatar
           initials={person.initials}
@@ -53,7 +56,7 @@ export function PersonCard({ person, host }: { person: Person; host?: boolean })
       {interests.length > 0 && (
         <View style={styles.block}>
           <Txt style={styles.label}>My kind of plans</Txt>
-          <BalancedTags items={interests} />
+          <BalancedTags items={interests} align="left" />
         </View>
       )}
     </View>

@@ -7,9 +7,9 @@ const GAP = 8;
 
 /**
  * Soft outline tags ("My kind of plans"): every row is filled as full as possible (items may be reordered)
- * and centred horizontally, the last row too.
+ * and centred horizontally, the last row too (My profile). align="left": rows start at the left (profile card in a plan).
  */
-export function BalancedTags({ items }: { items: string[] }) {
+export function BalancedTags({ items, align = 'center' }: { items: string[]; align?: 'center' | 'left' }) {
   const [width, setWidth] = useState(0);
   const [sizes, setSizes] = useState<Record<string, number>>({});
   const measured = width > 0 && items.every((i) => sizes[i] !== undefined);
@@ -36,7 +36,7 @@ export function BalancedTags({ items }: { items: string[] }) {
       )}
       <View style={{ gap: GAP }}>
         {rows.map((row, r) => (
-          <View key={r} style={styles.row}>
+          <View key={r} style={[styles.row, align === 'left' && styles.left]}>
             {row.map((i) => (
               <Tag key={i} label={i} />
             ))}
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
   },
   measureItem: { flexShrink: 0, flexGrow: 0, alignSelf: 'flex-start' },
   row: { flexDirection: 'row', justifyContent: 'center', gap: GAP },
+  left: { justifyContent: 'flex-start' },
   tag: {
     flexShrink: 0,
     paddingHorizontal: 12,

@@ -464,6 +464,7 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     - He revisat la resta de pantalles dels plans (xat, «Request sent», «Manage group», «My plans»): no marquen l'amfitrió, i a la fitxa del mapa no s'hi posa.
   - **«My kind of plans» (perfil), centrat:** cada fila d'etiquetes va centrada al mig (també l'última), en lloc d'anar d'esquerra a dreta. Cada fila continua omplint-se tant com pot perquè quedin equilibrades.
   - **Perfil curt de la gent del pla:** a «View details», a «Who's going», pots tocar el cercle de cada persona. Puja una targeta des de baix (amb el fons enfosquit) amb la inicial (més endavant la foto), el nom, «(HOST)» si és l'amfitrió, la franja d'edat, d'on és, un «About me» curt (com a molt dues línies), els idiomes que parla i fins a quatre interessos. Mai l'edat exacta ni on és ara. Es tanca amb la ✕ o tocant fora, i tornes al pla.
+  - **Després, ajustat:** dins d'aquesta targeta, «My kind of plans» va alineat a l'esquerra. A My profile continua centrat. També té més espai a baix, perquè el contingut no quedi enganxat a la vora.
   - **Fitxa del pla (en tocar un pla al mapa), nou ordre:** el títol; la descripció just a sota; una línia fina; el lloc en terracota amb «Exact point is shared after joining» **a la seva pròpia línia** a sota (en cursiva i fosc); i després la resta com abans. Quan ja hi ets, aquella línia mostra l'adreça exacta en verd, i si la toques et dona les indicacions.
   - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.
 
