@@ -4,7 +4,6 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { LookProvider } from '@/state/look';
 import { resetDemoData } from '@/data/api';
 import { Account } from '@/data/types';
 import { AlertsProvider } from '@/state/alerts';
@@ -58,41 +57,31 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <BootContext.Provider value={boot}>
-        <LookProvider>
-          <SessionProvider key={`s${epoch}`} initial={saved.session as Account | null | undefined}>
-            <ProfileProvider initial={saved.profile as SavedProfile | undefined}>
-              <FiltersProvider initial={saved.filters as SavedFilters | undefined}>
-                <SafetyProvider initial={saved.safety as SavedSafety | undefined}>
-                  <AlertsProvider>
-                    <ChatProvider>
-                      <PlansProvider initial={saved.plans as SavedPlans | undefined}>
-                        <StatusBar style="dark" />
-                        <Stack
-                          screenOptions={{
-                            headerShown: false,
-                            contentStyle: { backgroundColor: colors.cream },
-                          }}
-                        >
-                          <Stack.Screen name="(onboarding)/reel" options={{ animation: 'fade' }} />
-                          <Stack.Screen name="(tabs)" options={{ animation: 'fade', gestureEnabled: false }} />
-                          <Stack.Screen name="filters" options={{ presentation: 'modal' }} />
-                          <Stack.Screen
-                            name="setup/take-id"
-                            options={{
-                              animation: 'fade',
-                              contentStyle: { backgroundColor: '#161311' },
-                            }}
-                          />
-                          <Stack.Screen name="setup/welcome" options={{ animation: 'fade', gestureEnabled: false }} />
-                        </Stack>
-                      </PlansProvider>
-                    </ChatProvider>
-                  </AlertsProvider>
-                </SafetyProvider>
-              </FiltersProvider>
-            </ProfileProvider>
-          </SessionProvider>
-        </LookProvider>
+        <SessionProvider key={`s${epoch}`} initial={saved.session as Account | null | undefined}>
+          <ProfileProvider initial={saved.profile as SavedProfile | undefined}>
+            <FiltersProvider initial={saved.filters as SavedFilters | undefined}>
+              <SafetyProvider initial={saved.safety as SavedSafety | undefined}>
+                <AlertsProvider>
+                  <ChatProvider>
+                    <PlansProvider initial={saved.plans as SavedPlans | undefined}>
+                      <StatusBar style="dark" />
+                      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.cream } }}>
+                        <Stack.Screen name="(onboarding)/reel" options={{ animation: 'fade' }} />
+                        <Stack.Screen name="(tabs)" options={{ animation: 'fade', gestureEnabled: false }} />
+                        <Stack.Screen name="filters" options={{ presentation: 'modal' }} />
+                        <Stack.Screen
+                          name="setup/take-id"
+                          options={{ animation: 'fade', contentStyle: { backgroundColor: '#161311' } }}
+                        />
+                        <Stack.Screen name="setup/welcome" options={{ animation: 'fade', gestureEnabled: false }} />
+                      </Stack>
+                    </PlansProvider>
+                  </ChatProvider>
+                </AlertsProvider>
+              </SafetyProvider>
+            </FiltersProvider>
+          </ProfileProvider>
+        </SessionProvider>
       </BootContext.Provider>
     </SafeAreaProvider>
   );

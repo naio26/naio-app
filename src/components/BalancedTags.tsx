@@ -6,8 +6,8 @@ import { Txt } from './Txt';
 const GAP = 8;
 
 /**
- * Soft outline tags ("My kind of plans") laid out like justified text: every row starts at the left edge and
- * reaches the right edge (items spread evenly); the last row stays on the left. Items may be reordered so rows fill well.
+ * Soft outline tags ("My kind of plans"): every row is filled as full as possible (items may be reordered)
+ * and centred horizontally, the last row too.
  */
 export function BalancedTags({ items }: { items: string[] }) {
   const [width, setWidth] = useState(0);
@@ -36,7 +36,7 @@ export function BalancedTags({ items }: { items: string[] }) {
       )}
       <View style={{ gap: GAP }}>
         {rows.map((row, r) => (
-          <View key={r} style={[styles.row, r < rows.length - 1 && row.length > 1 && styles.justified]}>
+          <View key={r} style={styles.row}>
             {row.map((i) => (
               <Tag key={i} label={i} />
             ))}
@@ -58,7 +58,7 @@ function Tag({ label }: { label: string }) {
 }
 
 /**
- * Fill each row as full as possible (best combination of the remaining tags, so the justified gaps stay small);
+ * Fill each row as full as possible (best combination of the remaining tags, so the rows look balanced);
  * whatever is left becomes the last row. Inside a row the original order is kept.
  */
 function fillRows(items: string[], sizes: Record<string, number>, max: number): string[][] {
@@ -95,8 +95,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   measureItem: { flexShrink: 0, flexGrow: 0, alignSelf: 'flex-start' },
-  row: { flexDirection: 'row', justifyContent: 'flex-start', gap: GAP },
-  justified: { justifyContent: 'space-between' },
+  row: { flexDirection: 'row', justifyContent: 'center', gap: GAP },
   tag: {
     flexShrink: 0,
     paddingHorizontal: 12,

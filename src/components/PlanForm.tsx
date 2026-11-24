@@ -1,36 +1,29 @@
-import { useMemo, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
-import { Icon, type IconName } from "./Icon";
-import {
-  AREAS,
-  MAX_GROUP,
-  MAX_SPOTS,
-  MIN_SPOTS,
-  MOODS,
-  PLAN_LANGUAGES,
-} from "@/data/catalog";
-import { formatTime, timeOptions } from "@/data/time";
-import { Plan, PlanDay, PlanDraft } from "@/data/types";
-import { colors, fonts, radius, space } from "@/theme";
-import { BackButton } from "./BackButton";
-import { Button } from "./Button";
-import { Chip } from "./Chip";
-import { Input } from "./Input";
-import { Screen } from "./Screen";
-import { Txt } from "./Txt";
+import { useMemo, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Icon, type IconName } from './Icon';
+import { AREAS, MAX_GROUP, MAX_SPOTS, MIN_SPOTS, MOODS, PLAN_LANGUAGES } from '@/data/catalog';
+import { formatTime, timeOptions } from '@/data/time';
+import { Plan, PlanDay, PlanDraft } from '@/data/types';
+import { colors, fonts, radius, space } from '@/theme';
+import { BackButton } from './BackButton';
+import { Button } from './Button';
+import { Chip } from './Chip';
+import { Input } from './Input';
+import { Screen } from './Screen';
+import { Txt } from './Txt';
 
 const MAX_MOODS = 2;
 
 export function emptyDraft(): PlanDraft {
   return {
-    title: "",
-    day: "today",
-    time: timeOptions("today")[1] ?? timeOptions("tomorrow")[0],
+    title: '',
+    day: 'today',
+    time: timeOptions('today')[1] ?? timeOptions('tomorrow')[0],
     spots: 5,
-    languages: ["English"],
-    area: "",
-    exactPoint: "",
-    note: "",
+    languages: ['English'],
+    area: '',
+    exactPoint: '',
+    note: '',
     moods: [],
   };
 }
@@ -79,11 +72,11 @@ export function PlanForm({
   };
 
   const missing = [
-    !d.title.trim() && "an activity",
-    !d.area && "an area",
-    !d.exactPoint.trim() && "a meeting point",
-    d.languages.length === 0 && "a language",
-    d.moods.length === 0 && "a mood",
+    !d.title.trim() && 'an activity',
+    !d.area && 'an area',
+    !d.exactPoint.trim() && 'a meeting point',
+    d.languages.length === 0 && 'a language',
+    d.moods.length === 0 && 'a mood',
   ].filter(Boolean) as string[];
 
   const submit = async () => {
@@ -100,16 +93,10 @@ export function PlanForm({
         <View style={{ gap: 8 }}>
           {missing.length > 0 && (
             <Txt variant="caption" center>
-              Add {missing.join(", ")} to continue.
+              Add {missing.join(', ')} to continue.
             </Txt>
           )}
-          <Button
-            title={submitLabel}
-            arrow
-            disabled={missing.length > 0}
-            loading={saving}
-            onPress={submit}
-          />
+          <Button title={submitLabel} arrow disabled={missing.length > 0} loading={saving} onPress={submit} />
         </View>
       }
     >
@@ -130,28 +117,18 @@ export function PlanForm({
 
       <Field label="Day / time" hint="Plans are for today or tomorrow only.">
         <View style={styles.row}>
-          {(["today", "tomorrow"] as const).map((day) => (
+          {(['today', 'tomorrow'] as const).map((day) => (
             <Chip
               key={day}
-              label={day === "today" ? "Today" : "Tomorrow"}
+              label={day === 'today' ? 'Today' : 'Tomorrow'}
               selected={d.day === day}
               onPress={() => setDay(day)}
             />
           ))}
         </View>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.times}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.times}>
           {times.map((t) => (
-            <Chip
-              key={t}
-              size="sm"
-              label={formatTime(t)}
-              selected={d.time === t}
-              onPress={() => set({ time: t })}
-            />
+            <Chip key={t} size="sm" label={formatTime(t)} selected={d.time === t} onPress={() => set({ time: t })} />
           ))}
         </ScrollView>
       </Field>
@@ -168,7 +145,7 @@ export function PlanForm({
             onChange={(spots) => set({ spots })}
           />
           <Txt variant="small" style={{ flex: 1 }}>
-            {d.spots === 1 ? "person can join" : "people can join"}, besides you
+            {d.spots === 1 ? 'person can join' : 'people can join'}, besides you
           </Txt>
         </View>
         <View style={styles.wrap}>
@@ -185,9 +162,7 @@ export function PlanForm({
                   set({
                     languages: on
                       ? d.languages.filter((x) => x !== l)
-                      : PLAN_LANGUAGES.filter(
-                          (x) => x === l || d.languages.includes(x),
-                        ),
+                      : PLAN_LANGUAGES.filter((x) => x === l || d.languages.includes(x)),
                   })
                 }
               />
@@ -196,10 +171,7 @@ export function PlanForm({
         </View>
       </Field>
 
-      <Field
-        label="Area"
-        hint="Everyone sees the area. Pick a public neighbourhood."
-      >
+      <Field label="Area" hint="Everyone sees the area. Pick a public neighbourhood.">
         <View style={styles.wrap}>
           {AREAS.map((a) => (
             <Chip
@@ -213,10 +185,7 @@ export function PlanForm({
         </View>
       </Field>
 
-      <Field
-        label="Meeting point"
-        hint="Only shared with the people you accept."
-      >
+      <Field label="Meeting point" hint="Only shared with the people you accept.">
         <Input
           placeholder="Monastiraki Square, by the metro exit"
           value={d.exactPoint}
@@ -225,10 +194,7 @@ export function PlanForm({
         />
       </Field>
 
-      <Field
-        label="Mood"
-        hint={`Pick up to ${MAX_MOODS}. It helps the right people find your plan.`}
-      >
+      <Field label="Mood" hint={`Pick up to ${MAX_MOODS}. It helps the right people find your plan.`}>
         <View style={styles.wrap}>
           {MOODS.map((m) => {
             const on = d.moods.includes(m);
@@ -240,14 +206,7 @@ export function PlanForm({
                 label={m}
                 selected={on}
                 style={full && { opacity: 0.45 }}
-                onPress={() =>
-                  !full &&
-                  set({
-                    moods: on
-                      ? d.moods.filter((x) => x !== m)
-                      : [...d.moods, m],
-                  })
-                }
+                onPress={() => !full && set({ moods: on ? d.moods.filter((x) => x !== m) : [...d.moods, m] })}
               />
             );
           })}
@@ -270,26 +229,17 @@ export function PlanForm({
           Preview
         </Txt>
         <Txt variant="bodyStrong" style={{ fontSize: 18 }}>
-          {d.title.trim() || "Your activity"}
+          {d.title.trim() || 'Your activity'}
         </Txt>
         <Txt variant="small">
-          {d.day === "today" ? "Today" : "Tomorrow"} · {formatTime(d.time)} ·{" "}
-          {d.area || "Area"}
+          {d.day === 'today' ? 'Today' : 'Tomorrow'} · {formatTime(d.time)} · {d.area || 'Area'}
         </Txt>
       </View>
     </Screen>
   );
 }
 
-function Field({
-  label,
-  hint,
-  children,
-}: {
-  label: string;
-  hint?: string;
-  children: React.ReactNode;
-}) {
+function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
     <View style={{ gap: 10 }}>
       <Txt style={styles.label}>{label}</Txt>
@@ -318,15 +268,9 @@ function Stepper({
         onPress={() => onChange(value - 1)}
         style={styles.stepBtn}
       >
-        <Icon
-          name="minus"
-          color={value <= min ? colors.faint : colors.accent}
-        />
+        <Icon name="minus" color={value <= min ? colors.faint : colors.accent} />
       </Pressable>
-      <Txt
-        variant="bodyStrong"
-        style={{ minWidth: 24, textAlign: "center", fontSize: 18 }}
-      >
+      <Txt variant="bodyStrong" style={{ minWidth: 24, textAlign: 'center', fontSize: 18 }}>
         {value}
       </Txt>
       <Pressable
@@ -347,16 +291,16 @@ const styles = StyleSheet.create({
     fontFamily: fonts.sansBold,
     fontSize: 11,
     letterSpacing: 1.2,
-    textTransform: "uppercase",
+    textTransform: 'uppercase',
     color: colors.muted,
   },
-  row: { flexDirection: "row", gap: 10 },
+  row: { flexDirection: 'row', gap: 10 },
   times: { gap: 8, paddingRight: space.lg },
-  wrap: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  spots: { flexDirection: "row", alignItems: "center", gap: 14 },
+  wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  spots: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   stepper: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 6,
     borderWidth: 1,
     borderColor: colors.border,
@@ -364,18 +308,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     padding: 4,
   },
-  stepBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  note: { height: 84, paddingTop: 14, textAlignVertical: "top" },
-  preview: {
-    backgroundColor: colors.blush,
-    borderRadius: radius.lg,
-    padding: 20,
-    gap: 8,
-  },
+  stepBtn: { width: 40, height: 40, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  note: { height: 84, paddingTop: 14, textAlignVertical: 'top' },
+  preview: { backgroundColor: colors.blush, borderRadius: radius.lg, padding: 20, gap: 8 },
 });

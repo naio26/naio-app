@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import { router } from 'expo-router';
 import { Button, Card, Screen, ScreenHeader, SettingsRow, SettingsSection, Txt } from '@/components';
 import { useBoot } from '@/state/boot';
-import { useLook } from '@/state/look';
 import { useSafety } from '@/state/safety';
 import { colors, space } from '@/theme';
 
@@ -12,7 +11,6 @@ export default function Settings() {
   const { offline, setOffline, locationMode, prefs, blocked } = useSafety();
   const on = Object.values(prefs).filter(Boolean).length;
   const { resetDemo } = useBoot();
-  const { mineLook, setMineLook } = useLook();
   const [confirmReset, setConfirmReset] = useState(false);
   const [resetting, setResetting] = useState(false);
   return (
@@ -63,30 +61,6 @@ export default function Settings() {
 
       {/* Demo only: clears everything saved on this phone and starts again from the intro. */}
       <SettingsSection title="Demo" />
-      <SettingsRow
-        title="“Your plan” colour - A"
-        sub="Lighter green · then look at the map and My plans"
-        onPress={() => setMineLook('green')}
-        right={
-          mineLook === 'green' ? (
-            <Txt variant="label" color={colors.green}>
-              On
-            </Txt>
-          ) : undefined
-        }
-      />
-      <SettingsRow
-        title="“Your plan” colour - B"
-        sub="Yellow · then look at the map and My plans"
-        onPress={() => setMineLook('yellow')}
-        right={
-          mineLook === 'yellow' ? (
-            <Txt variant="label" color={colors.green}>
-              On
-            </Txt>
-          ) : undefined
-        }
-      />
       <SettingsRow
         title="Test the location question"
         sub="The pop-up after “Create profile”: try Allow or Don’t allow"

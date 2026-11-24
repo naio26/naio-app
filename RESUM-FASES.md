@@ -1,7 +1,7 @@
 
 # Resum de fases — naio.
 
-Última actualització: 24 de novembre de 2026 (pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan»; versió de prova v3 actualitzada)
+Última actualització: 24 de novembre de 2026 (pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -455,6 +455,17 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **L'avís a l'amfitrió:** l'app el desa per a l'amfitrió, però a la demo no el pots veure, perquè l'amfitrió és una persona de prova i a Alerts només hi surten els teus avisos. Per això, a la demo tu reps una línia a Alerts: «You left the plan · Maya has been told». Quan hi hagi una base de dades de debò, l'amfitrió el rebrà al seu Alerts.
   - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.
 
+- **Més ajustos a les pantalles dels plans (24 de novembre de 2026):**
+  - **Color de «Your plan»: has triat la A**, el verd més clar amb text blanc. El groc i les files del menú Demo s'han esborrat. Ara al menú Demo ja no queda cap opció A/B per triar.
+  - **Franja de color de «View details»** (corregit): **taronja suau** mentre només mires el pla, i **verda** quan ja hi ets (t'han acceptat, o és el teu pla).
+  - **L'amfitrió sempre surt com «(HOST)»**, en majúscules i entre parèntesis. L'he canviat a:
+    - **«View details»:** sota la inicial de l'amfitrió, a «Who's going».
+    - **«You're in»** (la pantalla després d'apuntar-te): a la línia de noms, «Sofia (HOST), Leo, You».
+    - He revisat la resta de pantalles dels plans (xat, «Request sent», «Manage group», «My plans»): no marquen l'amfitrió, i a la fitxa del mapa no s'hi posa.
+  - **«My kind of plans» (perfil), centrat:** cada fila d'etiquetes va centrada al mig (també l'última), en lloc d'anar d'esquerra a dreta. Cada fila continua omplint-se tant com pot perquè quedin equilibrades.
+  - **Fitxa del pla (en tocar un pla al mapa), nou ordre:** el títol; la descripció just a sota; una línia fina; el lloc en terracota amb «Exact point is shared after joining» **a la seva pròpia línia** a sota (en cursiva i fosc); i després la resta com abans. Quan ja hi ets, aquella línia mostra l'adreça exacta en verd, i si la toques et dona les indicacions.
+  - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.
+
 ## 2. PROPERAMENT
 
 Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan vulguis, podem decidir junts què ve ara. Algunes idees (cap no està decidida):
@@ -467,7 +478,6 @@ Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan v
 
 ### El que necessito de tu
 
-- **Color de «Your plan»:** tria A (verd més clar) o B (groc) (menú Demo).
 - **Unir la versió desada amb la branca principal:** la versió està desada a GitHub en una branca a part, `phases-1-4`. Quan vulguis, la puc unir amb la branca principal (`main`).
 - **Les decisions de les fases 3 i 4:** el rellotge de prova, el pla «Coffee and a wander?» com a teu, el mapa dibuixat i els camps nous de «Create a plan» (zona i estat d'ànim). Digues-me si en vols canviar alguna.
 - **Textos legals:** les «Terms» i les «Safety Guidelines» encara no tenen text. A «Settings → Terms & privacy» de moment hi ha un resum curt fet per mi. Quan tinguis els textos de debò, me'ls pots passar.

@@ -1,13 +1,4 @@
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import {
   answerJoinRequest,
   cancelJoinRequest,
@@ -23,16 +14,16 @@ import {
   requestToJoin,
   updatePlan as apiUpdatePlan,
   waitForHostReply,
-} from "@/data/api";
-import { useLoad } from "@/data/hooks";
-import { JoinRequest, JoinStatus, Plan, PlanDraft } from "@/data/types";
-import { useAlerts } from "./alerts";
-import { useChat } from "./chat";
-import { useMe } from "./people";
-import { KEYS, useSaved } from "./storage";
+} from '@/data/api';
+import { useLoad } from '@/data/hooks';
+import { JoinRequest, JoinStatus, Plan, PlanDraft } from '@/data/types';
+import { useAlerts } from './alerts';
+import { useChat } from './chat';
+import { useMe } from './people';
+import { KEYS, useSaved } from './storage';
 
 /** Your relation to a plan: 'host' for your own plans, otherwise none → requested → accepted. */
-export type MyStatus = JoinStatus | "host";
+export type MyStatus = JoinStatus | 'host';
 
 type PlansState = {
   plans: Plan[]; // every plan that is still on
@@ -60,21 +51,13 @@ const PlansContext = createContext<PlansState | null>(null);
 export type SavedPlans = Record<string, JoinStatus>;
 
 /** All plans, your joins and requests to your plans. Saved on the phone (statuses here, the rest in api.ts). */
-export function PlansProvider({
-  children,
-  initial,
-}: {
-  children: ReactNode;
-  initial?: SavedPlans;
-}) {
+export function PlansProvider({ children, initial }: { children: ReactNode; initial?: SavedPlans }) {
   const alerts = useAlerts();
   const chat = useChat();
   const me = useMe();
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loaded, setLoaded] = useState(false);
-  const [status, setStatus] = useState<Record<string, JoinStatus>>(
-    initial ?? {},
-  );
+  const [status, setStatus] = useState<Record<string, JoinStatus>>(initial ?? {});
   useSaved(KEYS.plans, status);
   const [requests, setRequests] = useState<JoinRequest[]>([]);
   // Latest statuses for the async host reply below (state inside it would be stale).
@@ -98,16 +81,15 @@ export function PlansProvider({
   const awaitHost = useCallback(
     (planId: string) => {
       waitForHostReply(planId).then(async (reply) => {
-        if (!reply || !alive.current || latest.current[planId] !== "requested")
-          return;
+        if (!reply || !alive.current || latest.current[planId] !== 'requested') return;
         setStatus((s) => ({ ...s, [planId]: reply.status }));
         const plan = await getPlan(planId);
         const [host] = plan ? await listPeople([plan.hostId]) : [];
-        chat.addSystem(planId, "You joined the plan");
+        chat.addSystem(planId, 'You joined the plan');
         alerts.add({
-          kind: "accepted",
-          title: `${host?.firstName ?? "The host"} accepted your request`,
-          subtitle: plan?.title ?? "",
+          kind: 'accepted',
+          title: `${host?.firstName ?? 'The host'} accepted your request`,
+          subtitle: plan?.title ?? '',
           planId,
           personId: host?.id,
         });
@@ -122,15 +104,12 @@ export function PlansProvider({
     if (initial) {
       // Reopening the app while a request was waiting: the host answers again a few seconds later.
       Object.entries(initial)
-        .filter(([, st]) => st === "requested")
+        .filter(([, st]) => st === 'requested')
         .forEach(([id]) => awaitHost(id));
     } else {
       // First start: the plans you're already in.
       listMyJoinedPlans().then((ids) =>
-        setStatus((s) => ({
-          ...Object.fromEntries(ids.map((id) => [id, "accepted"])),
-          ...s,
-        })),
+        setStatus((s) => ({ ...Object.fromEntries(ids.map((id) => [id, 'accepted'])), ...s })),
       );
     }
     // Only once, when the app starts.
@@ -148,31 +127,24 @@ export function PlansProvider({
 
   // Leaving or cancelling: off My plans at once; the host is told (in the demo you get a note in Alerts).
   const withdraw = useCallback(
-    async (planId: string, how: "left" | "cancelled") => {
-      setStatus((s) => ({ ...s, [planId]: "none" }));
-      if (how === "left") await apiLeavePlan(planId, me.firstName);
+    async (planId: string, how: 'left' | 'cancelled') => {
+      setStatus((s) => ({ ...s, [planId]: 'none' }));
+      if (how === 'left') await apiLeavePlan(planId, me.firstName);
       else await cancelJoinRequest(planId, me.firstName);
       const plan = await getPlan(planId);
       const [host] = plan ? await listPeople([plan.hostId]) : [];
       await refresh();
       alerts.add({
-        kind: "left",
-        title:
-          how === "left" ? "You left the plan" : "You cancelled your request",
-        subtitle: `${plan?.title ?? ""} · ${host?.firstName ?? "The host"} has been told`,
+        kind: 'left',
+        title: how === 'left' ? 'You left the plan' : 'You cancelled your request',
+        subtitle: `${plan?.title ?? ''} · ${host?.firstName ?? 'The host'} has been told`,
         planId,
       });
     },
     [alerts, me.firstName, refresh],
   );
-  const cancelRequest = useCallback(
-    (planId: string) => withdraw(planId, "cancelled"),
-    [withdraw],
-  );
-  const leavePlan = useCallback(
-    (planId: string) => withdraw(planId, "left"),
-    [withdraw],
-  );
+  const cancelRequest = useCallback((planId: string) => withdraw(planId, 'cancelled'), [withdraw]);
+  const leavePlan = useCallback((planId: string) => withdraw(planId, 'left'), [withdraw]);
 
   const removeMember = useCallback(
     async (planId: string, personId: string) => {
@@ -222,12 +194,9 @@ export function PlansProvider({
     () => ({
       plans,
       loaded,
-      statusOf: (plan) =>
-        plan.hostId === "me" ? "host" : (status[plan.id] ?? "none"),
+      statusOf: (plan) => (plan.hostId === 'me' ? 'host' : (status[plan.id] ?? 'none')),
       membersOf: (plan) =>
-        status[plan.id] === "accepted" && !plan.memberIds.includes("me")
-          ? [...plan.memberIds, "me"]
-          : plan.memberIds,
+        status[plan.id] === 'accepted' && !plan.memberIds.includes('me') ? [...plan.memberIds, 'me'] : plan.memberIds,
       requestJoin,
       cancelRequest,
       leavePlan,
@@ -254,14 +223,12 @@ export function PlansProvider({
     ],
   );
 
-  return (
-    <PlansContext.Provider value={value}>{children}</PlansContext.Provider>
-  );
+  return <PlansContext.Provider value={value}>{children}</PlansContext.Provider>;
 }
 
 export function usePlans() {
   const ctx = useContext(PlansContext);
-  if (!ctx) throw new Error("usePlans must be used inside <PlansProvider>");
+  if (!ctx) throw new Error('usePlans must be used inside <PlansProvider>');
   return ctx;
 }
 
@@ -269,9 +236,6 @@ export function usePlans() {
 export function usePlan(id: string): Plan | undefined {
   const { plans } = usePlans();
   const live = plans.find((p) => p.id === id);
-  const fetched = useLoad(
-    () => (live ? Promise.resolve(undefined) : getPlan(id)),
-    [id, !!live],
-  );
+  const fetched = useLoad(() => (live ? Promise.resolve(undefined) : getPlan(id)), [id, !!live]);
   return live ?? fetched;
 }

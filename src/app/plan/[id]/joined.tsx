@@ -1,12 +1,12 @@
-import { StyleSheet, View } from "react-native";
-import { languagesText } from "@/data/catalog";
-import { router, useLocalSearchParams } from "expo-router";
-import { Icon, type IconName } from "@/components";
-import { Button, Card, GoingLine, Logo, Screen, Txt } from "@/components";
-import { planWhen } from "@/data/time";
-import { usePeople } from "@/state/people";
-import { usePlan, usePlans } from "@/state/plans";
-import { colors, icon, space } from "@/theme";
+import { StyleSheet, View } from 'react-native';
+import { languagesText } from '@/data/catalog';
+import { router, useLocalSearchParams } from 'expo-router';
+import { Icon, type IconName } from '@/components';
+import { Button, Card, GoingLine, Logo, Screen, Txt } from '@/components';
+import { planWhen } from '@/data/time';
+import { usePeople } from '@/state/people';
+import { usePlan, usePlans } from '@/state/plans';
+import { colors, icon, space } from '@/theme';
 
 // Screen 35 — the host accepted you.
 export default function YoureIn() {
@@ -24,15 +24,9 @@ export default function YoureIn() {
           <Button
             title="Say hi in the chat"
             arrow
-            onPress={() =>
-              router.push({ pathname: "/plan/[id]/chat", params: { id } })
-            }
+            onPress={() => router.push({ pathname: '/plan/[id]/chat', params: { id } })}
           />
-          <Button
-            title="Back to the map"
-            variant="link"
-            onPress={() => router.dismissTo("/map")}
-          />
+          <Button title="Back to the map" variant="link" onPress={() => router.dismissTo('/map')} />
         </View>
       }
     >
@@ -62,12 +56,7 @@ export default function YoureIn() {
           </Txt>
         </View>
         {/* "3 people" bold · "3 spots left" terracotta, then the names. */}
-        <GoingLine
-          people={members}
-          hostId={plan.hostId}
-          capacity={plan.capacity}
-          small
-        />
+        <GoingLine people={members} hostId={plan.hostId} capacity={plan.capacity} small />
         <Txt variant="small">{languagesText(plan.languages)}</Txt>
       </Card>
 
@@ -80,8 +69,8 @@ export default function YoureIn() {
 
 const styles = StyleSheet.create({
   content: { paddingTop: space.xl, gap: space.xl },
-  center: { alignItems: "center", gap: 14, marginTop: space.xl },
+  center: { alignItems: 'center', gap: 14, marginTop: space.xl },
   hero: { marginBottom: space.sm },
   card: { gap: 10, padding: 22, marginTop: space.md },
-  point: { flexDirection: "row", alignItems: "center", gap: 6 },
+  point: { flexDirection: 'row', alignItems: 'center', gap: 6 },
 });
