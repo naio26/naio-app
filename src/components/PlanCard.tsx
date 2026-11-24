@@ -1,13 +1,10 @@
 import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { isNow } from '@/data/time';
 import { Plan } from '@/data/types';
 import { colors, fonts, planKindColors, radius } from '@/theme';
 import { Txt } from './Txt';
 
-/** The colour of a plan's block: your plan (light green), Now, Today or Tomorrow. */
+/** The colour of a plan's block: by day only, so plans on the same day always match (Today or Tomorrow). */
 export function planKindColor(plan: Plan) {
-  if (plan.hostId === 'me') return planKindColors.mine;
-  if (isNow(plan)) return planKindColors.now;
   return plan.day === 'today' ? planKindColors.today : planKindColors.tomorrow;
 }
 

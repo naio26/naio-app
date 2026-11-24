@@ -60,12 +60,10 @@ export const colors = {
 } as const;
 
 /**
- * Colour block on the left of a plan card (My plans), by type of plan. Soft, one family; use these everywhere.
- * Your plan = the same light green as the "Your plan" label.
+ * Colour block on the left of a plan card (My plans), by DAY: every plan on the same day has the same colour
+ * (Now, Today and your own plan today all share "today"). Soft, one family; use these everywhere.
  */
 export const planKindColors = {
-  mine: colors.mapMine,
-  now: '#EDB08A', // soft terracotta: happening now
   today: '#F6CDA8', // peach
   tomorrow: '#FBE3C4', // butter
   past: '#EADBD0', // sand
