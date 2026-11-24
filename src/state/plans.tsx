@@ -36,6 +36,8 @@ type PlansState = {
   cancelRequest: (planId: string) => Promise<void>;
   /** After being accepted: your spot is free again, the chat closes for you, the host is told. */
   leavePlan: (planId: string) => Promise<void>;
+  /** Demo: the host accepts all your pending requests now. */
+  simulateHostAccepts: () => void;
   removeMember: (planId: string, personId: string) => Promise<void>;
   /** People asking to join YOUR plans. */
   requests: JoinRequest[];
@@ -77,26 +79,40 @@ export function PlansProvider({ children, initial }: { children: ReactNode; init
     setLoaded(true);
   }, []);
 
-  // Demo: the host accepts a few seconds after your request, unless you cancelled meanwhile.
-  const awaitHost = useCallback(
-    (planId: string) => {
-      waitForHostReply(planId).then(async (reply) => {
-        if (!reply || !alive.current || latest.current[planId] !== 'requested') return;
-        setStatus((s) => ({ ...s, [planId]: reply.status }));
-        const plan = await getPlan(planId);
-        const [host] = plan ? await listPeople([plan.hostId]) : [];
-        chat.addSystem(planId, 'You joined the plan');
-        alerts.add({
-          kind: 'accepted',
-          title: `${host?.firstName ?? 'The host'} accepted your request`,
-          subtitle: plan?.title ?? '',
-          planId,
-          personId: host?.id,
-        });
+  // The host accepts: you're in, the chat opens and you get an alert.
+  const accept = useCallback(
+    async (planId: string) => {
+      if (!alive.current || latest.current[planId] !== 'requested') return;
+      latest.current = { ...latest.current, [planId]: 'accepted' }; // never twice
+      setStatus((s) => ({ ...s, [planId]: 'accepted' }));
+      const plan = await getPlan(planId);
+      const [host] = plan ? await listPeople([plan.hostId]) : [];
+      chat.addSystem(planId, 'You joined the plan');
+      alerts.add({
+        kind: 'accepted',
+        title: `${host?.firstName ?? 'The host'} accepted your request`,
+        subtitle: plan?.title ?? '',
+        planId,
+        personId: host?.id,
       });
     },
     [alerts, chat],
   );
+
+  // Demo: the host accepts about 15 seconds after your request, unless you cancelled meanwhile.
+  const awaitHost = useCallback(
+    (planId: string) => {
+      waitForHostReply(planId).then((reply) => reply && accept(planId));
+    },
+    [accept],
+  );
+
+  // Settings → Demo → "Simulate host accepts": skip the wait for every pending request.
+  const simulateHostAccepts = useCallback(() => {
+    Object.entries(latest.current)
+      .filter(([, st]) => st === 'requested')
+      .forEach(([id]) => accept(id));
+  }, [accept]);
 
   useEffect(() => {
     refresh();
@@ -200,6 +216,7 @@ export function PlansProvider({ children, initial }: { children: ReactNode; init
       requestJoin,
       cancelRequest,
       leavePlan,
+      simulateHostAccepts,
       removeMember,
       requests,
       answerRequest,
@@ -214,6 +231,7 @@ export function PlansProvider({ children, initial }: { children: ReactNode; init
       requestJoin,
       cancelRequest,
       leavePlan,
+      simulateHostAccepts,
       removeMember,
       requests,
       answerRequest,

@@ -58,7 +58,7 @@ export default function PlanDetails() {
             <Txt>
               {plan.area} · {plan.distanceKm} km
             </Txt>
-            <PointNote plan={plan} status={status} />
+            <PointNote plan={plan} status={status} hostName={host?.firstName} />
           </View>
         </View>
 

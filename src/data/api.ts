@@ -217,10 +217,10 @@ export async function requestToJoin(planId: string): Promise<{ planId: string; s
   return { planId, status: 'requested' };
 }
 
-/** Demo only: the host "accepts" a few seconds after the request. */
+/** Demo only: the host "accepts" about 15 seconds after the request (Settings → Demo can skip the wait). */
 export async function waitForHostReply(planId: string): Promise<{ planId: string; status: 'accepted' } | null> {
   const gen = generation;
-  await wait(5000);
+  await wait(15000);
   if (gen !== generation) return null; // "Reset demo" happened meanwhile
   return { planId, status: 'accepted' };
 }

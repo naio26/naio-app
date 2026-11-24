@@ -21,14 +21,14 @@ export function AvatarStack({
 }: {
   people: Person[];
   max?: number;
-  /** Adds "(HOST)" after the host's name. */
+  /** Kept for callers; names never carry a host marker. */
   hostId?: string;
   /** Names in regular weight instead of bold. */
   plain?: boolean;
 }) {
   const shown = people.slice(0, max);
   const extra = people.length - shown.length;
-  const names = goingNames(shown, hostId ?? '') + (extra > 0 ? ` +${extra}` : '');
+  const names = goingNames(shown) + (extra > 0 ? ` +${extra}` : '');
   return (
     <View style={styles.stackRow}>
       <View style={styles.stack}>
@@ -55,13 +55,12 @@ export function AvatarStack({
   );
 }
 
-/** Names with the host marked "(HOST)": "Maya (HOST), Leo, You". */
-export const goingNames = (people: Person[], hostId: string) =>
-  people.map((p) => `${p.id === 'me' ? 'You' : p.firstName}${p.id === hostId ? ' (HOST)' : ''}`).join(', ');
+/** Names, no host marker ("(HOST)" only goes under the initial on plan details and on the profile card). */
+export const goingNames = (people: Person[]) => people.map((p) => (p.id === 'me' ? 'You' : p.firstName)).join(', ');
 
 /**
  * "Who's going": "4 people" in bold · "3 spots left" in regular terracotta (same size),
- * then the names below in the normal text colour, the host marked "(HOST)".
+ * then the names below in the normal text colour (no host marker).
  */
 export function GoingLine({
   people,
@@ -95,7 +94,6 @@ export function GoingLine({
             <Txt key={p.id} style={[styles.goingNames, size]}>
               {i > 0 ? ', ' : ''}
               {p.id === 'me' ? 'You' : p.firstName}
-              {p.id === hostId && <Txt style={[styles.goingNames, size]}> (HOST)</Txt>}
             </Txt>
           ))}
         </Txt>
@@ -108,7 +106,7 @@ export function GoingLine({
  * Small line under the place, with a pin: "Exact point is shared after joining" (terracotta),
  * or, once you're in, the exact point itself in green: tap it for directions in a maps app.
  */
-export function PointNote({ plan, status }: { plan: Plan; status: MyStatus }) {
+export function PointNote({ plan, status, hostName }: { plan: Plan; status: MyStatus; hostName?: string }) {
   const city = useCity();
   const open = status === 'accepted' || status === 'host';
   if (!open)
@@ -116,7 +114,10 @@ export function PointNote({ plan, status }: { plan: Plan; status: MyStatus }) {
       <View style={styles.pointNote}>
         <Icon name="map-pin" size={14} color={colors.accent} />
         <Txt variant="caption" color={colors.accent} style={{ flexShrink: 1 }}>
-          Exact point is shared after joining
+          {/* Request sent: "…after Leo accepts" (name from the plan's host). */}
+          {status === 'requested' && hostName
+            ? `Exact point is shared after ${hostName} accepts`
+            : 'Exact point is shared after joining'}
         </Txt>
       </View>
     );

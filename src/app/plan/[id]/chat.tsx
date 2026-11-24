@@ -191,7 +191,9 @@ const styles = StyleSheet.create({
     gap: 12,
     padding: 16,
     borderRadius: radius.lg,
-    backgroundColor: colors.mist,
+    // Only a frame: same background as the screen.
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   dayPill: {
     alignSelf: 'center',

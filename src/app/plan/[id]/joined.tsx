@@ -55,7 +55,7 @@ export default function YoureIn() {
             {plan.exactPoint} · {plan.distanceKm} km
           </Txt>
         </View>
-        {/* "3 people" bold · "3 spots left" terracotta, then the names. */}
+        {/* "3 people" bold · "3 spots left" terracotta, then the names (no host marker). */}
         <GoingLine people={members} hostId={plan.hostId} capacity={plan.capacity} small />
         <Txt variant="small">{languagesText(plan.languages)}</Txt>
       </Card>
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   content: { paddingTop: space.xl, gap: space.xl },
   center: { alignItems: 'center', gap: 14, marginTop: space.xl },
   hero: { marginBottom: space.sm },
-  card: { gap: 10, padding: 22, marginTop: space.md },
+  // Light green: you're in the plan (same green as plan details once you're in).
+  card: { gap: 10, padding: 22, marginTop: space.md, backgroundColor: colors.greenSoft, borderColor: colors.greenSoft },
   point: { flexDirection: 'row', alignItems: 'center', gap: 6 },
 });

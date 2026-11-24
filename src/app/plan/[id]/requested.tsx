@@ -1,16 +1,17 @@
 import { useEffect, useRef } from 'react';
 import { languagesText } from '@/data/catalog';
-import { Animated, Easing, StyleSheet, View } from 'react-native';
+import { Alert, Animated, Easing, StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Icon, type IconName } from '@/components';
-import { Button, Card, Logo, Screen, Txt } from '@/components';
+import { Button, Card, Logo, PointNote, Screen, Txt } from '@/components';
 import { planWhen } from '@/data/time';
 import { usePeople } from '@/state/people';
 import { usePlan, usePlans } from '@/state/plans';
 import { colors, fonts, icon, space } from '@/theme';
 import { goBack } from '@/components';
 
-// NEW screen (not in the designs): shown after "Join plan" while the host decides.
+// NEW screen (not in the designs): shown after "Join plan" and stays until the host accepts (demo: ~15 s,
+// or Settings → Demo → "Simulate host accepts"), then it turns into "You're in".
 export default function RequestSent() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const plan = usePlan(id);
@@ -47,10 +48,20 @@ export default function RequestSent() {
           <Button
             title="Cancel request"
             variant="link"
-            onPress={async () => {
-              await cancelRequest(plan.id);
-              goBack();
-            }}
+            onPress={() =>
+              // Same short question as on plan details.
+              Alert.alert('Cancel your request?', `We'll let ${hostName} know.`, [
+                { text: 'Stay', style: 'cancel' },
+                {
+                  text: 'Cancel request',
+                  style: 'destructive',
+                  onPress: async () => {
+                    await cancelRequest(plan.id);
+                    goBack();
+                  },
+                },
+              ])
+            }
           />
         </View>
       }
@@ -66,12 +77,12 @@ export default function RequestSent() {
         <Txt variant="eyebrow" style={{ letterSpacing: 1.6 }}>
           Request sent
         </Txt>
-        <Txt variant="display" center style={{ fontSize: 40 }}>
-          Nearly there.
+        {/* The main message: one sentence with the host's name (from the plan). The rest below, smaller. */}
+        <Txt variant="display" center style={{ fontSize: 36, lineHeight: 42 }}>
+          {hostName} has your request.
         </Txt>
-        <Txt center>
-          {hostName} has your request. Once they accept, you’ll be active in the group chat and see the exact meeting
-          point.
+        <Txt variant="small" center style={{ fontSize: 15, lineHeight: 22 }}>
+          Once they accept, you’ll be active in the group chat and see the exact meeting point.
         </Txt>
       </View>
 
@@ -86,11 +97,12 @@ export default function RequestSent() {
         <Txt variant="small">
           {members.length} people · {languagesText(plan.languages)}
         </Txt>
+        <PointNote plan={plan} status="requested" hostName={hostName} />
       </Card>
 
       <View style={styles.locks}>
         <LockRow name="message-circle" title="Group chat" text={`Unlocks when ${hostName} accepts`} />
-        <LockRow name="map-pin" title="Exact meeting point" text="Shared after joining" />
+        <LockRow name="map-pin" title="Exact meeting point" text={`Shared after ${hostName} accepts`} />
       </View>
 
       <View style={styles.waiting}>

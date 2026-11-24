@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { router } from 'expo-router';
 import { Button, Card, Screen, ScreenHeader, SettingsRow, SettingsSection, Txt } from '@/components';
 import { useBoot } from '@/state/boot';
+import { usePlans } from '@/state/plans';
 import { useSafety } from '@/state/safety';
 import { colors, space } from '@/theme';
 
@@ -11,6 +12,8 @@ export default function Settings() {
   const { offline, setOffline, locationMode, prefs, blocked } = useSafety();
   const on = Object.values(prefs).filter(Boolean).length;
   const { resetDemo } = useBoot();
+  const { plans, statusOf, simulateHostAccepts } = usePlans();
+  const pending = plans.filter((p) => statusOf(p) === 'requested').length;
   const [confirmReset, setConfirmReset] = useState(false);
   const [resetting, setResetting] = useState(false);
   return (
@@ -61,6 +64,19 @@ export default function Settings() {
 
       {/* Demo only: clears everything saved on this phone and starts again from the intro. */}
       <SettingsSection title="Demo" />
+      <SettingsRow
+        title="Simulate host accepts"
+        sub={
+          pending
+            ? `Accepts your ${pending === 1 ? 'request' : `${pending} requests`} now, without waiting`
+            : 'No request waiting right now · join a plan first'
+        }
+        onPress={() => {
+          if (!pending) return;
+          simulateHostAccepts();
+          Alert.alert('Request accepted', 'You’re in. Open the plan from My plans or Alerts.');
+        }}
+      />
       <SettingsRow
         title="Test the location question"
         sub="The pop-up after “Create profile”: try Allow or Don’t allow"
