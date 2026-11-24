@@ -5,6 +5,7 @@ export { Card } from './Card';
 export { Chip } from './Chip';
 export { Input } from './Input';
 export { SearchField } from './SearchField';
+export { LanguagePicker } from './LanguagePicker';
 export { Logo } from './Logo';
 export { ProviderSignIn } from './ProviderSignIn';
 export { Screen } from './Screen';

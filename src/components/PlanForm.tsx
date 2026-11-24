@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Icon, type IconName } from './Icon';
-import { MAX_GROUP, MAX_SPOTS, MIN_SPOTS, MOODS, PLAN_LANGUAGES } from '@/data/catalog';
+import { MAX_GROUP, MAX_SPOTS, MIN_SPOTS, MOODS } from '@/data/catalog';
 import { useCity } from '@/state/city';
 import { formatTime, nowHHMM, timeOptions } from '@/data/time';
 import { Plan, PlanDay, PlanDraft } from '@/data/types';
@@ -10,10 +10,15 @@ import { BackButton } from './BackButton';
 import { Button } from './Button';
 import { Chip } from './Chip';
 import { Input } from './Input';
+import { LanguagePicker } from './LanguagePicker';
 import { Screen } from './Screen';
 import { Txt } from './Txt';
 
 const MAX_MOODS = 3;
+
+/** "an activity", "an activity and a mood", "an activity, a time and a mood". */
+const listText = (items: string[]) =>
+  items.length < 2 ? (items[0] ?? '') : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`;
 
 export function emptyDraft(): PlanDraft {
   return {
@@ -82,6 +87,7 @@ export function PlanForm({
 
   const missing = [
     !d.title.trim() && 'an activity',
+    !d.time && 'a time',
     !d.exactPoint.trim() && 'a meeting point',
     d.languages.length === 0 && 'a language',
     d.moods.length === 0 && 'a mood',
@@ -101,7 +107,7 @@ export function PlanForm({
         <View style={{ gap: 8 }}>
           {missing.length > 0 && (
             <Txt variant="caption" center>
-              Add {missing.join(', ')} to continue.
+              Add {listText(missing)} to continue.
             </Txt>
           )}
           <Button title={submitLabel} arrow disabled={missing.length > 0} loading={saving} onPress={submit} />
@@ -159,32 +165,13 @@ export function PlanForm({
       </Field>
 
       <Field label="Languages" sub="Pick one or more languages.">
-        <View style={styles.wrap}>
-          {PLAN_LANGUAGES.map((l) => {
-            const on = d.languages.includes(l);
-            return (
-              <Chip
-                key={l}
-                size="sm"
-                label={l}
-                selected={on}
-                onPress={() =>
-                  // One or more: tap to add or remove. Keeps PLAN_LANGUAGES order.
-                  set({
-                    languages: on
-                      ? d.languages.filter((x) => x !== l)
-                      : PLAN_LANGUAGES.filter((x) => x === l || d.languages.includes(x)),
-                  })
-                }
-              />
-            );
-          })}
-        </View>
+        {/* Same as Filters → Language: the city's suggested languages, then "+ Add another language". */}
+        <LanguagePicker size="sm" selected={d.languages} onChange={(languages) => set({ languages })} />
       </Field>
 
       <Field
         label="Area (optional)"
-        hint={`Neighbourhoods of ${city.name}. Everyone sees the area. Without one, people only see ${city.name}.`}
+        hint={`Neighbourhoods of ${city.name}. Everyone sees the area. Without choosing one, people will see just ${city.name}.`}
       >
         <View style={styles.wrap}>
           {/* Neighbourhoods of the city you're in (from the current city, never typed here). Tap again to clear. */}

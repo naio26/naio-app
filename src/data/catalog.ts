@@ -115,8 +115,6 @@ export function languagesFor(cityLanguages: string[]): Language[] {
   return [...local, ...LANGUAGES.filter((l) => !cityLanguages.includes(l.code))];
 }
 
-/** Languages offered when creating a plan. */
-export const PLAN_LANGUAGES = ['English', 'Spanish', 'Greek', 'French', 'Italian', 'German'];
 
 export const MIN_SPOTS = 1;
 /** A plan holds at most 15 people in total, the host included. */

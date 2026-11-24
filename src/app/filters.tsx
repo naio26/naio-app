@@ -3,16 +3,14 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import {
   Button,
   Chip,
-  CodeBadge,
   goBack,
-  OptionRow,
+  LanguagePicker,
   RangeSlider,
   Screen,
   ScreenHeader,
-  SearchField,
   Txt,
 } from '@/components';
-import { DISTANCES, LANGUAGES, languagesFor, MOODS } from '@/data/catalog';
+import { DISTANCES, MOODS } from '@/data/catalog';
 import { AGE_RANGES, Filters, Gender, GENDERS, TimeWindow } from '@/data/types';
 import { useCity } from '@/state/city';
 import { NO_FILTERS, useFilters } from '@/state/filters';
@@ -30,14 +28,7 @@ const toggle = <T,>(list: T[], item: T) => (list.includes(item) ? list.filter((x
 export default function FiltersSheet() {
   const { filters, setFilters } = useFilters();
   const city = useCity();
-  // Suggested languages follow the city (Greek and English in Athens).
-  const suggested = languagesFor(city.languages)
-    .slice(0, city.languages.length)
-    .map((l) => l.name);
   const [draft, setDraft] = useState<Filters>(filters);
-  // "+ Add another language": a search over the fixed list (no free text, so names stay consistent).
-  const [searching, setSearching] = useState(false);
-  const [query, setQuery] = useState('');
   const ageValue: [number, number] = draft.ages
     ? [AGE_RANGES.indexOf(draft.ages.from), AGE_RANGES.indexOf(draft.ages.to)]
     : [0, AGE_RANGES.length - 1];
@@ -49,20 +40,6 @@ export default function FiltersSheet() {
       : draft.maxKm === Infinity
         ? 'Any distance, even more than 30 km'
         : `Up to ${draft.maxKm} km · includes every closer plan`;
-
-  // Suggested languages first, then any extra ones you added with "+ Add another language".
-  const langChips = [...suggested, ...draft.languages.filter((l) => !suggested.includes(l))];
-  const q = query.trim().toLowerCase();
-  const matches = q
-    ? LANGUAGES.filter(
-        (l) => !langChips.includes(l.name) && (l.name.toLowerCase().includes(q) || l.code.toLowerCase() === q),
-      )
-    : [];
-  const addLanguage = (name: string) => {
-    set({ languages: [...draft.languages, name] });
-    setQuery('');
-    setSearching(false);
-  };
 
   return (
     <Screen
@@ -170,42 +147,7 @@ export default function FiltersSheet() {
         <Txt variant="caption" style={{ marginTop: -6 }}>
           Leave empty for any language. Suggested languages considering your location.
         </Txt>
-        <View style={styles.chips}>
-          {langChips.map((l) => (
-            <Chip
-              key={l}
-              label={l}
-              selected={draft.languages.includes(l)}
-              onPress={() => set({ languages: toggle(draft.languages, l) })}
-            />
-          ))}
-        </View>
-        {searching ? (
-          <View style={{ gap: space.xs }}>
-            <SearchField placeholder="Search languages" value={query} onChangeText={setQuery} autoFocus />
-            {matches.map((l) => (
-              <OptionRow
-                key={l.code}
-                label={l.name}
-                selected={false}
-                idleIcon="plus"
-                leading={<CodeBadge code={l.code} />}
-                onPress={() => addLanguage(l.name)}
-              />
-            ))}
-            {!!q && matches.length === 0 && (
-              <Txt variant="caption" style={{ paddingVertical: space.sm }}>
-                No language called “{query.trim()}” yet.
-              </Txt>
-            )}
-          </View>
-        ) : (
-          <Pressable accessibilityRole="button" hitSlop={8} onPress={() => setSearching(true)} style={styles.addLang}>
-            <Txt variant="label" color={colors.accent}>
-              + Add another language
-            </Txt>
-          </Pressable>
-        )}
+        <LanguagePicker selected={draft.languages} onChange={(languages) => set({ languages })} />
       </View>
 
       {/* Age range of the people you want to make plans with: snaps to the official ranges */}
@@ -320,7 +262,6 @@ const styles = StyleSheet.create({
   boxTitle: { fontFamily: fonts.sans, fontSize: 14, color: colors.dark },
   boxTitleOn: { fontFamily: fonts.sansBold, color: colors.accent },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  addLang: { alignSelf: 'flex-start', paddingVertical: space.xs },
   whenGroup: { gap: 8 },
   whenRow: { flexDirection: 'row', gap: 10 },
   day: { fontFamily: fonts.sansBold, fontSize: 14, color: colors.accent },

@@ -1,7 +1,7 @@
 
 # Resum de fases — naio.
 
-Última actualització: 24 de novembre de 2026 (colors de My plans per tipus amb una sola regla, fitxa verda suau al mapa per als plans on ets, pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
+Última actualització: 24 de novembre de 2026 (idiomes, àrea i missatge de «Create a plan», colors de My plans per tipus amb una sola regla, fitxa verda suau al mapa per als plans on ets, pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -497,6 +497,10 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     - **Corregit (la lògica, no només els colors):** un pla que comença d'aquí a menys d'una hora es pintava com a «Now» (coral), però a la targeta posava «Today». Per això semblava que hi havia plans «Today» de dos colors. Ara hi ha **una sola regla** a tota l'app que decideix si un pla és «Now», «Today» o «Tomorrow», i la fan servir el text de la targeta («NOW · 4:30 PM»), el color del bloc i l'etiqueta del mapa. Així el text i el color sempre coincideixen: tots els «Today» mel, tots els «Tomorrow» lavanda, tots els «Now» coral, i el teu pla verd menta.
     - **«Plans don't live forever», sense caixa:** ni fons ni marc, només la icona i el text sobre el fons de la pantalla.
   - **Fitxa del pla al mapa, plans on ja ets («You're in»):** el mateix estil i disposició, però amb el fons d'un verd molt suau, per distingir-los. Els plans on no ets queden igual.
+  - **«Create a plan», més canvis:**
+    - **Languages** funciona exactament igual que a Filters (és la mateixa peça): primer els idiomes suggerits per a la ciutat on ets (a Atenes, grec i anglès), i després «+ Add another language», que obre el cercador amb la lupa i una llista fixa (no es pot escriure lliurement). Pots triar-ne un o més; «Pick one or more languages.» continua just a sota del títol.
+    - **Area:** el text ara diu «Without choosing one, people will see just Athens.» (el nom de la ciutat surt de la ciutat actual, mai escrit a mà).
+    - **Missatge de sota:** només diu el que falta, amb «and» abans de l'últim, i acaba amb «to continue». Per exemple: «Add an activity to continue.», «Add an activity and a meeting point to continue.».
   - **«You're in» (prova):** la caixa té el fons d'un verd més clar i una vora verda una mica més marcada. Digues-me si t'agrada.
   - **Fitxa del pla (en tocar un pla al mapa), nou ordre:** el títol; la descripció just a sota; una línia fina; el lloc en terracota amb «Exact point is shared after joining» **a la seva pròpia línia** a sota (en cursiva i fosc); i després la resta com abans. Quan ja hi ets, aquella línia mostra l'adreça exacta en verd, i si la toques et dona les indicacions.
   - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.
