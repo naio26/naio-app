@@ -120,7 +120,7 @@ export default function PlanDetails() {
         <PlanActions plan={plan} status={status} host={host} going={memberIds.length} hostingNote={false} />
       </View>
 
-      <BottomSheet visible={!!shown} onClose={() => setShownId(null)} backdrop>
+      <BottomSheet visible={!!shown} onClose={() => setShownId(null)} backdrop grabber={false}>
         {shown && <PersonCard person={shown} host={shown.id === plan.hostId} />}
       </BottomSheet>
     </View>

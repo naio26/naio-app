@@ -19,7 +19,8 @@ export function PersonCard({ person, host }: { person: Person; host?: boolean })
   const languages = person.languages.map((l) => l.name).join(' · ');
   const interests = person.interests.slice(0, 4);
   return (
-    <View style={[styles.root, { paddingBottom: insets.bottom + space.lg }]}>
+    // A bit of room at the top too (the sheet has no drag line here), about the same as at the bottom.
+    <View style={[styles.root, { paddingTop: space.lg, paddingBottom: insets.bottom + space.lg }]}>
       <View style={styles.hero}>
         <Avatar
           initials={person.initials}
