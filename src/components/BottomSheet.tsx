@@ -8,10 +8,13 @@ export function BottomSheet({
   visible,
   onClose,
   children,
+  backdrop,
 }: {
   visible: boolean;
   onClose: () => void;
   children: ReactNode;
+  /** Dim the screen behind (tap it to close). Used over normal screens; the map keeps it off. */
+  backdrop?: boolean;
 }) {
   const y = useRef(new Animated.Value(600)).current;
   const [mounted, setMounted] = useState(visible);
@@ -29,25 +32,35 @@ export function BottomSheet({
 
   if (!mounted) return null;
   return (
-    <Animated.View style={[styles.sheet, { transform: [{ translateY: y }] }]}>
-      <View style={styles.grabber} />
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Close"
-        hitSlop={10}
-        onPress={onClose}
-        style={styles.close}
-      >
-        <Icon name="x" color={colors.dark} />
-      </Pressable>
-      <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
-        {children}
-      </ScrollView>
-    </Animated.View>
+    <>
+      {backdrop && (
+        <Pressable
+          accessibilityLabel="Close"
+          onPress={onClose}
+          style={[StyleSheet.absoluteFill, styles.backdrop, !visible && { opacity: 0 }]}
+        />
+      )}
+      <Animated.View style={[styles.sheet, { transform: [{ translateY: y }] }]}>
+        <View style={styles.grabber} />
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Close"
+          hitSlop={10}
+          onPress={onClose}
+          style={styles.close}
+        >
+          <Icon name="x" color={colors.dark} />
+        </Pressable>
+        <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
+          {children}
+        </ScrollView>
+      </Animated.View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
+  backdrop: { backgroundColor: colors.overlay, opacity: 0.6 },
   sheet: {
     position: 'absolute',
     left: 0,

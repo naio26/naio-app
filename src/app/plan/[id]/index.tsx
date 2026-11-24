@@ -1,13 +1,16 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   Avatar,
   BackButton,
+  BottomSheet,
   GoingLine,
   HostingNote,
   InfoBox,
   PlanActions,
+  PersonCard,
   PlanBadge,
   PointNote,
   Txt,
@@ -27,6 +30,9 @@ export default function PlanDetails() {
   const { statusOf, membersOf } = usePlans();
   const memberIds = plan ? membersOf(plan) : [];
   const members = usePeople(memberIds);
+  // Tap someone's circle in "Who's going": their short profile in a sheet.
+  const [shownId, setShownId] = useState<string | null>(null);
+  const shown = members.find((m) => m.id === shownId);
   if (!plan) return <View style={styles.root} />;
 
   const status = statusOf(plan);
@@ -76,7 +82,13 @@ export default function PlanDetails() {
 
           <View style={styles.people}>
             {members.map((m) => (
-              <View key={m.id} style={styles.person}>
+              <Pressable
+                key={m.id}
+                accessibilityRole="button"
+                accessibilityLabel={`See ${m.id === 'me' ? 'your' : `${m.firstName}’s`} profile`}
+                onPress={() => setShownId(m.id)}
+                style={({ pressed }) => [styles.person, pressed && { opacity: 0.6 }]}
+              >
                 <Avatar
                   initials={m.initials}
                   size={52}
@@ -89,7 +101,7 @@ export default function PlanDetails() {
                 </Txt>
                 <Txt variant="caption">{m.ageRange}</Txt>
                 {m.id === plan.hostId && <Txt style={styles.host}>(HOST)</Txt>}
-              </View>
+              </Pressable>
             ))}
           </View>
 
@@ -107,6 +119,10 @@ export default function PlanDetails() {
         {status !== 'host' && <VerifiedBadge />}
         <PlanActions plan={plan} status={status} host={host} going={memberIds.length} hostingNote={false} />
       </View>
+
+      <BottomSheet visible={!!shown} onClose={() => setShownId(null)} backdrop>
+        {shown && <PersonCard person={shown} host={shown.id === plan.hostId} />}
+      </BottomSheet>
     </View>
   );
 }

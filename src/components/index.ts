@@ -38,4 +38,5 @@ export { VerifiedBadge } from './VerifiedBadge';
 export { AllSet, askLocation } from './AllSet';
 export { RangeSlider } from './RangeSlider';
 export { BalancedTags } from './BalancedTags';
+export { PersonCard } from './PersonCard';
 export { PlanSheet } from './PlanSheet';
