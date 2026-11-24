@@ -147,7 +147,6 @@ export function PointNote({
       <Txt variant="caption" color={colors.link} style={[{ flexShrink: 1 }, styles.underline]}>
         {plan.exactPoint}
       </Txt>
-      <Icon name="navigation" size={13} color={colors.link} />
     </Pressable>
   );
 }

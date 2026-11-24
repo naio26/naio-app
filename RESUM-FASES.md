@@ -471,7 +471,7 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **«(HOST)» només on vam quedar:** sota la inicial de l'amfitrió a «Who's going» (detalls del pla) i a la targeta de perfil. A les llistes de noms (per exemple a «You're in») ja no hi surt: «Sofia, Leo, You».
   - **Xat del grup:** la caixa de dalt (el punt de trobada) ja no té el fons groc: només el marc, amb el mateix fons que la resta de la pantalla.
   - **«You're in»:** la caixa del pla té un fons verd clar, el mateix verd que fem servir quan ja ets dins d'un pla.
-  - **Adreça exacta en blau d'enllaç:** l'adreça que es pot tocar (i obre Apple Maps / Google Maps) ara és del blau típic dels enllaços (#007AFF), perquè es vegi que es pot tocar.
+  - **Adreça exacta en blau d'enllaç:** l'adreça que es pot tocar (i obre Apple Maps / Google Maps) ara és del blau típic dels enllaços (#007AFF), perquè es vegi que es pot tocar. Després, s'ha tret la fletxeta blava de la dreta; l'adreça continua blava i es pot tocar.
   - **Xat del grup:** «Today» / «Tomorrow» és només text, sense fons. Per veure el pla, toca el nom del pla a dalt o «View plan» (a la dreta): obre la mateixa pantalla del pla que des de Plans.
   - **«Request sent»:** a la caixa del pla ara diu «Exact point is shared once accepted».
   - **«You're in» (prova):** la caixa té el fons d'un verd més clar i una vora verda una mica més marcada. Digues-me si t'agrada.
