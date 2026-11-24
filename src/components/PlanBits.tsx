@@ -104,9 +104,20 @@ export function GoingLine({
 
 /**
  * Small line under the place, with a pin: "Exact point is shared after joining" (terracotta),
- * or, once you're in, the exact point itself in green: tap it for directions in a maps app.
+ * or, once you're in, the exact point itself in link blue: tap it for directions in a maps app.
  */
-export function PointNote({ plan, status, hostName }: { plan: Plan; status: MyStatus; hostName?: string }) {
+export function PointNote({
+  plan,
+  status,
+  hostName,
+  lockedText,
+}: {
+  plan: Plan;
+  status: MyStatus;
+  hostName?: string;
+  /** Replaces the text while locked ("Exact point is shared once accepted" on Request sent). */
+  lockedText?: string;
+}) {
   const city = useCity();
   const open = status === 'accepted' || status === 'host';
   if (!open)
@@ -115,9 +126,10 @@ export function PointNote({ plan, status, hostName }: { plan: Plan; status: MySt
         <Icon name="map-pin" size={14} color={colors.accent} />
         <Txt variant="caption" color={colors.accent} style={{ flexShrink: 1 }}>
           {/* Request sent: "…after Leo accepts" (name from the plan's host). */}
-          {status === 'requested' && hostName
-            ? `Exact point is shared after ${hostName} accepts`
-            : 'Exact point is shared after joining'}
+          {lockedText ??
+            (status === 'requested' && hostName
+              ? `Exact point is shared after ${hostName} accepts`
+              : 'Exact point is shared after joining')}
         </Txt>
       </View>
     );
@@ -130,11 +142,12 @@ export function PointNote({ plan, status, hostName }: { plan: Plan; status: MySt
       hitSlop={8}
       style={({ pressed }) => [styles.pointNote, pressed && { opacity: 0.6 }]}
     >
-      <Icon name="map-pin" size={14} color={colors.green} />
-      <Txt variant="caption" color={colors.green} style={[{ flexShrink: 1 }, styles.underline]}>
+      {/* Link blue, so it's clear it can be tapped. */}
+      <Icon name="map-pin" size={14} color={colors.link} />
+      <Txt variant="caption" color={colors.link} style={[{ flexShrink: 1 }, styles.underline]}>
         {plan.exactPoint}
       </Txt>
-      <Icon name="navigation" size={13} color={colors.green} />
+      <Icon name="navigation" size={13} color={colors.link} />
     </Pressable>
   );
 }

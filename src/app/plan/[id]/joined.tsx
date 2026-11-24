@@ -71,7 +71,14 @@ const styles = StyleSheet.create({
   content: { paddingTop: space.xl, gap: space.xl },
   center: { alignItems: 'center', gap: 14, marginTop: space.xl },
   hero: { marginBottom: space.sm },
-  // Light green: you're in the plan (same green as plan details once you're in).
-  card: { gap: 10, padding: 22, marginTop: space.md, backgroundColor: colors.greenSoft, borderColor: colors.greenSoft },
+  // You're in the plan: very light green fill and a stronger green border.
+  card: {
+    gap: 10,
+    padding: 22,
+    marginTop: space.md,
+    backgroundColor: colors.greenLight,
+    borderColor: colors.greenLine,
+    borderWidth: 1.5,
+  },
   point: { flexDirection: 'row', alignItems: 'center', gap: 6 },
 });

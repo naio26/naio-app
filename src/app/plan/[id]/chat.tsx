@@ -10,7 +10,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Icon, type IconName } from '@/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, BackButton, Txt } from '@/components';
@@ -50,11 +50,19 @@ export default function PlanChat() {
     send(id, t, memberIds);
   };
 
+  const viewPlan = () => router.push({ pathname: '/plan/[id]', params: { id: plan.id } });
+
   return (
     <SafeAreaView style={styles.root} edges={['top', 'bottom']}>
       <View style={styles.header}>
         <BackButton />
-        <View style={{ flex: 1, gap: 4 }}>
+        {/* Tap the plan name (or "View plan") to open the plan, as from Plans. */}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`View plan ${plan.title}`}
+          onPress={viewPlan}
+          style={({ pressed }) => [{ flex: 1, gap: 4 }, pressed && { opacity: 0.6 }]}
+        >
           <Txt style={styles.title} numberOfLines={1}>
             {plan.title}
           </Txt>
@@ -64,7 +72,12 @@ export default function PlanChat() {
               {memberIds.length} going · {planWhen(plan).replace(' · ', ' ')} · {languagesText(plan.languages)}
             </Txt>
           </View>
-        </View>
+        </Pressable>
+        <Pressable accessibilityRole="button" hitSlop={10} onPress={viewPlan}>
+          <Txt variant="label" color={colors.accent} style={{ fontSize: 14 }}>
+            View plan
+          </Txt>
+        </Pressable>
       </View>
 
       {!open ? (
@@ -195,14 +208,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
   },
-  dayPill: {
-    alignSelf: 'center',
-    backgroundColor: colors.mist,
-    borderRadius: 999,
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    marginVertical: 6,
-  },
+  // "Today" / "Tomorrow": just the text, no background.
+  dayPill: { alignSelf: 'center', paddingVertical: 6, marginVertical: 6 },
   system: { marginVertical: 6 },
   theirs: { flexDirection: 'row', alignItems: 'flex-end', gap: 10, marginRight: 40 },
   mine: { alignItems: 'flex-end', gap: 4, marginLeft: 60 },

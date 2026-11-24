@@ -27,6 +27,9 @@ export const colors = {
   // Status
   green: '#2E7D61', // verified badge, success
   greenSoft: '#E4F1EA',
+  greenLight: '#F2F9F5', // very light green fill ("You're in" plan box)
+  greenLine: '#8FC4A8', // green border that stands out ("You're in" plan box)
+  link: '#007AFF', // the usual link blue: the tappable exact address that opens a maps app
   danger: '#B8433A', // destructive actions (white text on top)
 
   // Brand details

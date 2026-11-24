@@ -97,7 +97,7 @@ export default function RequestSent() {
         <Txt variant="small">
           {members.length} people · {languagesText(plan.languages)}
         </Txt>
-        <PointNote plan={plan} status="requested" hostName={hostName} />
+        <PointNote plan={plan} status="requested" lockedText="Exact point is shared once accepted" />
       </Card>
 
       <View style={styles.locks}>
