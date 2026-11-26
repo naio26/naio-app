@@ -25,7 +25,7 @@ type Props = {
 const looks: Record<Variant, { bg: string; fg: string; border?: string }> = {
   primary: { bg: colors.accentFill, fg: colors.white },
   danger: { bg: colors.danger, fg: colors.white },
-  green: { bg: colors.green, fg: colors.white }, // a plan you're in ("Open the group chat" on the map)
+  green: { bg: colors.green, fg: colors.white }, // a plan you're in: "Open the group chat" everywhere (map sheet, plan details)
   outline: { bg: 'transparent', fg: colors.accent, border: colors.accent },
   social: { bg: colors.white, fg: colors.dark, border: colors.border },
   glow: { bg: 'transparent', fg: colors.dark }, // light mustard gradient (intro "Get started")

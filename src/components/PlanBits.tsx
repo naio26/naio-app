@@ -221,8 +221,10 @@ export function PlanActions({
       )}
       {status === 'accepted' && (
         <>
+          {/* Green like everywhere you're in a plan (map sheet too). */}
           <Button
             title="Open the group chat"
+            variant="green"
             arrow
             onPress={() => router.push({ pathname: '/plan/[id]/chat', params })}
           />
