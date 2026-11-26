@@ -17,7 +17,7 @@ export const PIN_SIZE = {
 
 /**
  * A plan: green pill with only "Now", "Today" or "Tomorrow".
- * Yours: the same pill and white text, filled with a lighter green, that only says ★ "Your plan" (no day or time).
+ * Yours: the same pill, light yellow with golden text, that only says ★ "Your plan" (no day or time).
  */
 export function PlanPin({ when, mine, selected }: { when: string; mine?: boolean; selected?: boolean }) {
   const own = useMineColours();
@@ -57,7 +57,7 @@ export function PersonPin({
   return (
     <View style={styles.personWrap}>
       <View style={[styles.ring, selected && styles.ringOn]}>
-        <Avatar initials={initials} size={38} color={colors.mapOpen} />
+        <Avatar initials={initials} size={38} color={colors.openToPlans} />
       </View>
       <View style={styles.nameTag}>
         <Txt numberOfLines={1} style={styles.personName}>
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   personWrap: { height: PIN_SIZE.person.height, width: 96, alignItems: 'center', gap: 3 },
   ring: { borderRadius: 24, borderWidth: 3, borderColor: colors.white, ...shadow.soft },
-  ringOn: { borderColor: colors.mapOpen, transform: [{ scale: 1.08 }] },
+  ringOn: { borderColor: colors.openToPlans, transform: [{ scale: 1.08 }] },
   nameTag: {
     alignItems: 'center',
     paddingHorizontal: 8,

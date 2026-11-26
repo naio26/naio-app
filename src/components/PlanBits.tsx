@@ -275,7 +275,7 @@ export function HostingNote() {
   );
 }
 
-/** Small label above a plan title: "Request sent", "You're in", or "★ Your plan" (light green, never a day or time). */
+/** Small label above a plan title: "Request sent", "You're in", or "★ Your plan" (light yellow, never a day or time). */
 export function PlanBadge({ status }: { status: MyStatus }) {
   const own = useMineColours();
   if (status === 'none') return null;
@@ -285,7 +285,7 @@ export function PlanBadge({ status }: { status: MyStatus }) {
     host: { text: 'Your plan', fg: own.fg, icon: 'star' as const },
   }[status];
   return (
-    // Your own plan: white bold text on the lighter green fill, only "Your plan" (never a day or time).
+    // Your own plan: golden bold text on the light yellow fill, only "Your plan" (never a day or time).
     <View style={[styles.badge, status === 'host' && [styles.badgeMine, { backgroundColor: own.bg }]]}>
       <Icon name={look.icon} size={14} color={look.fg} />
       <Txt style={[styles.badgeText, { color: look.fg }]}>{look.text}</Txt>

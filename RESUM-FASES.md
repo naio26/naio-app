@@ -1,7 +1,7 @@
 
 # Resum de fases — naio.
 
-Última actualització: 26 de novembre de 2026 (una sola mida de títol, logo més petit, dia i hora en verd als plans on ets, quadre de ratlles de les persones en taronja, opció A triada, botó verd del xat a tot arreu, botó verd del xat, persones en taronja, llistes sense noms, colors definitius de My plans, fitxa de les persones en taronja, idiomes, àrea i missatge de «Create a plan», colors de My plans per tipus amb una sola regla, fitxa verda suau al mapa per als plans on ets, pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
+Última actualització: 26 de novembre de 2026 (els teus plans en groc, Today turquesa, un sol taronja per a «Open to plans», una sola mida de títol, logo més petit, dia i hora en verd als plans on ets, quadre de ratlles de les persones en taronja, opció A triada, botó verd del xat a tot arreu, botó verd del xat, persones en taronja, llistes sense noms, colors definitius de My plans, fitxa de les persones en taronja, idiomes, àrea i missatge de «Create a plan», colors de My plans per tipus amb una sola regla, fitxa verda suau al mapa per als plans on ets, pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -507,6 +507,10 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     - El text que la descriu és una mica més petit, com a la resta de l'app.
   - **Fitxa del pla al mapa:** el fons verd suau dels plans on ets s'ha tret (torna a ser igual que la resta). Ara, per saber que ja hi ets, el botó **«Open the group chat»** és verd (ple de verd, amb el text blanc).
   - **Persones en taronja al mapa, més canvis:** el quadre de sota ja no té el fons groc, només el marc. El text fa servir el gènere de la persona: «her / She'll» per a dones, «him / He'll / his» per a homes, i «them / They'll» només si va triar «Other» o no ho va dir. «From …» ara és de color terracota, com a My profile.
+  - **Colors nous:**
+    - **Els teus plans sempre en groc** (té prioritat sobre Now/Today/Tomorrow): groc clar per al bloc de My plans, l'etiqueta «★ Your plan» i el marcador del mapa; un groc daurat més intens per als textos (l'etiqueta, l'hora i el títol). Als detalls del teu pla, la franja de dalt és d'un groc molt pàl·lid. El verd queda només per als plans on t'has unit («You're in»).
+    - **Today** ara és un **turquesa suau** (bloc, «TODAY · hora» i títol). Now (granat suau) i Tomorrow (lila) no canvien.
+    - **Taronja d'«Open to plans»:** un sol taronja a tot arreu: el punt de la llegenda, els marcadors de les persones i la fitxa de la persona («AVAILABLE» i la vora de ratlles del quadre). Els plans on encara no ets mantenen el seu color terracota.
   - **Títols, tots iguals i una mica més petits:** ara hi ha **una sola mida de títol per a tota l'app, 32** (abans n'hi havia de 30 a 46; la majoria eren de 42). La fan servir tots els títols grans en lletra serif: «My plans», «Notifications», «Create a plan», «Settings», els títols dels plans, el nom a My profile, les fitxes del mapa, les diapositives inicials, etc. Està definida en un sol lloc del tema.
   - **Logo «naio.» una mica més petit** (al voltant d'un 15% menys), el mateix logo a tot arreu.
   - **Dia i hora en verd quan ja ets al pla:** «TOMORROW · 10:00 AM» (o Now / Today) surt del mateix verd que «You're in» a la fitxa del mapa, als detalls del pla (l'obris des del mapa, des de My plans, des del xat amb «View plan» o des d'Alerts) i a la pantalla «You're in.». Si encara no hi ets, es queda igual que abans.

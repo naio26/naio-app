@@ -47,12 +47,12 @@ export default function PlanDetails() {
   return (
     <View style={styles.root}>
       <ScrollView contentContainerStyle={{ paddingBottom: space.xl }} showsVerticalScrollIndicator={false}>
-        <View style={[styles.band, inside && styles.bandIn, { paddingTop: insets.top + 12 }]}>
+        <View style={[styles.band, status === 'accepted' && styles.bandIn, status === 'host' && styles.bandMine, { paddingTop: insets.top + 12 }]}>
           <BackButton />
           <View style={{ marginTop: space.xl, gap: 8 }}>
             <PlanBadge status={status} />
             {/* In the plan ("You're in"): day and time in the same green, however you got here. */}
-            <Txt variant="eyebrow" style={[{ letterSpacing: 1.2 }, status === 'accepted' && { color: colors.green }]}>
+            <Txt variant="eyebrow" style={[{ letterSpacing: 1.2 }, status === 'accepted' && { color: colors.green }, status === 'host' && { color: colors.mineInk }]}>
               {planWhen(plan)}
             </Txt>
             <Txt variant="display">
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
   // Pale peach band while you're only looking; green once you're in the plan.
   band: { backgroundColor: colors.blush, paddingHorizontal: space.gutter, paddingBottom: space.xl },
   bandIn: { backgroundColor: colors.greenSoft },
+  bandMine: { backgroundColor: colors.mineSoft }, // your own plan: yellow, never green
   // The same space (24) above and below the description.
   body: { paddingHorizontal: space.gutter, paddingTop: space.xl, gap: space.xl },
   row: { gap: 8, paddingVertical: 16, borderTopWidth: 1, borderTopColor: colors.border },

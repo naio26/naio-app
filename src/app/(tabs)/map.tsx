@@ -162,7 +162,7 @@ export default function MapTab() {
             </Txt>
           </View>
           <View style={styles.legendItem}>
-            <View style={[styles.legendDot, { backgroundColor: colors.mapOpen }]} />
+            <View style={[styles.legendDot, { backgroundColor: colors.openToPlans }]} />
             <Txt variant="caption" color={colors.dark}>
               Open to plans
             </Txt>
@@ -245,7 +245,7 @@ function PersonSheet({ person }: { person: Person }) {
   return (
     <View style={{ gap: space.lg }}>
       <View style={{ gap: 8 }}>
-        <Txt variant="eyebrow" style={{ letterSpacing: 1.2 }}>
+        <Txt variant="eyebrow" style={{ letterSpacing: 1.2, color: colors.openToPlans }}>
           Available
         </Txt>
         <Txt variant="h1">
@@ -275,7 +275,7 @@ function PersonSheet({ person }: { person: Person }) {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.mapLand },
-  frame: { backgroundColor: 'transparent', borderWidth: 1, borderStyle: 'dashed', borderColor: colors.accentLine },
+  frame: { backgroundColor: 'transparent', borderWidth: 1, borderStyle: 'dashed', borderColor: colors.openToPlans },
   top: {
     position: 'absolute',
     left: space.lg,
