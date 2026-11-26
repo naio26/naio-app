@@ -27,6 +27,8 @@ export function PlanSheet({ plan }: { plan: Plan }) {
   // Your own plan: yellow dominates (golden text). Every other plan: the naio. terracotta.
   const mine = status === 'host';
   const tone = mine ? colors.mineInk : colors.accent;
+  // A plan you're in: green day/time, "View details" link and group chat button (the rest as any plan).
+  const joined = status === 'accepted';
   const details = () => router.push({ pathname: '/plan/[id]', params: { id: plan.id } });
 
   return (
@@ -34,8 +36,8 @@ export function PlanSheet({ plan }: { plan: Plan }) {
       <View style={{ gap: 6 }}>
         <PlanBadge status={status} />
         {/* More room between the day/time and the title. */}
-        {/* Your own plan: golden. Plans you're in look like any other plan (terracotta). */}
-        <Txt variant="eyebrow" style={[{ letterSpacing: 1.2, marginBottom: 6 }, mine && { color: colors.mineInk }]}>
+        {/* Your own plan: golden. A plan you're in: green, like "You're in". */}
+        <Txt variant="eyebrow" style={[{ letterSpacing: 1.2, marginBottom: 6 }, mine && { color: colors.mineInk }, joined && { color: colors.green }]}>
           {planWhen(plan)}
         </Txt>
         <Txt variant="h1">{plan.title}</Txt>
@@ -80,7 +82,7 @@ export function PlanSheet({ plan }: { plan: Plan }) {
           <AvatarStack people={members} plain meColor={mine ? colors.mineInk : colors.accent} />
         </View>
         <Pressable accessibilityRole="link" hitSlop={10} onPress={details}>
-          <Txt variant="caption" style={[styles.peopleLink, { color: tone }]}>
+          <Txt variant="caption" style={[styles.peopleLink, { color: joined ? colors.green : tone }]}>
             View details
           </Txt>
         </Pressable>

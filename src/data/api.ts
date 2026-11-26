@@ -85,6 +85,9 @@ const ready: Promise<void> = load<ReturnType<typeof fresh>>('db').then((saved) =
       const old = p as Plan & { language?: string };
       return { ...p, languages: p.languages ?? [old.language ?? 'English'], capacity: Math.min(p.capacity, MAX_GROUP) };
     });
+    // Demo plans added after this copy was saved (e.g. the three-language plan) show up without "Reset demo".
+    const known = new Set(db.plans.map((p) => p.id));
+    db.plans.push(...clone(plans).filter((p) => !known.has(p.id)));
   }
 });
 const persist = () => save('db', db);

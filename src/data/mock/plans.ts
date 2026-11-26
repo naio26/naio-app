@@ -92,4 +92,23 @@ export const plans: Plan[] = [
     moods: ['Outdoors', 'Adventure'],
     location: { latitude: 37.9676, longitude: 23.7172 },
   },
+  {
+    // A plan in three languages, to see how several languages are laid out.
+    id: 'language-swap-thiseio',
+    title: 'Language swap in Thiseio',
+    tagline: 'Drinks with a view and three languages at the table.',
+    description: 'Practise your Greek, Spanish or English over a drink with the Acropolis in front of us. All levels welcome.',
+    day: 'today',
+    time: '19:30',
+    area: 'Thiseio',
+    meetNear: 'Apostolou Pavlou',
+    exactPoint: 'Café on Apostolou Pavlou 25',
+    distanceKm: 1.0,
+    languages: ['English', 'Greek', 'Spanish'],
+    capacity: 8,
+    hostId: 'sofia',
+    memberIds: ['sofia', 'jonas', 'nora'],
+    moods: ['Deep talk', 'Food & drinks'],
+    location: { latitude: 37.9765, longitude: 23.7185 },
+  },
 ];

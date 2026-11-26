@@ -53,8 +53,8 @@ export default function PlanDetails() {
           <BackButton />
           <View style={{ marginTop: space.xl, gap: 8 }}>
             <PlanBadge status={status} />
-            {/* A plan you're in looks exactly like one you're not in; your own plan is golden. */}
-            <Txt variant="eyebrow" style={[{ letterSpacing: 1.2 }, mine && { color: colors.mineInk }]}>
+            {/* Your own plan: golden. A plan you're in: green day/time (the rest as before joining). */}
+            <Txt variant="eyebrow" style={[{ letterSpacing: 1.2 }, mine && { color: colors.mineInk }, status === 'accepted' && { color: colors.green }]}>
               {planWhen(plan)}
             </Txt>
             <Txt variant="display">
