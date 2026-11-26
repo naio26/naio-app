@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import { Icon, type IconName } from './Icon';
 import { MyProfile } from '@/data/types';
-import { colors, fonts, shadow, space } from '@/theme';
+import { colors, fonts, shadow, space, titleSize } from '@/theme';
 import { Button } from './Button';
 import { Card } from './Card';
 import { BalancedTags } from './BalancedTags';
@@ -69,7 +69,7 @@ export function ProfileView({ profile, onEdit }: { profile: MyProfile; onEdit: (
 
 const styles = StyleSheet.create({
   hero: { alignItems: 'center', marginTop: space.lg, gap: 8 },
-  name: { fontFamily: fonts.serif, fontSize: 46, lineHeight: 54, color: colors.dark, marginTop: space.sm },
+  name: { fontFamily: fonts.serif, ...titleSize, color: colors.dark, marginTop: space.sm },
   from: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 20, color: colors.accent },
   where: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: space.xs },
   card: { marginTop: space.xl, padding: 26, borderRadius: 30, gap: 0, ...shadow.soft, shadowOpacity: 0.05 },

@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Person } from '@/data/types';
-import { colors, fonts, space } from '@/theme';
+import { colors, fonts, space, titleSize } from '@/theme';
 import { Avatar } from './Avatar';
 import { BalancedTags } from './BalancedTags';
 import { Icon } from './Icon';
@@ -87,7 +87,7 @@ export const profileText = { fontFamily: fonts.sans, fontSize: 15, lineHeight: 2
 const styles = StyleSheet.create({
   root: { gap: space.lg },
   hero: { alignItems: 'center', gap: 4 },
-  name: { fontFamily: fonts.serif, fontSize: 30, lineHeight: 36, color: colors.dark, marginTop: space.sm },
+  name: { fontFamily: fonts.serif, ...titleSize, color: colors.dark, marginTop: space.sm },
   host: { fontFamily: fonts.sansBold, fontSize: 11, letterSpacing: 1, color: colors.accent },
   age: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 21, color: colors.dark },
   from: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2 },

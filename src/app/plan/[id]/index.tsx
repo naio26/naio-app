@@ -55,7 +55,7 @@ export default function PlanDetails() {
             <Txt variant="eyebrow" style={[{ letterSpacing: 1.2 }, status === 'accepted' && { color: colors.green }]}>
               {planWhen(plan)}
             </Txt>
-            <Txt variant="display" style={{ fontSize: 38, lineHeight: 44 }}>
+            <Txt variant="display">
               {plan.title}
             </Txt>
             <Txt>

@@ -51,7 +51,7 @@ export default function Report() {
         <View style={{ marginBottom: space.sm }}>
           <Icon name="check" size={icon.hero} color={colors.accent} />
         </View>
-        <Txt variant="display" center style={{ fontSize: 38 }}>
+        <Txt variant="display" center>
           Thanks for telling us.
         </Txt>
         <Txt center>

@@ -30,7 +30,7 @@ export function ResultScreen({
 }) {
   return (
     <Screen contentStyle={styles.content} footer={footer}>
-      <Logo size={30} />
+      <Logo size={26} />
       <View style={styles.center}>
         <View style={styles.hero}>
           <Icon name={icon} size={iconSize.hero} color={colors.accent} />
@@ -40,7 +40,7 @@ export function ResultScreen({
             {eyebrow}
           </Txt>
         )}
-        <Txt variant="display" center style={{ fontSize: 42 }}>
+        <Txt variant="display" center>
           {title}
         </Txt>
       </View>

@@ -23,10 +23,19 @@ export const radius = {
   pill: 999,
 } as const;
 
+/**
+ * THE title size: every screen title in the app (big serif titles, My plans, the name on My profile,
+ * plan and person sheets). Change it only here; screens never set their own title size.
+ */
+export const titleSize = { fontSize: 32, lineHeight: 38 } as const;
+const title = { fontFamily: fonts.serif, ...titleSize, color: colors.dark, letterSpacing: -0.3 } as const;
+
 // Text presets. Screens pick one by name through <Txt variant="…">.
 export const type = {
-  display: { fontFamily: fonts.serif, fontSize: 42, lineHeight: 46, color: colors.dark, letterSpacing: -0.5 },
-  h1: { fontFamily: fonts.serif, fontSize: 34, lineHeight: 40, color: colors.dark, letterSpacing: -0.3 },
+  /** Screen titles: `display` and `h1` are the same title (kept as two names so older screens still read well). */
+  title,
+  display: title,
+  h1: title,
   h2: { fontFamily: fonts.serif, fontSize: 26, lineHeight: 32, color: colors.dark },
   eyebrow: {
     fontFamily: fonts.sansBold,

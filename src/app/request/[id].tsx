@@ -49,7 +49,7 @@ export default function JoinRequestScreen() {
         <View style={[styles.pill, request.status === 'accepted' && { backgroundColor: colors.greenSoft }]}>
           <Txt style={[styles.pillText, request.status === 'accepted' && { color: colors.green }]}>{pill}</Txt>
         </View>
-        <Txt variant="display" center style={{ fontSize: 44, lineHeight: 50 }}>
+        <Txt variant="display" center>
           {person.firstName}, {person.ageRange}
         </Txt>
         <Txt center>{[person.situation, person.from && `From ${person.from}`].filter(Boolean).join(' · ')}</Txt>

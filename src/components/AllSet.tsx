@@ -129,7 +129,7 @@ export function AllSet() {
 
   return (
     <Screen contentStyle={styles.content} footer={<Button title={v.button.title} arrow onPress={v.button.onPress} />}>
-      <Logo size={30} />
+      <Logo size={26} />
       <View style={styles.center}>
         <Icon name={v.icon} size={icon.hero} color={colors.accent} />
         {v.label && (
@@ -137,7 +137,7 @@ export function AllSet() {
             {v.label}
           </Txt>
         )}
-        <Txt variant="display" center style={step !== 'granted' && styles.longTitle}>
+        <Txt variant="display" center>
           {v.title}
         </Txt>
         {v.sub && (
@@ -159,7 +159,6 @@ type ActionButton = { title: string; onPress: () => void };
 const styles = StyleSheet.create({
   content: { paddingTop: space.xl, paddingBottom: space.lg },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 14 },
-  longTitle: { fontSize: 32, lineHeight: 38 },
   // "Welcome to {city}, {name}.": soft light terracotta, a bit smaller and lower than the title.
   sub: { fontSize: 24, lineHeight: 30, marginTop: space.sm },
   smallLine: { fontSize: 14, lineHeight: 20 },

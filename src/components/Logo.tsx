@@ -11,7 +11,7 @@ type Props = {
  * The one and only "naio." wordmark: DM Sans ExtraBold, lowercase, coloured period.
  * Every screen uses this component; only the size and the tone change, never the font or colours.
  */
-export function Logo({ size = 40, tone = 'default' }: Props) {
+export function Logo({ size = 34, tone = 'default' }: Props) {
   const light = tone === 'light';
   return (
     <Text

@@ -30,7 +30,7 @@ export default function YoureIn() {
         </View>
       }
     >
-      <Logo size={30} />
+      <Logo size={26} />
 
       <View style={styles.center}>
         <View style={styles.hero}>
@@ -39,7 +39,7 @@ export default function YoureIn() {
         <Txt variant="eyebrow" style={{ letterSpacing: 1.6 }}>
           Plan joined
         </Txt>
-        <Txt variant="display" center style={{ fontSize: 44 }}>
+        <Txt variant="display" center>
           You’re in.
         </Txt>
       </View>

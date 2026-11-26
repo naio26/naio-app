@@ -11,7 +11,7 @@ export default function ProfileTab() {
   return (
     <Screen scroll edges={['top']} contentStyle={styles.content}>
       <View style={styles.top}>
-        <Logo size={40} />
+        <Logo size={34} />
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Settings"

@@ -68,7 +68,7 @@ export default function RequestSent() {
         </View>
       }
     >
-      <Logo size={30} />
+      <Logo size={26} />
 
       <View style={styles.center}>
         <Animated.View
@@ -80,7 +80,7 @@ export default function RequestSent() {
           Request sent
         </Txt>
         {/* The main message: one sentence with the host's name (from the plan). The rest below, smaller. */}
-        <Txt variant="display" center style={{ fontSize: 36, lineHeight: 42 }}>
+        <Txt variant="display" center>
           {hostName} has your request.
         </Txt>
         <Txt variant="small" center style={{ fontSize: 15, lineHeight: 22 }}>

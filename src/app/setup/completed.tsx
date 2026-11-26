@@ -28,7 +28,7 @@ export default function ProfileCompleted() {
       footer={<Button title="Create profile" arrow loading={saving} onPress={create} />}
     >
       <View style={styles.top}>
-        <Logo size={44} />
+        <Logo size={38} />
       </View>
       <ProfileView profile={profile} onEdit={() => goBack()} />
     </Screen>

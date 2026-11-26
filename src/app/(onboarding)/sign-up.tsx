@@ -31,7 +31,7 @@ export default function SignUp() {
   return (
     <Screen scroll contentStyle={styles.content}>
       <View style={styles.logo}>
-        <Logo size={44} />
+        <Logo size={38} />
       </View>
 
       <View style={styles.hero}>
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   content: { paddingBottom: space.xxl },
   logo: { alignItems: 'flex-end', marginTop: space.xxl },
   hero: { marginTop: 96, gap: 14, marginBottom: space.xxl },
-  title: { fontSize: 44, lineHeight: 48 },
+  title: {},
   social: { gap: 10 },
   or: { flexDirection: 'row', alignItems: 'center', gap: 12, marginVertical: space.lg },
   line: { flex: 1, height: 1, backgroundColor: colors.border },

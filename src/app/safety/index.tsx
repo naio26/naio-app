@@ -6,7 +6,7 @@ import { Screen, ScreenHeader, Txt } from '@/components';
 import { planWhen, toMinutes } from '@/data/time';
 import { useCity } from '@/state/city';
 import { usePlans } from '@/state/plans';
-import { colors, fonts, radius, space } from '@/theme';
+import { colors, fonts, radius, space, titleSize } from '@/theme';
 
 // Screen 44 — Safety centre.
 export default function SafetyCentre() {
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     gap: 14,
     marginBottom: space.sm,
   },
-  heroTitle: { fontFamily: fonts.serif, fontSize: 38, lineHeight: 44, color: colors.white },
+  heroTitle: { fontFamily: fonts.serif, ...titleSize, color: colors.white },
   heroText: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: 'rgba(255,255,255,0.75)' },
   row: {
     flexDirection: 'row',

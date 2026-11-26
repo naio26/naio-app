@@ -1,5 +1,5 @@
 import { Modal, StyleSheet, View } from 'react-native';
-import { colors, fonts, radius, space } from '@/theme';
+import { colors, fonts, radius, space, titleSize } from '@/theme';
 import { Button } from './Button';
 import { Txt } from './Txt';
 
@@ -47,8 +47,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: fonts.serif,
-    fontSize: 38,
-    lineHeight: 44,
+    ...titleSize,
     color: colors.dark,
     letterSpacing: -0.5,
     marginTop: 4,

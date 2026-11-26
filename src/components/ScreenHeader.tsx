@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
   },
   row: { flexDirection: 'row', alignItems: 'flex-end', gap: 12 },
   back: { paddingBottom: 4 },
-  title: { fontSize: 30, lineHeight: 36 },
-  large: { fontSize: 40, lineHeight: 46 },
+  // Same title size as every screen (theme `titleSize`); `large` no longer changes it.
+  title: {},
+  large: {},
 });

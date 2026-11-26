@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button, Logo, Txt } from '@/components';
-import { colors, fonts, space } from '@/theme';
+import { colors, fonts, space, titleSize } from '@/theme';
 
 const SLIDE_MS = 5000;
 const HOLD_MS = 250; // shorter than this counts as a tap, longer as "hold to pause"
@@ -143,7 +143,7 @@ export default function Reel() {
       />
 
       <View style={[styles.top, { paddingTop: insets.top + 12 }]}>
-        <Logo size={30} tone="light" />
+        <Logo size={26} tone="light" />
         <Pressable accessibilityRole="button" hitSlop={16} onPress={start}>
           <Txt style={styles.skip}>Skip</Txt>
         </Pressable>
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
   stage: { flex: 1, justifyContent: 'flex-end', paddingHorizontal: space.gutter, paddingBottom: 72 },
   copy: { gap: 10 },
   eyebrow: { letterSpacing: 0.6, fontSize: 13 },
-  title: { fontFamily: fonts.serif, fontSize: 38, lineHeight: 44, color: colors.white, letterSpacing: -0.3 },
+  title: { fontFamily: fonts.serif, ...titleSize, color: colors.white, letterSpacing: -0.3 },
   body: { fontFamily: fonts.sansBold, fontSize: 16, lineHeight: 22, color: colors.white },
   bottom: { paddingHorizontal: space.gutter, gap: 24 },
   bars: { flexDirection: 'row', gap: 4 },
