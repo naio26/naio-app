@@ -1,6 +1,7 @@
 import { Plan } from '../types';
 
 // Plans only exist for today or tomorrow. The demo clock says it's today, 4:18 PM (see src/data/time.ts).
+// distanceKm is worked out again from `location` when the app starts (api.ts), so the numbers here are only a guide.
 export const plans: Plan[] = [
   {
     id: 'sunset-drinks',
@@ -110,5 +111,60 @@ export const plans: Plan[] = [
     memberIds: ['sofia', 'jonas', 'nora'],
     moods: ['Deep talk', 'Food & drinks'],
     location: { latitude: 37.9765, longitude: 23.7185 },
+  },
+  // Further away, to test "How far would you go?" (distances are worked out from the location).
+  {
+    id: 'seafood-piraeus', // ~8.6 km
+    title: 'Seafood lunch in Piraeus',
+    tagline: 'Fresh fish by the harbour and a long, slow lunch.',
+    description: 'Lunch at a taverna on the harbour in Piraeus. Take the metro, we meet at the station.',
+    day: 'tomorrow',
+    time: '13:30',
+    area: 'Piraeus',
+    meetNear: 'Piraeus metro station',
+    exactPoint: 'Piraeus metro station, main exit',
+    distanceKm: 8.6,
+    languages: ['English', 'Greek'],
+    capacity: 6,
+    hostId: 'nora',
+    memberIds: ['nora', 'leo'],
+    moods: ['Food & drinks'],
+    location: { latitude: 37.942, longitude: 23.6465 },
+  },
+  {
+    id: 'glyfada-sea-walk', // ~12.4 km
+    title: 'Sea walk in Glyfada',
+    tagline: 'A walk along the sea and a coffee with a view.',
+    description: 'An easy walk along the coast in Glyfada, then coffee by the marina.',
+    day: 'tomorrow',
+    time: '11:00',
+    area: 'Glyfada',
+    meetNear: 'Glyfada marina',
+    exactPoint: 'Glyfada marina, by the boats',
+    distanceKm: 12.4,
+    languages: ['English'],
+    capacity: 8,
+    hostId: 'jonas',
+    memberIds: ['jonas', 'sofia'],
+    moods: ['Outdoors', 'Chill'],
+    location: { latitude: 37.865, longitude: 23.753 },
+  },
+  {
+    id: 'parnitha-hike', // ~21.9 km: beyond the biggest distance (20 km), so it never shows
+    title: 'Hike on Mount Parnitha',
+    tagline: 'Pine forest, fresh air and a picnic at the top.',
+    description: 'A half-day hike on Mount Parnitha. Good shoes, water and snacks.',
+    day: 'tomorrow',
+    time: '09:00',
+    area: 'Mount Parnitha',
+    meetNear: 'Parnitha cable car',
+    exactPoint: 'Parnitha cable car, lower station',
+    distanceKm: 21.9,
+    languages: ['English', 'Spanish'],
+    capacity: 10,
+    hostId: 'leo',
+    memberIds: ['leo'],
+    moods: ['Outdoors', 'Adventure'],
+    location: { latitude: 38.172, longitude: 23.72 },
   },
 ];

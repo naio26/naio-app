@@ -23,7 +23,7 @@ import {
   YouDot,
 } from '@/components';
 import { listAvailablePeople } from '@/data/api';
-import { pronouns } from '@/data/catalog';
+import { availabilityText, pronouns } from '@/data/catalog';
 import { useLoad } from '@/data/hooks';
 import { MY_AREA, personMatches, planMatches } from '@/data/match';
 import { dayKindLabel, formatTime } from '@/data/time';
@@ -259,7 +259,7 @@ function PersonSheet({ person }: { person: Person }) {
         </Txt>
         {/* Stay and time come from the person's data (the city is the current city's name there). */}
         <Txt variant="small" style={{ fontSize: 14 }}>
-          {a.stay} · Available until {formatTime(a.until)}
+          {a.stay} · {availabilityText(a)}
         </Txt>
         <FromLine from={person.from} strong />
       </View>

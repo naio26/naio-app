@@ -1,5 +1,5 @@
 // Who shows up on the map: plans and people that match YOUR filters (screens 23–24).
-import { matchesFilters, toMinutes } from './time';
+import { availabilityWindows, matchesFilters } from './time';
 import { AGE_RANGES, AgeRange, Filters, Gender, Person, Plan } from './types';
 
 type LatLng = { latitude: number; longitude: number };
@@ -31,24 +31,16 @@ export function planMatches(plan: Plan, f: Filters, host?: { gender?: Gender; ag
 
 /**
  * Orange marker: someone open to plans (no plan of their own) who matches your filters:
- * distance, gender, language, age range and time (they're available from now until `until`, today).
+ * distance (always), gender, language, age range and "When" (their now / today / tomorrow slots).
  * Moods are about plans, so they don't hide people.
  */
 export function personMatches(p: Person, f: Filters) {
   const a = p.available;
   if (!a) return false;
-  if (f.maxKm !== null && kmBetween(MY_AREA, a.location) > f.maxKm) return false;
+  if (kmBetween(MY_AREA, a.location) > f.maxKm) return false;
   if (f.genders.length && !(p.gender && f.genders.includes(p.gender))) return false;
   if (f.languages.length && !p.languages.some((l) => f.languages.includes(l.name))) return false;
   if (!inAges(p.ageRange, f)) return false;
-  if (f.when.length) {
-    const until = toMinutes(a.until);
-    // The demo clock is already past noon, so "this morning" never matches.
-    const ok =
-      f.when.includes('now') ||
-      (f.when.includes('today-afternoon') && until > 12 * 60) ||
-      (f.when.includes('today-evening') && until > 18 * 60);
-    if (!ok) return false;
-  }
+  if (f.when.length && !availabilityWindows(a).some((w) => f.when.includes(w))) return false;
   return true;
 }

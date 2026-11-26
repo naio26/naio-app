@@ -67,8 +67,16 @@ export async function signInWithEmail(email: string): Promise<Account> {
 // A changeable copy of the mock data, so creating, editing, accepting and chatting really change things.
 // It's also saved on the phone (like a real backend would keep it), so changes survive a reload.
 const clone = <T>(x: T): T => JSON.parse(JSON.stringify(x));
+const toKm = (a: { latitude: number; longitude: number }, b: { latitude: number; longitude: number }) => {
+  const dx = (a.longitude - b.longitude) * 88; // km per degree at Athens' latitude
+  const dy = (a.latitude - b.latitude) * 111;
+  return Math.round(Math.sqrt(dx * dx + dy * dy) * 10) / 10;
+};
+const ME = { latitude: 37.9755, longitude: 23.7348 }; // approximate, Syntagma
+// A plan's distance always comes from where it is, so the distance filter and "· 1.1 km" agree.
+const withDistance = (p: Plan): Plan => ({ ...p, distanceKm: Math.max(0.2, toKm(p.location, ME)) });
 const fresh = () => ({
-  plans: clone(plans),
+  plans: clone(plans).map(withDistance),
   requests: clone(requests),
   messages: clone(messages),
   notices: clone(notices),
@@ -88,6 +96,7 @@ const ready: Promise<void> = load<ReturnType<typeof fresh>>('db').then((saved) =
     // Demo plans added after this copy was saved (e.g. the three-language plan) show up without "Reset demo".
     const known = new Set(db.plans.map((p) => p.id));
     db.plans.push(...clone(plans).filter((p) => !known.has(p.id)));
+    db.plans = db.plans.map(withDistance);
   }
 });
 const persist = () => save('db', db);
@@ -171,12 +180,6 @@ export async function listMyJoinedPlans(): Promise<string[]> {
 
 // ---- Your own plans (29–36) ----
 
-const toKm = (a: { latitude: number; longitude: number }, b: { latitude: number; longitude: number }) => {
-  const dx = (a.longitude - b.longitude) * 88; // km per degree at Athens' latitude
-  const dy = (a.latitude - b.latitude) * 111;
-  return Math.round(Math.sqrt(dx * dx + dy * dy) * 10) / 10;
-};
-const ME = { latitude: 37.9755, longitude: 23.7348 }; // approximate, Syntagma
 
 function applyDraft(plan: Plan, d: PlanDraft): Plan {
   // The area is optional: without one, the plan sits at your approximate position and shows the city name.

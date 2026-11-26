@@ -56,8 +56,7 @@ export type Person = {
   /** Profile photo URL (later). Until then the coloured initial is shown. */
   photo?: string;
   /** Set when the person shows up on the map as "Available" without a plan (screen 28). */
-  available?: {
-    until: string; // 24h "HH:mm"
+  available?: Availability & {
     stay: string; // "In Athens for 4 days"
     location: { latitude: number; longitude: number }; // approximate
   };
@@ -65,6 +64,15 @@ export type Person = {
 
 /** Plans only ever exist for today or tomorrow. */
 export type PlanDay = 'today' | 'tomorrow';
+
+/** A part of the day: Morning (until 12 PM), Afternoon (12–6 PM), Evening (from 6 PM). */
+export type DaySlot = 'morning' | 'afternoon' | 'evening';
+
+/**
+ * When someone is open to plans: "now", or today / tomorrow with one or more slots.
+ * Shown as "Available now", "Available today · afternoon", "Available tomorrow · morning & evening".
+ */
+export type Availability = { when: 'now'; slots: [] } | { when: PlanDay; slots: DaySlot[] };
 
 export type Plan = {
   id: string;
@@ -160,6 +168,8 @@ export type MyProfile = {
   situation?: Situation;
   from: string; // optional, "Barcelona, Spain"
   about: string; // optional
+  /** You're open to plans (you set it from My profile). Undefined = not open to plans. */
+  available?: Availability;
 };
 
 // ---- Filters (screens 23–24) ----
@@ -174,7 +184,7 @@ export type TimeWindow =
   | 'tomorrow-evening';
 
 export type Filters = {
-  maxKm: number | null; // null = any distance
+  maxKm: number; // one of DISTANCES (1, 5, 10, 20 km), 20 by default
   moods: string[]; // empty = any mood
   languages: string[]; // empty = any language
   when: TimeWindow[]; // empty = any time

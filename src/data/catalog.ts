@@ -1,5 +1,5 @@
 // Fixed lists the app offers to choose from. Not user data, so they live here and not in mock/.
-import { Gender, Language, LanguageLevel, Situation } from './types';
+import { Availability, DaySlot, Gender, Language, LanguageLevel, Situation } from './types';
 
 export const LANGUAGE_LEVELS: LanguageLevel[] = ['Native', 'Fluent', 'Conversational', 'Learning'];
 
@@ -101,13 +101,29 @@ export const MOODS = [
 ];
 
 /** Distance chips. Choosing one includes every closer plan. */
+/** "How far would you go?": up to 1, 5, 10 or 20 km. 20 km is the default (and what Reset goes back to). */
 export const DISTANCES: { label: string; maxKm: number }[] = [
-  { label: '< 5 km', maxKm: 5 },
-  { label: '5–10 km', maxKm: 10 },
-  { label: '10–20 km', maxKm: 20 },
-  { label: '20–30 km', maxKm: 30 },
-  { label: '> 30 km', maxKm: Infinity },
+  { label: '1 km', maxKm: 1 },
+  { label: '5 km', maxKm: 5 },
+  { label: '10 km', maxKm: 10 },
+  { label: '20 km', maxKm: 20 },
 ];
+export const DEFAULT_KM = 20;
+
+/** Parts of the day for "open to plans" (people in orange). */
+export const DAY_SLOTS: { key: DaySlot; title: string; sub: string }[] = [
+  { key: 'morning', title: 'Morning', sub: 'until 12 PM' },
+  { key: 'afternoon', title: 'Afternoon', sub: '12–6 PM' },
+  { key: 'evening', title: 'Evening', sub: 'from 6 PM' },
+];
+
+/** "Available now", "Available today · afternoon", "Available tomorrow · morning & evening". */
+export function availabilityText(a: Availability) {
+  if (a.when === 'now') return 'Available now';
+  const names = DAY_SLOTS.filter((s) => a.slots.includes(s.key)).map((s) => s.title.toLowerCase());
+  const list = names.length < 2 ? (names[0] ?? '') : `${names.slice(0, -1).join(', ')} & ${names[names.length - 1]}`;
+  return `Available ${a.when}${list ? ` · ${list}` : ''}`;
+}
 
 /** All languages with the city's own languages first (e.g. Greek, English in Athens), then the usual order. */
 export function languagesFor(cityLanguages: string[]): Language[] {

@@ -1,6 +1,6 @@
 // Times in the app. The demo runs on a fixed clock so plans always look "upcoming",
 // whatever time you test at. Swap demoNow() for the real time once there's a backend.
-import { Filters, Gender, Plan, PlanDay, TimeWindow } from './types';
+import { Availability, DaySlot, Filters, Gender, Plan, PlanDay, TimeWindow } from './types';
 
 /** Demo clock: today at 4:18 PM. */
 export const demoNow = () => ({ day: 'today' as PlanDay, minutes: 16 * 60 + 18 });
@@ -45,15 +45,28 @@ export const planWhen = (plan: Plan) => `${dayKindLabel(plan)} · ${formatTime(p
 
 /** Map pin label: "NOW", "TODAY 6 PM", "TOMORROW 10 AM". */
 
+/** Morning (until 12 PM), afternoon (12–6 PM) or evening (from 6 PM) for a time in minutes. */
+export const daySlotAt = (minutes: number): DaySlot =>
+  minutes < 12 * 60 ? 'morning' : minutes < 18 * 60 ? 'afternoon' : 'evening';
+
 function slot(plan: Plan): TimeWindow {
-  const m = toMinutes(plan.time);
-  const part = m < 12 * 60 ? 'morning' : m < 18 * 60 ? 'afternoon' : 'evening';
-  return `${plan.day}-${part}` as TimeWindow;
+  return `${plan.day}-${daySlotAt(toMinutes(plan.time))}` as TimeWindow;
+}
+
+/** The "When" windows someone open to plans covers ("now" also counts as the current part of today). */
+export function availabilityWindows(a: Availability): TimeWindow[] {
+  const now = daySlotAt(demoNow().minutes);
+  if (a.when === 'now') return ['now', `today-${now}` as TimeWindow];
+  const out = a.slots.map((s) => `${a.when}-${s}` as TimeWindow);
+  // Free today in the part of the day it is now: that's "now" too.
+  if (a.when === 'today' && a.slots.includes(now)) out.push('now');
+  return out;
 }
 
 /** Does a plan pass the filters from screens 23–24? Empty groups mean "anything". */
 export function matchesFilters(plan: Plan, f: Filters, hostGender?: Gender) {
-  if (f.maxKm !== null && plan.distanceKm > f.maxKm) return false;
+  // Always a distance: only plans within it show (20 km by default).
+  if (plan.distanceKm > f.maxKm) return false;
   if (f.moods.length && !plan.moods.some((m) => f.moods.includes(m))) return false;
   if (f.languages.length && !plan.languages.some((l) => f.languages.includes(l))) return false;
   if (f.genders.length && !(hostGender && f.genders.includes(hostGender))) return false;

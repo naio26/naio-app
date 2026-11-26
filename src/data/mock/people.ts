@@ -18,7 +18,8 @@ export const people: Person[] = [
       { code: 'ES', name: 'Spanish', level: 'Conversational' },
     ],
     avatarColor: '#C8694F',
-    available: { until: '20:00', stay: `In ${demoCity.name} for 4 days`, location: { latitude: 37.9792, longitude: 23.7402 } },
+    // 0.6 km · now
+    available: { when: 'now', slots: [], stay: `In ${demoCity.name} for 4 days`, location: { latitude: 37.9792, longitude: 23.7402 } },
   },
   {
     id: 'leo',
@@ -106,6 +107,60 @@ export const people: Person[] = [
       { code: 'FR', name: 'French', level: 'Conversational' },
     ],
     avatarColor: '#8A6A9A',
-    available: { until: '22:00', stay: `New in ${demoCity.name}`, location: { latitude: 37.9702, longitude: 23.7366 } },
+    // 3.7 km (Kallithea) · today, afternoon and evening
+    available: {
+      when: 'today',
+      slots: ['afternoon', 'evening'],
+      stay: `New in ${demoCity.name}`,
+      location: { latitude: 37.955, longitude: 23.701 },
+    },
+  },
+  {
+    id: 'elena',
+    firstName: 'Elena',
+    initials: 'E',
+    ageRange: '31-39',
+    gender: 'Female',
+    verified: true,
+    from: 'Bologna, Italy',
+    situation: 'Staying temporarily',
+    about: 'Here for a work project. Happy to swap a morning coffee for local tips.',
+    interests: ['Coffee', 'Art', 'Ocean'],
+    languages: [
+      { code: 'IT', name: 'Italian', level: 'Native' },
+      { code: 'EN', name: 'English', level: 'Fluent' },
+    ],
+    avatarColor: '#B0705A',
+    // 8.6 km (Piraeus) · tomorrow morning
+    available: {
+      when: 'tomorrow',
+      slots: ['morning'],
+      stay: `In ${demoCity.name} for 2 weeks`,
+      location: { latitude: 37.942, longitude: 23.6465 },
+    },
+  },
+  {
+    id: 'ingrid',
+    firstName: 'Ingrid',
+    initials: 'I',
+    ageRange: '46-49',
+    gender: 'Female',
+    verified: true,
+    from: 'Oslo, Norway',
+    situation: 'New in town',
+    about: 'Just moved north of the city. Looking for walking buddies and a good dinner spot.',
+    interests: ['Reading', 'Cooking', 'Local events'],
+    languages: [
+      { code: 'NO', name: 'Norwegian', level: 'Native' },
+      { code: 'EN', name: 'English', level: 'Fluent' },
+    ],
+    avatarColor: '#6F7FA0',
+    // 12.8 km (Kifisia) · tomorrow morning and evening
+    available: {
+      when: 'tomorrow',
+      slots: ['morning', 'evening'],
+      stay: `New in ${demoCity.name}`,
+      location: { latitude: 38.0736, longitude: 23.8114 },
+    },
   },
 ];
