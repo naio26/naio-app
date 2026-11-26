@@ -515,7 +515,7 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     - **My plans:** només tres colors, segons el moment: Now granat suau, Today turquesa suau, Tomorrow lila. Els teus plans fan servir el color del seu moment com qualsevol altre; només l'etiqueta «★ Your plan» és groga.
     - **Taronja d'«Open to plans»:** un sol taronja (#E8893A) per al punt de la llegenda, els marcadors taronja i la fitxa de la persona.
     - **Logo:** la mateixa mida petita (30) a totes les pantalles.
-  - **Marcador del teu pla: vas triar B**, l'agulla de mapa en forma de gota, groc clar amb la vora marró i «Your plan» a sota només en text marró. L'estrella ara és més petita, només el contorn (sense omplir) i de color groc. L'opció A i les files de Settings → Demo s'han tret.
+  - **Marcador del teu pla: vas triar B**, l'agulla de mapa en forma de gota, groc clar amb la vora marró i «Your plan» a sota només en text marró. El marcador és una mica més petit, i l'estrella de dins és més gran, només el contorn (sense omplir) i de color marró. L'opció A i les files de Settings → Demo s'han tret.
   - **Marcador del teu pla al mapa:** vas triar l'opció **B**, una agulla de mapa (en forma de gota) groc clar amb una estrella, diferent dels plans verds i de les persones taronja. Per provar: l'estrella és plena, de color marró (no només el contorn), la vora de l'agulla és del mateix marró, i «Your plan» a sota és només el text en marró, sense fons ni vora. L'opció A i les files de Settings → Demo s'han tret.
   - **Logo «naio.» una mica més petit i igual a tot arreu:** ara té una sola mida (30), definida al mateix logo, i és igual a My profile, a l'inici de sessió, a les diapositives i a totes les altres pantalles.
   - **Colors nous:**

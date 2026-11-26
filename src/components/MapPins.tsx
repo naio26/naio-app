@@ -13,12 +13,12 @@ export const PIN_SIZE = {
   plan: { height: 56, anchorY: 56 }, // the tip at the bottom
   person: { height: 80, anchorY: 22 }, // the centre of the circle
   you: { height: 76, anchorY: 24 }, // the centre of the blue dot
-  mine: { height: 76, anchorY: 43 }, // your plan: the point of the pin
+  mine: { height: 64, anchorY: 35 }, // your plan: the point of the pin
 };
 
 /**
  * YOUR plan: its own shape (owner chose B, a classic map pin), never the green pill or the orange circle.
- * Light yellow with a brown border, a small yellow outline star (no fill), and "Your plan" below as
+ * Light yellow with a brown border, a brown outline star (no fill), and "Your plan" below as
  * plain brown text (no background, no border).
  */
 export function MinePin({ selected }: { selected?: boolean }) {
@@ -28,7 +28,7 @@ export function MinePin({ selected }: { selected?: boolean }) {
       {/* A square with one sharp corner, turned 45° so the corner points down at the spot. */}
       <View style={[styles.drop, { backgroundColor: own.bg, borderColor: own.fg }, selected && styles.dropOn]}>
         <View style={{ transform: [{ rotate: '-45deg' }] }}>
-          <Icon name="star" size={10} color={colors.mineStar} />
+          <Icon name="star" size={14} color={own.fg} />
         </View>
       </View>
       <Txt numberOfLines={1} style={[styles.personName, { color: own.fg }]}>
@@ -138,11 +138,11 @@ const styles = StyleSheet.create({
   ringOn: { borderColor: colors.openToPlans, transform: [{ scale: 1.08 }] },
   dropOn: { transform: [{ rotate: '45deg' }, { scale: 1.1 }] },
   drop: {
-    width: 32,
-    height: 32,
+    width: 26,
+    height: 26,
     marginTop: 4,
-    marginBottom: 8,
-    borderRadius: 16,
+    marginBottom: 6,
+    borderRadius: 13,
     borderBottomRightRadius: 0,
     borderWidth: 2,
     transform: [{ rotate: '45deg' }],
