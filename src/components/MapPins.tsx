@@ -18,8 +18,8 @@ export const PIN_SIZE = {
 
 /**
  * YOUR plan: its own shape (owner chose B, a classic map pin), never the green pill or the orange circle.
- * Light yellow with a golden-brown star; the pin's border and the "Your plan" tag (a yellow pill with
- * the same brown outline) use that brown too (owner is trying it).
+ * Light yellow with a brown star and the same brown border; "Your plan" below is just brown text,
+ * no background and no border (owner is trying it).
  */
 export function MinePin({ selected }: { selected?: boolean }) {
   const own = useMineColours();
@@ -31,11 +31,9 @@ export function MinePin({ selected }: { selected?: boolean }) {
           <Icon name="star" size={16} color={own.fg} />
         </View>
       </View>
-      <View style={[styles.mineTag, { backgroundColor: own.bg, borderColor: own.fg }]}>
-        <Txt numberOfLines={1} style={[styles.personName, { color: own.fg }]}>
-          Your plan
-        </Txt>
-      </View>
+      <Txt numberOfLines={1} style={[styles.personName, { color: own.fg }]}>
+        Your plan
+      </Txt>
     </View>
   );
 }
@@ -139,7 +137,6 @@ const styles = StyleSheet.create({
   ring: { borderRadius: 24, borderWidth: 3, borderColor: colors.white, ...shadow.soft },
   ringOn: { borderColor: colors.openToPlans, transform: [{ scale: 1.08 }] },
   dropOn: { transform: [{ rotate: '45deg' }, { scale: 1.1 }] },
-  mineTag: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 999, borderWidth: 1.5 },
   drop: {
     width: 32,
     height: 32,
