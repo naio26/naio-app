@@ -1,12 +1,17 @@
 import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { planKind } from '@/data/time';
 import { Plan } from '@/data/types';
-import { colors, fonts, planKindColors, radius } from '@/theme';
+import { colors, fonts, planKindColors, planKindInk, radius } from '@/theme';
 import { Txt } from './Txt';
 
 /** The colour of a plan's block: your plan, Now, Today or Tomorrow. */
 export function planKindColor(plan: Plan) {
   return planKindColors[planKind(plan)];
+}
+
+/** The text colour that goes with it (title and time), a deeper shade of the same colour. */
+export function planKindInkColor(plan: Plan) {
+  return planKindInk[planKind(plan)];
 }
 
 /** Plan card with a plain colour block on the left (My plans, 37). */
@@ -16,6 +21,7 @@ export function PlanCard({
   line,
   footer,
   tint,
+  ink,
   faded,
   compact,
   onPress,
@@ -27,6 +33,8 @@ export function PlanCard({
   footer?: React.ReactNode;
   /** Colour of the block on the left (`planKindColor`, or `planKindColors.past` / `.cancelled`). */
   tint: string;
+  /** Colour of the time and title (`planKindInkColor`); dark when not given. */
+  ink?: string;
   /** Greyed out, like a watermark: a cancelled plan that's no longer on. */
   faded?: boolean;
   /** Smaller card (cancelled plans). */
@@ -50,8 +58,8 @@ export function PlanCard({
     >
       <View style={[styles.art, compact && { width: 64 }, { backgroundColor: tint }]} />
       <View style={[styles.body, compact && styles.bodyCompact]}>
-        <Txt style={styles.eyebrow}>{eyebrow}</Txt>
-        <Txt style={[styles.title, compact && styles.titleCompact]} numberOfLines={2}>
+        <Txt style={[styles.eyebrow, ink ? { color: ink } : null]}>{eyebrow}</Txt>
+        <Txt style={[styles.title, compact && styles.titleCompact, ink ? { color: ink } : null]} numberOfLines={2}>
           {title}
         </Txt>
         <Txt variant="caption" numberOfLines={2}>

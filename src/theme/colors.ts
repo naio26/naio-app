@@ -65,11 +65,22 @@ export const colors = {
  */
 export const planKindColors = {
   mine: '#A3D2B8', // your plan: soft mint green (goes with the green "Your plan" label)
-  now: '#EE9E7E', // Now: soft coral
+  now: '#D9A3AF', // Now: light, soft burgundy
   today: '#F6CB7F', // Today: soft honey
   tomorrow: '#C9BEDF', // Tomorrow: soft lavender
   past: '#EADBD0', // sand
   cancelled: colors.cancelTint, // grey
+} as const;
+
+/**
+ * Title and time of a plan card (My plans), in the same colour as its block. The blocks are too
+ * light to read as text on white, so these are deeper shades of the same colours.
+ */
+export const planKindInk = {
+  mine: '#2F7A58', // green
+  now: '#8E3B52', // burgundy
+  today: '#94650F', // honey
+  tomorrow: '#6A5A9B', // lilac
 } as const;
 
 export type ColorName = keyof typeof colors;

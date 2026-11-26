@@ -4,7 +4,7 @@ import { areaText } from '@/data/catalog';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
-import { Avatar, Button, PlanBadge, PlanCard, planKindColor, Screen, SwipeToRemove, Txt } from '@/components';
+import { Avatar, Button, PlanBadge, PlanCard, planKindColor, planKindInkColor, Screen, SwipeToRemove, Txt } from '@/components';
 import { listPastPlans } from '@/data/api';
 import { useLoad } from '@/data/hooks';
 import { planWhen, toMinutes } from '@/data/time';
@@ -163,6 +163,7 @@ function UpcomingCard({ plan }: { plan: Plan }) {
       eyebrow={planWhen(plan)}
       title={plan.title}
       tint={planKindColor(plan)}
+      ink={planKindInkColor(plan)}
       line={`${areaText(plan.area, city.name)} · ${names.length ? names.slice(0, 3).join(', ') + (names.length > 3 ? ` +${names.length - 3}` : '') : 'Only you so far'}`}
       footer={
         <View style={{ marginTop: 4 }}>
