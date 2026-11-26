@@ -12,6 +12,7 @@ import {
   MapMarker,
   NaioMap,
   PersonPin,
+  MinePin,
   PIN_SIZE,
   PlanPin,
   PlanSheet,
@@ -23,6 +24,7 @@ import {
 } from '@/components';
 import { listAvailablePeople } from '@/data/api';
 import { pronouns } from '@/data/catalog';
+import { useMinePinLook } from '@/state/look';
 import { useLoad } from '@/data/hooks';
 import { MY_AREA, personMatches, planMatches } from '@/data/match';
 import { dayKindLabel, formatTime } from '@/data/time';
@@ -44,6 +46,7 @@ export default function MapTab() {
   const { profile, created } = useProfile();
   const { filters, setFilters, introSeen, setIntroSeen } = useFilters();
   const { plans, statusOf } = usePlans();
+  const minePin = useMinePinLook();
   const { blocked, offline, setOffline } = useSafety();
   // Orange markers: people open to plans who match your filters. Blocked people disappear, with their plans.
   const available = (useLoad(listAvailablePeople, []) ?? []).filter(
@@ -119,12 +122,17 @@ export default function MapTab() {
             <MapMarker
               key={p.id}
               location={p.location}
-              size={PIN_SIZE.plan}
+              size={statusOf(p) === 'host' ? (minePin === 'A' ? PIN_SIZE.mineA : PIN_SIZE.mineB) : PIN_SIZE.plan}
               label={statusOf(p) === 'host' ? 'Your plan' : `Plan, ${when}`}
               z={on ? 6 : 2}
               onPress={() => setSelected({ kind: 'plan', plan: p })}
             >
-              <PlanPin when={when} mine={statusOf(p) === 'host'} selected={on} />
+              {/* Your plan has its own shape (2 options in Settings → Demo); other plans keep the green pill. */}
+              {statusOf(p) === 'host' ? (
+                <MinePin look={minePin} selected={on} />
+              ) : (
+                <PlanPin when={when} selected={on} />
+              )}
             </MapMarker>
           );
         })}

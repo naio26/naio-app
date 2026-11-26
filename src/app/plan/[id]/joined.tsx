@@ -30,7 +30,7 @@ export default function YoureIn() {
         </View>
       }
     >
-      <Logo size={26} />
+      <Logo />
 
       <View style={styles.center}>
         <View style={styles.hero}>

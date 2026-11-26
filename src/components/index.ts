@@ -19,7 +19,7 @@ export { CornerFrame, IdCardArt, IdReadyCard } from './IdArt';
 export { ProfilePhoto } from './ProfilePhoto';
 export { UpToCard } from './UpToCard';
 export { NaioMap, MapMarker } from './NaioMap';
-export { PlanPin, PersonPin, YouDot, PIN_SIZE } from './MapPins';
+export { MinePin, PlanPin, PersonPin, YouDot, PIN_SIZE } from './MapPins';
 export { BottomSheet } from './BottomSheet';
 export {
   AvatarStack,

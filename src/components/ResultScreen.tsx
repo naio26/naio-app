@@ -30,7 +30,7 @@ export function ResultScreen({
 }) {
   return (
     <Screen contentStyle={styles.content} footer={footer}>
-      <Logo size={26} />
+      <Logo />
       <View style={styles.center}>
         <View style={styles.hero}>
           <Icon name={icon} size={iconSize.hero} color={colors.accent} />

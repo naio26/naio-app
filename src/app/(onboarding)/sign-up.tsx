@@ -31,7 +31,7 @@ export default function SignUp() {
   return (
     <Screen scroll contentStyle={styles.content}>
       <View style={styles.logo}>
-        <Logo size={38} />
+        <Logo />
       </View>
 
       <View style={styles.hero}>

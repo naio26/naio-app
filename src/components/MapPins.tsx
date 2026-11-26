@@ -13,7 +13,45 @@ export const PIN_SIZE = {
   plan: { height: 56, anchorY: 56 }, // the tip at the bottom
   person: { height: 80, anchorY: 22 }, // the centre of the circle
   you: { height: 76, anchorY: 24 }, // the centre of the blue dot
+  mineA: { height: 74, anchorY: 22 }, // your plan, option A: the centre of the square
+  mineB: { height: 76, anchorY: 43 }, // your plan, option B: the point of the pin
 };
+
+/**
+ * YOUR plan: its own shape (neither the green pill nor the orange circle), same yellow colours.
+ * Two shapes being compared (Settings → Demo): A rounded square, B classic map pin.
+ */
+export function MinePin({ look, selected }: { look: 'A' | 'B'; selected?: boolean }) {
+  const own = useMineColours();
+  const tag = (
+    <View style={styles.nameTag}>
+      <Txt numberOfLines={1} style={[styles.personName, { color: own.fg }]}>
+        Your plan
+      </Txt>
+    </View>
+  );
+  if (look === 'A') {
+    return (
+      <View style={[styles.personWrap, { height: PIN_SIZE.mineA.height }]}>
+        <View style={[styles.square, { backgroundColor: own.bg }, selected && styles.squareOn]}>
+          <Icon name="star" size={18} color={own.fg} />
+        </View>
+        {tag}
+      </View>
+    );
+  }
+  return (
+    <View style={[styles.personWrap, { height: PIN_SIZE.mineB.height }]}>
+      {/* A square with one sharp corner, turned 45° so the corner points down at the spot. */}
+      <View style={[styles.drop, { backgroundColor: own.bg }, selected && styles.squareOn]}>
+        <View style={{ transform: [{ rotate: '-45deg' }] }}>
+          <Icon name="star" size={16} color={own.fg} />
+        </View>
+      </View>
+      {tag}
+    </View>
+  );
+}
 
 /**
  * A plan: green pill with only "Now", "Today" or "Tomorrow".
@@ -126,6 +164,31 @@ const styles = StyleSheet.create({
   personWrap: { height: PIN_SIZE.person.height, width: 96, alignItems: 'center', gap: 3 },
   ring: { borderRadius: 24, borderWidth: 3, borderColor: colors.white, ...shadow.soft },
   ringOn: { borderColor: colors.openToPlans, transform: [{ scale: 1.08 }] },
+  square: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    borderWidth: 3,
+    borderColor: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...shadow.soft,
+  },
+  squareOn: { borderColor: colors.mineInk, transform: [{ scale: 1.08 }] },
+  drop: {
+    width: 32,
+    height: 32,
+    marginTop: 4,
+    marginBottom: 8,
+    borderRadius: 16,
+    borderBottomRightRadius: 0,
+    borderWidth: 3,
+    borderColor: colors.white,
+    transform: [{ rotate: '45deg' }],
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...shadow.soft,
+  },
   nameTag: {
     alignItems: 'center',
     paddingHorizontal: 8,

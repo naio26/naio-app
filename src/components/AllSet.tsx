@@ -129,7 +129,7 @@ export function AllSet() {
 
   return (
     <Screen contentStyle={styles.content} footer={<Button title={v.button.title} arrow onPress={v.button.onPress} />}>
-      <Logo size={26} />
+      <Logo />
       <View style={styles.center}>
         <Icon name={v.icon} size={icon.hero} color={colors.accent} />
         {v.label && (
