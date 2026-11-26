@@ -13,69 +13,43 @@ export const PIN_SIZE = {
   plan: { height: 56, anchorY: 56 }, // the tip at the bottom
   person: { height: 80, anchorY: 22 }, // the centre of the circle
   you: { height: 76, anchorY: 24 }, // the centre of the blue dot
-  mineA: { height: 74, anchorY: 22 }, // your plan, option A: the centre of the square
-  mineB: { height: 76, anchorY: 43 }, // your plan, option B: the point of the pin
+  mine: { height: 76, anchorY: 43 }, // your plan: the point of the pin
 };
 
 /**
- * YOUR plan: its own shape (neither the green pill nor the orange circle), same yellow colours.
- * Two shapes being compared (Settings → Demo): A rounded square, B classic map pin.
+ * YOUR plan: its own shape (owner chose B, a classic map pin), never the green pill or the orange circle.
+ * Light yellow with a golden-brown star; the pin's border and the "Your plan" tag (a yellow pill with
+ * the same brown outline) use that brown too (owner is trying it).
  */
-export function MinePin({ look, selected }: { look: 'A' | 'B'; selected?: boolean }) {
+export function MinePin({ selected }: { selected?: boolean }) {
   const own = useMineColours();
-  const tag = (
-    <View style={styles.nameTag}>
-      <Txt numberOfLines={1} style={[styles.personName, { color: own.fg }]}>
-        Your plan
-      </Txt>
-    </View>
-  );
-  if (look === 'A') {
-    return (
-      <View style={[styles.personWrap, { height: PIN_SIZE.mineA.height }]}>
-        <View style={[styles.square, { backgroundColor: own.bg }, selected && styles.squareOn]}>
-          <Icon name="star" size={18} color={own.fg} />
-        </View>
-        {tag}
-      </View>
-    );
-  }
   return (
-    <View style={[styles.personWrap, { height: PIN_SIZE.mineB.height }]}>
+    <View style={[styles.personWrap, { height: PIN_SIZE.mine.height }]}>
       {/* A square with one sharp corner, turned 45° so the corner points down at the spot. */}
-      <View style={[styles.drop, { backgroundColor: own.bg }, selected && styles.squareOn]}>
+      <View style={[styles.drop, { backgroundColor: own.bg, borderColor: own.fg }, selected && styles.dropOn]}>
         <View style={{ transform: [{ rotate: '-45deg' }] }}>
           <Icon name="star" size={16} color={own.fg} />
         </View>
       </View>
-      {tag}
+      <View style={[styles.mineTag, { backgroundColor: own.bg, borderColor: own.fg }]}>
+        <Txt numberOfLines={1} style={[styles.personName, { color: own.fg }]}>
+          Your plan
+        </Txt>
+      </View>
     </View>
   );
 }
 
-/**
- * A plan: green pill with only "Now", "Today" or "Tomorrow".
- * Yours: the same pill, light yellow with golden text, that only says ★ "Your plan" (no day or time).
- */
-export function PlanPin({ when, mine, selected }: { when: string; mine?: boolean; selected?: boolean }) {
-  const own = useMineColours();
+/** A plan: green pill with only "Now", "Today" or "Tomorrow". (Your own plan uses MinePin.) */
+export function PlanPin({ when, selected }: { when: string; selected?: boolean }) {
   return (
     <View style={styles.planWrap}>
-      <View style={[styles.pill, styles.pillShort, mine && { backgroundColor: own.bg }, selected && styles.selected]}>
-        {mine ? (
-          <View style={styles.pillTop}>
-            <Icon name="star" size={12} color={own.fg} />
-            <Txt numberOfLines={1} style={[styles.pillTime, { color: own.fg }]}>
-              Your plan
-            </Txt>
-          </View>
-        ) : (
-          <Txt numberOfLines={1} style={styles.pillTime}>
-            {when}
-          </Txt>
-        )}
+      <View style={[styles.pill, styles.pillShort, selected && styles.selected]}>
+        <Txt numberOfLines={1} style={styles.pillTime}>
+          {when}
+        </Txt>
       </View>
-      <View style={[styles.tip, mine && { borderTopColor: own.bg }]} />
+      <View style={styles.tip} />
     </View>
   );
 }
@@ -164,17 +138,8 @@ const styles = StyleSheet.create({
   personWrap: { height: PIN_SIZE.person.height, width: 96, alignItems: 'center', gap: 3 },
   ring: { borderRadius: 24, borderWidth: 3, borderColor: colors.white, ...shadow.soft },
   ringOn: { borderColor: colors.openToPlans, transform: [{ scale: 1.08 }] },
-  square: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    borderWidth: 3,
-    borderColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...shadow.soft,
-  },
-  squareOn: { borderColor: colors.mineInk, transform: [{ scale: 1.08 }] },
+  dropOn: { transform: [{ rotate: '45deg' }, { scale: 1.1 }] },
+  mineTag: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 999, borderWidth: 1.5 },
   drop: {
     width: 32,
     height: 32,
@@ -182,8 +147,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     borderRadius: 16,
     borderBottomRightRadius: 0,
-    borderWidth: 3,
-    borderColor: colors.white,
+    borderWidth: 2,
     transform: [{ rotate: '45deg' }],
     alignItems: 'center',
     justifyContent: 'center',
