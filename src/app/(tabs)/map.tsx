@@ -23,7 +23,6 @@ import {
 } from '@/components';
 import { listAvailablePeople } from '@/data/api';
 import { pronouns } from '@/data/catalog';
-import { useNoteLook } from '@/state/look';
 import { useLoad } from '@/data/hooks';
 import { MY_AREA, personMatches, planMatches } from '@/data/match';
 import { dayKindLabel, formatTime } from '@/data/time';
@@ -242,7 +241,6 @@ export default function MapTab() {
 function PersonSheet({ person }: { person: Person }) {
   const a = person.available!;
   const pr = pronouns(person.gender);
-  const noteLook = useNoteLook();
   const note = `${person.firstName} hasn’t created a plan but seems to be in a similar mood. You can’t message ${pr.object} directly. ${pr.subjectWill} be notified when a nearby plan matches ${pr.possessive} filters.`;
   return (
     <View style={{ gap: space.lg }}>
@@ -269,18 +267,8 @@ function PersonSheet({ person }: { person: Person }) {
       {person.languages.length > 0 && (
         <ProfileBlock label="Languages">{person.languages.map((l) => l.name).join(' · ')}</ProfileBlock>
       )}
-      {/* Pronouns follow the person's gender (they/them if Other or not said).
-          Look being compared (Settings → Demo): A dashed frame, B no box + terracotta bell. */}
-      {noteLook === 'A' ? (
-        <InfoBox style={styles.frame} text={note} />
-      ) : (
-        <View style={styles.noteRow}>
-          <Icon name="bell" color={colors.accent} />
-          <Txt variant="small" style={{ flex: 1 }}>
-            {note}
-          </Txt>
-        </View>
-      )}
+      {/* Dashed frame, no fill (owner chose A). Pronouns follow the person's gender (they/them if Other or not said). */}
+      <InfoBox style={styles.frame} text={note} />
     </View>
   );
 }
@@ -288,7 +276,6 @@ function PersonSheet({ person }: { person: Person }) {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.mapLand },
   frame: { backgroundColor: 'transparent', borderWidth: 1, borderStyle: 'dashed', borderColor: colors.accentLine },
-  noteRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10 },
   top: {
     position: 'absolute',
     left: space.lg,

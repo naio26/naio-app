@@ -1,7 +1,7 @@
 
 # Resum de fases — naio.
 
-Última actualització: 26 de novembre de 2026 (opcions A/B del quadre de les persones en taronja, botó verd del xat a tot arreu, botó verd del xat, persones en taronja, llistes sense noms, colors definitius de My plans, fitxa de les persones en taronja, idiomes, àrea i missatge de «Create a plan», colors de My plans per tipus amb una sola regla, fitxa verda suau al mapa per als plans on ets, pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
+Última actualització: 26 de novembre de 2026 (quadre de ratlles de les persones en taronja, opció A triada, botó verd del xat a tot arreu, botó verd del xat, persones en taronja, llistes sense noms, colors definitius de My plans, fitxa de les persones en taronja, idiomes, àrea i missatge de «Create a plan», colors de My plans per tipus amb una sola regla, fitxa verda suau al mapa per als plans on ets, pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -509,7 +509,7 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **Persones en taronja al mapa, més canvis:** el quadre de sota ja no té el fons groc, només el marc. El text fa servir el gènere de la persona: «her / She'll» per a dones, «him / He'll / his» per a homes, i «them / They'll» només si va triar «Other» o no ho va dir. «From …» ara és de color terracota, com a My profile.
   - **«Open the group chat» sempre verd:** a tot arreu on veus un pla on ets (mapa, plans de My plans, i xat → «View plan»), el botó és el mateix verd ple.
   - **Persones en taronja, «From …»:** ara en color fosc i una mica més gruixut (pes mitjà, no negreta del tot), per provar si t'agrada.
-  - **Per triar (Settings → Demo):** el quadre de sota de les persones en taronja. **A**: el mateix quadre amb la vora de ratlles. **B**: sense quadre, amb una campaneta petita de color terracota davant del text. Toca «Available person note - A» o «- B» (surt «On» a la triada) i després toca una persona en taronja al mapa. Si tanques l'app, torna a A.
+  - **Quadre de sota de les persones en taronja:** vas triar l'opció **A**: el mateix quadre, sense fons, amb la vora de ratlles (terracota clar). L'opció B (campaneta sense quadre) i les files de Settings → Demo s'han tret.
   - **Llistes de plans (My plans):** ja no hi surten els noms de qui hi va, només quantes persones: «Monastiraki · 3 people going» (a Past, «5 people went»).
   - **My plans, colors definitius:** **el teu pla** verd clar, **Now** granat (ara una mica més marró vermellós, però suau), **Today** groc (mel, igual que abans) i **Tomorrow** lila (igual que abans). L'hora i el títol de cada pla van del mateix color que el seu bloc, una mica més intens perquè es puguin llegir bé sobre el blanc.
     - Els interessos i els idiomes ara van separats en dues seccions amb títol, com a la fitxa curta: **«MY KIND OF PLANS»** i **«LANGUAGES»**.

@@ -3,7 +3,6 @@ import { Alert, View } from 'react-native';
 import { router } from 'expo-router';
 import { Button, Card, Screen, ScreenHeader, SettingsRow, SettingsSection, Txt } from '@/components';
 import { useBoot } from '@/state/boot';
-import { setNoteLook, useNoteLook } from '@/state/look';
 import { usePlans } from '@/state/plans';
 import { useSafety } from '@/state/safety';
 import { colors, space } from '@/theme';
@@ -13,7 +12,6 @@ export default function Settings() {
   const { offline, setOffline, locationMode, prefs, blocked } = useSafety();
   const on = Object.values(prefs).filter(Boolean).length;
   const { resetDemo } = useBoot();
-  const noteLook = useNoteLook();
   const { plans, statusOf, simulateHostAccepts } = usePlans();
   const pending = plans.filter((p) => statusOf(p) === 'requested').length;
   const [confirmReset, setConfirmReset] = useState(false);
@@ -66,27 +64,6 @@ export default function Settings() {
 
       {/* Demo only: clears everything saved on this phone and starts again from the intro. */}
       <SettingsSection title="Demo" />
-      {/* To compare: the note at the bottom of an orange person's card on the map. */}
-      {(
-        [
-          ['A', 'Available person note - A', 'Same box with a dashed border · then tap an orange person on the map'],
-          ['B', 'Available person note - B', 'No box, a small terracotta bell in front · then tap an orange person'],
-        ] as const
-      ).map(([v, title, sub]) => (
-        <SettingsRow
-          key={v}
-          title={title}
-          sub={sub}
-          onPress={() => setNoteLook(v)}
-          right={
-            noteLook === v ? (
-              <Txt variant="label" color={colors.green}>
-                On
-              </Txt>
-            ) : undefined
-          }
-        />
-      ))}
       <SettingsRow
         title="Simulate host accepts"
         sub={
