@@ -5,7 +5,7 @@ import { Icon, type IconName } from './Icon';
 import { colors, fonts, icon as iconSize, radius, shadow } from '@/theme';
 import { Txt } from './Txt';
 
-type Variant = 'primary' | 'outline' | 'social' | 'glow' | 'link' | 'danger' | 'green';
+type Variant = 'primary' | 'outline' | 'social' | 'glow' | 'link' | 'danger' | 'green' | 'mine' | 'mineOutline';
 
 type Props = {
   title: string;
@@ -27,6 +27,9 @@ const looks: Record<Variant, { bg: string; fg: string; border?: string }> = {
   danger: { bg: colors.danger, fg: colors.white },
   green: { bg: colors.green, fg: colors.white }, // a plan you're in: "Open the group chat" everywhere (map sheet, plan details)
   outline: { bg: 'transparent', fg: colors.accent, border: colors.accent },
+  // Your own plan: yellow dominates (light yellow fill, deeper golden text and outline).
+  mine: { bg: colors.mine, fg: colors.mineInk },
+  mineOutline: { bg: 'transparent', fg: colors.mineInk, border: colors.mineInk },
   social: { bg: colors.white, fg: colors.dark, border: colors.border },
   glow: { bg: 'transparent', fg: colors.dark }, // light mustard gradient (intro "Get started")
   link: { bg: 'transparent', fg: colors.muted },
@@ -34,7 +37,7 @@ const looks: Record<Variant, { bg: string; fg: string; border?: string }> = {
 
 export function Button({ title, onPress, variant = 'primary', arrow, icon, disabled, loading, style, small }: Props) {
   const look = looks[variant];
-  const isSolid = variant === 'primary' || variant === 'danger' || variant === 'green';
+  const isSolid = variant === 'primary' || variant === 'danger' || variant === 'green' || variant === 'mine';
   const bg = disabled && isSolid ? colors.disabled : look.bg;
   // Big primary buttons are left-aligned with an arrow; the rest are centred.
   const spread = !!arrow;
@@ -51,7 +54,7 @@ export function Button({ title, onPress, variant = 'primary', arrow, icon, disab
         variant === 'social' && styles.social,
         variant === 'glow' && styles.glow,
         { backgroundColor: bg },
-        look.border ? { borderWidth: variant === 'outline' ? 1.5 : 1, borderColor: look.border } : null,
+        look.border ? { borderWidth: variant === 'outline' || variant === 'mineOutline' ? 1.5 : 1, borderColor: look.border } : null,
         isSolid && !disabled && shadow.button,
         spread ? styles.spread : styles.centered,
         pressed && { opacity: 0.85, transform: [{ scale: 0.99 }] },
@@ -77,7 +80,7 @@ export function Button({ title, onPress, variant = 'primary', arrow, icon, disab
               color={look.fg}
               style={[
                 variant === 'social' && { fontSize: 17 },
-                variant === 'outline' && { fontSize: 17 },
+                (variant === 'outline' || variant === 'mineOutline') && { fontSize: 17 },
                 variant === 'link' && { fontFamily: fonts.sans, fontSize: 17 },
                 variant === 'glow' && { fontSize: 20 },
                 small && { fontSize: 15 },

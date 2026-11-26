@@ -40,6 +40,8 @@ export default function PlanDetails() {
   const status = statusOf(plan);
   const host = members.find((m) => m.id === plan.hostId);
   const inside = status === 'accepted' || status === 'host';
+  // Your own plan: yellow dominates (pale yellow band, golden text and buttons).
+  const mine = status === 'host';
 
   // No "Meet near" and no "Exact meeting point" row: the place (and, once you're in, the exact point) is under the title.
   const rows = [{ label: plan.languages.length > 1 ? 'Languages' : 'Language', value: languagesText(plan.languages) }];
@@ -47,12 +49,12 @@ export default function PlanDetails() {
   return (
     <View style={styles.root}>
       <ScrollView contentContainerStyle={{ paddingBottom: space.xl }} showsVerticalScrollIndicator={false}>
-        <View style={[styles.band, status === 'accepted' && styles.bandIn, status === 'host' && styles.bandMine, { paddingTop: insets.top + 12 }]}>
+        <View style={[styles.band, mine && styles.bandMine, { paddingTop: insets.top + 12 }]}>
           <BackButton />
           <View style={{ marginTop: space.xl, gap: 8 }}>
             <PlanBadge status={status} />
-            {/* In the plan ("You're in"): day and time in the same green, however you got here. */}
-            <Txt variant="eyebrow" style={[{ letterSpacing: 1.2 }, status === 'accepted' && { color: colors.green }, status === 'host' && { color: colors.mineInk }]}>
+            {/* A plan you're in looks exactly like one you're not in; your own plan is golden. */}
+            <Txt variant="eyebrow" style={[{ letterSpacing: 1.2 }, mine && { color: colors.mineInk }]}>
               {planWhen(plan)}
             </Txt>
             <Txt variant="display">
@@ -79,7 +81,13 @@ export default function PlanDetails() {
             {/* "4 people" bold · "3 spots left" terracotta. No names: the initials below show who's going. */}
             <View style={styles.row}>
               <Txt style={styles.rowLabel}>Who’s going</Txt>
-              <GoingLine people={members} hostId={plan.hostId} capacity={plan.capacity} names={false} />
+              <GoingLine
+                people={members}
+                hostId={plan.hostId}
+                capacity={plan.capacity}
+                names={false}
+                spotsColor={mine ? colors.mineInk : colors.accent}
+              />
             </View>
           </View>
 
@@ -95,7 +103,7 @@ export default function PlanDetails() {
                 <Avatar
                   initials={m.initials}
                   size={52}
-                  color={m.id === 'me' ? colors.accent : m.avatarColor}
+                  color={m.id === 'me' ? (mine ? colors.mineInk : colors.accent) : m.avatarColor}
                   verified={m.verified}
                   photo={m.photo}
                 />
@@ -103,7 +111,7 @@ export default function PlanDetails() {
                   {m.id === 'me' ? 'You' : m.firstName}
                 </Txt>
                 <Txt variant="caption">{m.ageRange}</Txt>
-                {m.id === plan.hostId && <Txt style={styles.host}>(HOST)</Txt>}
+                {m.id === plan.hostId && <Txt style={[styles.host, mine && { color: colors.mineInk }]}>(HOST)</Txt>}
               </Pressable>
             ))}
           </View>
@@ -132,9 +140,8 @@ export default function PlanDetails() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.cream },
-  // Pale peach band while you're only looking; green once you're in the plan.
+  // Pale peach band, also once you're in (the same screen as before joining); pale yellow on your own plan.
   band: { backgroundColor: colors.blush, paddingHorizontal: space.gutter, paddingBottom: space.xl },
-  bandIn: { backgroundColor: colors.greenSoft },
   bandMine: { backgroundColor: colors.mineSoft }, // your own plan: yellow, never green
   // The same space (24) above and below the description.
   body: { paddingHorizontal: space.gutter, paddingTop: space.xl, gap: space.xl },

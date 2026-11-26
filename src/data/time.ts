@@ -27,17 +27,12 @@ export function isNow(plan: Plan) {
 }
 
 /**
- * The ONE place that decides a plan's type: your plan, Now, Today or Tomorrow.
+ * The ONE place that decides a plan's time type: Now, Today or Tomorrow (your own plans too).
  * Map pins, My plans colours and every "Now/Today/Tomorrow · time" line use it, so a plan
  * is never called "Today" in one place and "Now" in another.
  */
-export type PlanKind = 'mine' | 'now' | 'today' | 'tomorrow';
-export function planKind(plan: Plan): PlanKind {
-  if (plan.hostId === 'me') return 'mine';
-  return dayKind(plan);
-}
-/** Now, Today or Tomorrow (ignores who hosts it). */
-export function dayKind(plan: Plan): Exclude<PlanKind, 'mine'> {
+export type DayKind = 'now' | 'today' | 'tomorrow';
+export function dayKind(plan: Plan): DayKind {
   if (isNow(plan)) return 'now';
   return plan.day === 'today' ? 'today' : 'tomorrow';
 }

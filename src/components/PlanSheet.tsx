@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { languagesText, placeText } from '@/data/catalog';
 import { planWhen } from '@/data/time';
@@ -24,6 +24,9 @@ export function PlanSheet({ plan }: { plan: Plan }) {
   const left = Math.max(plan.capacity - going, 0);
   const spots = left ? `${left} ${left === 1 ? 'spot' : 'spots'} left` : 'Full';
   const inside = status === 'accepted' || status === 'host';
+  // Your own plan: yellow dominates (golden text). Every other plan: the naio. terracotta.
+  const mine = status === 'host';
+  const tone = mine ? colors.mineInk : colors.accent;
   const details = () => router.push({ pathname: '/plan/[id]', params: { id: plan.id } });
 
   return (
@@ -31,25 +34,25 @@ export function PlanSheet({ plan }: { plan: Plan }) {
       <View style={{ gap: 6 }}>
         <PlanBadge status={status} />
         {/* More room between the day/time and the title. */}
-        {/* In the plan ("You're in"): day and time in the same green. */}
-        <Txt variant="eyebrow" style={[{ letterSpacing: 1.2, marginBottom: 6 }, status === 'accepted' && { color: colors.green }, status === 'host' && { color: colors.mineInk }]}>
+        {/* Your own plan: golden. Plans you're in look like any other plan (terracotta). */}
+        <Txt variant="eyebrow" style={[{ letterSpacing: 1.2, marginBottom: 6 }, mine && { color: colors.mineInk }]}>
           {planWhen(plan)}
         </Txt>
         <Txt variant="h1">{plan.title}</Txt>
-        {/* The description right under the title. */}
-        <Txt>{plan.tagline}</Txt>
+        {/* The description right under the title, the same size as on plan details. */}
+        <Txt style={styles.desc}>{plan.tagline}</Txt>
       </View>
 
       {/* Divider, then the place in terracotta with the exact-point note on its own line below. */}
       <View style={styles.placeBlock}>
-        <Txt style={styles.place}>{placeText(plan.area, city.name)}</Txt>
+        <Txt style={[styles.place, { color: tone }]}>{placeText(plan.area, city.name)}</Txt>
         {inside ? (
           // Once you're in: the exact point in green, tap it for directions.
           <PointNote plan={plan} status={status} />
         ) : (
-          // Before joining: italic, in the dark text colour.
+          // Before joining: italic, in the same terracotta as the place, right under it.
           <View style={styles.noteLine}>
-            <Icon name="map-pin" size={14} color={colors.dark} />
+            <Icon name="map-pin" size={14} color={colors.accent} />
             <Txt style={styles.placeNote}>Exact point is shared after joining</Txt>
           </View>
         )}
@@ -62,7 +65,7 @@ export function PlanSheet({ plan }: { plan: Plan }) {
             <Txt style={[styles.boxText, styles.bold]}>
               {going}/{plan.capacity} going
             </Txt>
-            <Txt style={[styles.boxText, { color: colors.accent }]}> · {spots}</Txt>
+            <Txt style={[styles.boxText, { color: tone }]}> · {spots}</Txt>
           </Txt>
         </View>
         <View style={styles.lang}>
@@ -71,8 +74,17 @@ export function PlanSheet({ plan }: { plan: Plan }) {
         </View>
       </View>
 
-      {/* Names in regular weight, no "(host)" here. */}
-      <AvatarStack people={members} plain />
+      {/* Names in regular weight, no "(host)" here. "View details" on the right: tap each person there. */}
+      <View style={styles.peopleRow}>
+        <View style={{ flex: 1 }}>
+          <AvatarStack people={members} plain meColor={mine ? colors.mineInk : colors.accent} />
+        </View>
+        <Pressable accessibilityRole="link" hitSlop={10} onPress={details}>
+          <Txt variant="caption" style={[styles.peopleLink, { color: tone }]}>
+            View details
+          </Txt>
+        </Pressable>
+      </View>
 
       {/* No "Join plan" here: you always see the details first. Once you're accepted: the group chat. */}
       {status === 'host' ? (
@@ -99,9 +111,12 @@ export function PlanSheet({ plan }: { plan: Plan }) {
 
 const styles = StyleSheet.create({
   place: { fontFamily: fonts.sans, fontSize: 14.5, lineHeight: 21, color: colors.accent },
-  placeBlock: { gap: 6, paddingTop: space.lg, borderTopWidth: 1, borderTopColor: colors.border },
+  placeBlock: { gap: 2, paddingTop: space.lg, borderTopWidth: 1, borderTopColor: colors.border },
+  desc: { fontSize: 15, lineHeight: 22 },
+  peopleRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  peopleLink: { fontFamily: fonts.sansBold, textDecorationLine: 'underline' },
   noteLine: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  placeNote: { fontFamily: fonts.sansItalic, fontSize: 13, lineHeight: 18, color: colors.dark, flexShrink: 1 },
+  placeNote: { fontFamily: fonts.sansItalic, fontSize: 13, lineHeight: 18, color: colors.accent, flexShrink: 1 },
   bold: { fontFamily: fonts.sansBold, color: colors.dark },
   factsRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   box: {

@@ -98,12 +98,10 @@ type Props = {
   size?: number;
   /** Dark brown by default; terracotta only for what's active or most important. */
   color?: string;
-  /** Solid shape in the same colour. Only for map markers (the star of your plan's pin); icons stay outlines. */
-  filled?: boolean;
 };
 
 /** A plain outline icon, straight on the background: no box, no circle. */
-export function Icon({ name, size = icon.size, color = colors.dark, filled }: Props) {
+export function Icon({ name, size = icon.size, color = colors.dark }: Props) {
   const C = icons[name];
-  return <C size={size} color={color} fill={filled ? color : 'none'} strokeWidth={icon.stroke} absoluteStrokeWidth />;
+  return <C size={size} color={color} strokeWidth={icon.stroke} absoluteStrokeWidth />;
 }

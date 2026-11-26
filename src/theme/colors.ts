@@ -47,10 +47,11 @@ export const colors = {
 
   // Map colour code (25–28). FUNCTIONAL colours: keep them on the map whatever the theme.
   mapPlan: '#2E7D61', // GREEN = "Plan to join": plan markers and legend dot
-  // YOUR OWN PLAN is always yellow (has priority over Now/Today/Tomorrow). Green is only for plans you joined.
-  mine: '#F7DF8E', // light yellow: backgrounds (My plans block, "Your plan" label, map pill)
-  mineInk: '#7A5A0B', // deeper golden: text on it or next to it (label text and star, time, title)
-  mineSoft: '#FDF5DA', // very pale yellow: top band of plan details for your own plan
+  // YOUR OWN PLAN: yellow dominates on its screen, its sheet, its map marker and the ★ "Your plan" label.
+  // (In the My plans list its card uses its time colour like any plan: only the label is yellow.)
+  mine: '#F7DF8E', // light yellow: backgrounds ("Your plan" label, map marker, yellow buttons)
+  mineInk: '#7A5A0B', // deeper golden: text, outlines and icons on your plan (readable)
+  mineSoft: '#FDF5DA', // very pale yellow: top band of your plan's details
   // THE "Open to plans" orange, one single colour: legend dot, people markers, the available person card.
   openToPlans: '#E8893A',
   // The drawn map (25–28).
@@ -67,7 +68,6 @@ export const colors = {
  * but clearly different from each other. Use these everywhere.
  */
 export const planKindColors = {
-  mine: '#F7DF8E', // your plan: light yellow (same as colors.mine)
   now: '#C8959A', // Now: soft maroon (red-brown)
   today: '#9FCFCB', // Today: soft turquoise
   tomorrow: '#C9BEDF', // Tomorrow: soft lavender
@@ -80,7 +80,6 @@ export const planKindColors = {
  * light to read as text on white, so these are deeper shades of the same colours.
  */
 export const planKindInk = {
-  mine: '#7A5A0B', // golden (same as colors.mineInk)
   now: '#7C3138', // maroon
   today: '#2C6B67', // turquoise
   tomorrow: '#6A5A9B', // lilac

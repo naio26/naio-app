@@ -1,17 +1,17 @@
 import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { planKind } from '@/data/time';
+import { dayKind } from '@/data/time';
 import { Plan } from '@/data/types';
 import { colors, fonts, planKindColors, planKindInk, radius } from '@/theme';
 import { Txt } from './Txt';
 
-/** The colour of a plan's block: your plan, Now, Today or Tomorrow. */
+/** The colour of a plan's block, by time only: Now, Today or Tomorrow (your own plan too). */
 export function planKindColor(plan: Plan) {
-  return planKindColors[planKind(plan)];
+  return planKindColors[dayKind(plan)];
 }
 
 /** The text colour that goes with it (title and time), a deeper shade of the same colour. */
 export function planKindInkColor(plan: Plan) {
-  return planKindInk[planKind(plan)];
+  return planKindInk[dayKind(plan)];
 }
 
 /** Plan card with a plain colour block on the left (My plans, 37). */

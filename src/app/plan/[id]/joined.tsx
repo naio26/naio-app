@@ -23,6 +23,7 @@ export default function YoureIn() {
         <View style={{ gap: 4 }}>
           <Button
             title="Say hi in the chat"
+            variant="green"
             arrow
             onPress={() => router.push({ pathname: '/plan/[id]/chat', params: { id } })}
           />
@@ -34,9 +35,9 @@ export default function YoureIn() {
 
       <View style={styles.center}>
         <View style={styles.hero}>
-          <Icon name="check" size={icon.hero} color={colors.accent} />
+          <Icon name="check" size={icon.hero} color={colors.green} />
         </View>
-        <Txt variant="eyebrow" style={{ letterSpacing: 1.6 }}>
+        <Txt variant="eyebrow" style={{ letterSpacing: 1.6, color: colors.green }}>
           Plan joined
         </Txt>
         <Txt variant="display" center>
@@ -48,9 +49,7 @@ export default function YoureIn() {
         <Txt variant="bodyStrong" style={{ fontSize: 18 }}>
           {plan.title}
         </Txt>
-        <Txt variant="small" color={colors.green}>
-          {planWhen(plan)}
-        </Txt>
+        <Txt variant="small">{planWhen(plan)}</Txt>
         <View style={styles.point}>
           <Icon name="map-pin" color={colors.green} />
           <Txt variant="small" color={colors.green} style={{ flex: 1 }}>

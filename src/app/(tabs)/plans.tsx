@@ -63,8 +63,8 @@ export default function MyPlans() {
       <View style={styles.body}>
         {tab === 'upcoming' && (
           <>
-            {/* Block colour by type (planKind): your plan, Now, Today or Tomorrow. The card's
-                "Now/Today/Tomorrow · time" line uses the same rule, so label and colour always match. */}
+            {/* Block colour by time only (dayKind): Now, Today or Tomorrow, your own plans too (only their
+                "★ Your plan" label is yellow). The "Now/Today/Tomorrow · time" line uses the same rule. */}
             {upcoming.map((p) => (
               <UpcomingCard key={p.id} plan={p} />
             ))}

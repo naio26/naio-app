@@ -19,6 +19,7 @@ export function AvatarStack({
   max = 3,
   hostId,
   plain,
+  meColor = colors.accent,
 }: {
   people: Person[];
   max?: number;
@@ -26,6 +27,8 @@ export function AvatarStack({
   hostId?: string;
   /** Names in regular weight instead of bold. */
   plain?: boolean;
+  /** Colour of your own circle (terracotta; golden on your own plan). */
+  meColor?: string;
 }) {
   const shown = people.slice(0, max);
   const extra = people.length - shown.length;
@@ -38,7 +41,7 @@ export function AvatarStack({
             <Avatar
               initials={p.initials}
               size={34}
-              color={p.id === 'me' ? colors.accent : p.avatarColor}
+              color={p.id === 'me' ? meColor : p.avatarColor}
               photo={p.photo}
             />
           </View>
@@ -69,6 +72,7 @@ export function GoingLine({
   capacity,
   small,
   names = true,
+  spotsColor = colors.accent,
 }: {
   people: Person[];
   hostId: string;
@@ -76,6 +80,8 @@ export function GoingLine({
   small?: boolean;
   /** Plan details: false, the initials below already show who's going. */
   names?: boolean;
+  /** Colour of "3 spots left" (terracotta; golden on your own plan). */
+  spotsColor?: string;
 }) {
   const left = Math.max(capacity - people.length, 0);
   // Nested texts get the size too (otherwise they'd fall back to the bigger body size).
@@ -84,7 +90,7 @@ export function GoingLine({
     <View style={{ gap: 4 }}>
       <Txt style={[styles.goingCount, size]}>
         {people.length} {people.length === 1 ? 'person' : 'people'}
-        <Txt style={[styles.goingSpots, size]}>
+        <Txt style={[styles.goingSpots, size, { color: spotsColor }]}>
           {' '}
           · {left ? `${left} ${left === 1 ? 'spot' : 'spots'} left` : 'full'}
         </Txt>
@@ -235,17 +241,18 @@ export function PlanActions({
       {status === 'host' && (
         <>
           {hostingNote && <HostingNote />}
-          <Button title="Edit plan" arrow onPress={() => router.push({ pathname: '/plan/[id]/edit', params })} />
+          {/* Your own plan: yellow buttons (light yellow fill / golden outline), never terracotta. */}
+          <Button title="Edit plan" variant="mine" arrow onPress={() => router.push({ pathname: '/plan/[id]/edit', params })} />
           <View style={styles.pair}>
             <Button
               title="Manage group"
-              variant="outline"
+              variant="mineOutline"
               onPress={() => router.push({ pathname: '/plan/[id]/group', params })}
               style={{ flex: 1, minHeight: 50 }}
             />
             <Button
               title="Chat"
-              variant="outline"
+              variant="mineOutline"
               onPress={() => router.push({ pathname: '/plan/[id]/chat', params })}
               style={{ flex: 1, minHeight: 50 }}
             />
@@ -258,17 +265,19 @@ export function PlanActions({
           />
         </>
       )}
-      {secondary && <Button title={secondary.title} variant="outline" onPress={secondary.onPress} />}
+      {secondary && (
+        <Button title={secondary.title} variant={status === 'host' ? 'mineOutline' : 'outline'} onPress={secondary.onPress} />
+      )}
     </View>
   );
 }
 
-/** "You're hosting this plan." (31) */
+/** "You're hosting this plan." (31), in your plan's golden yellow. */
 export function HostingNote() {
   return (
     <View style={styles.hosting}>
-      <Icon name="star" color={colors.accent} />
-      <Txt variant="label" color={colors.accent}>
+      <Icon name="star" color={colors.mineInk} />
+      <Txt variant="label" color={colors.mineInk}>
         You’re hosting this plan.
       </Txt>
     </View>
