@@ -65,7 +65,7 @@ export const colors = {
  */
 export const planKindColors = {
   mine: '#A3D2B8', // your plan: soft mint green (goes with the green "Your plan" label)
-  now: '#D9A3AF', // Now: light, soft burgundy
+  now: '#C8959A', // Now: soft maroon (red-brown)
   today: '#F6CB7F', // Today: soft honey
   tomorrow: '#C9BEDF', // Tomorrow: soft lavender
   past: '#EADBD0', // sand
@@ -78,7 +78,7 @@ export const planKindColors = {
  */
 export const planKindInk = {
   mine: '#2F7A58', // green
-  now: '#8E3B52', // burgundy
+  now: '#7C3138', // maroon
   today: '#94650F', // honey
   tomorrow: '#6A5A9B', // lilac
 } as const;

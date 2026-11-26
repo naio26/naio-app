@@ -60,12 +60,13 @@ export function PersonCard({ person, host }: { person: Person; host?: boolean })
 }
 
 /** "From Barcelona" with a small pin (profile card, and orange people on the map). */
-export function FromLine({ from }: { from?: string }) {
+export function FromLine({ from, accent }: { from?: string; accent?: boolean }) {
   if (!from) return null;
   return (
     <View style={styles.from}>
       <Icon name="map-pin" size={16} color={colors.muted} />
-      <Txt style={styles.fromText}>From {from}</Txt>
+      {/* accent: terracotta text, like on My profile (orange people on the map). */}
+      <Txt style={[styles.fromText, accent && { color: colors.accent }]}>From {from}</Txt>
     </View>
   );
 }

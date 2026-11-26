@@ -85,6 +85,7 @@ export function PlanSheet({ plan }: { plan: Plan }) {
       ) : status === 'accepted' ? (
         <Button
           title="Open the group chat"
+          variant="green"
           arrow
           onPress={() => router.push({ pathname: '/plan/[id]/chat', params: { id: plan.id } })}
         />

@@ -15,6 +15,9 @@ import { colors, fonts, planKindColors, radius, space } from '@/theme';
 
 type Tab = 'upcoming' | 'requests' | 'past';
 
+// Plan lists show only how many people are going, never their names: "5 people going".
+const peopleCount = (n: number, verb = 'going') => `${n} ${n === 1 ? 'person' : 'people'} ${verb}`;
+
 const order = (p: Plan) => (p.day === 'tomorrow' ? 24 * 60 : 0) + toMinutes(p.time);
 
 // Screen 37 — My plans. Upcoming and Requests are not in the designs (drawn in the same style).
@@ -112,7 +115,7 @@ export default function MyPlans() {
                 tint={planKindColors.past}
                 eyebrow={`Past · ${p.when}`}
                 title={p.title}
-                line={`${p.area} · ${p.people.slice(0, 3).join(', ')}${p.people.length > 3 ? ` +${p.people.length - 3}` : ''}`}
+                line={`${p.area} · ${peopleCount(p.people.length, 'went')}`}
                 footer={
                   <Txt variant="small" color={colors.dark}>
                     Plan information only · <Txt style={styles.closed}>chat closed</Txt>
@@ -157,14 +160,13 @@ function UpcomingCard({ plan }: { plan: Plan }) {
   const { statusOf, membersOf } = usePlans();
   const city = useCity();
   const members = usePeople(membersOf(plan));
-  const names = members.filter((m) => m.id !== 'me').map((m) => m.firstName);
   return (
     <PlanCard
       eyebrow={planWhen(plan)}
       title={plan.title}
       tint={planKindColor(plan)}
       ink={planKindInkColor(plan)}
-      line={`${areaText(plan.area, city.name)} · ${names.length ? names.slice(0, 3).join(', ') + (names.length > 3 ? ` +${names.length - 3}` : '') : 'Only you so far'}`}
+      line={`${areaText(plan.area, city.name)} · ${peopleCount(members.length)}`}
       footer={
         <View style={{ marginTop: 4 }}>
           <PlanBadge status={statusOf(plan)} />

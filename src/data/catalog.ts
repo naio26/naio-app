@@ -1,5 +1,5 @@
 // Fixed lists the app offers to choose from. Not user data, so they live here and not in mock/.
-import { Language, LanguageLevel, Situation } from './types';
+import { Gender, Language, LanguageLevel, Situation } from './types';
 
 export const LANGUAGE_LEVELS: LanguageLevel[] = ['Native', 'Fluent', 'Conversational', 'Learning'];
 
@@ -136,3 +136,10 @@ export const REPORT_REASONS = [
   'Didn’t show up',
   'Something else',
 ];
+
+/** Pronouns for a person: she/her, he/him/his, or they/them when the gender is Other or not given. */
+export function pronouns(gender?: Gender) {
+  if (gender === 'Female') return { subject: 'she', subjectWill: 'She’ll', object: 'her', possessive: 'her' };
+  if (gender === 'Male') return { subject: 'he', subjectWill: 'He’ll', object: 'him', possessive: 'his' };
+  return { subject: 'they', subjectWill: 'They’ll', object: 'them', possessive: 'their' };
+}

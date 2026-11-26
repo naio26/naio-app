@@ -1,7 +1,7 @@
 
 # Resum de fases — naio.
 
-Última actualització: 26 de novembre de 2026 (colors definitius de My plans, fitxa de les persones en taronja, idiomes, àrea i missatge de «Create a plan», colors de My plans per tipus amb una sola regla, fitxa verda suau al mapa per als plans on ets, pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
+Última actualització: 26 de novembre de 2026 (botó verd del xat, persones en taronja, llistes sense noms, colors definitius de My plans, fitxa de les persones en taronja, idiomes, àrea i missatge de «Create a plan», colors de My plans per tipus amb una sola regla, fitxa verda suau al mapa per als plans on ets, pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -505,7 +505,10 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     - La línia ara diu «In Athens for 4 days · **Available until** 8:00 PM» (la ciutat i l'hora surten de les dades, mai escrites a mà).
     - A sota hi surt d'on és la persona («From Lisbon, Portugal»), amb el mateix estil que a la fitxa curta de les persones d'un pla.
     - El text que la descriu és una mica més petit, com a la resta de l'app.
-  - **My plans, colors definitius:** **el teu pla** verd clar, **Now** granat clar i suau, **Today** groc (mel, igual que abans) i **Tomorrow** lila (igual que abans). L'hora i el títol de cada pla van del mateix color que el seu bloc, una mica més intens perquè es puguin llegir bé sobre el blanc.
+  - **Fitxa del pla al mapa:** el fons verd suau dels plans on ets s'ha tret (torna a ser igual que la resta). Ara, per saber que ja hi ets, el botó **«Open the group chat»** és verd (ple de verd, amb el text blanc).
+  - **Persones en taronja al mapa, més canvis:** el quadre de sota ja no té el fons groc, només el marc. El text fa servir el gènere de la persona: «her / She'll» per a dones, «him / He'll / his» per a homes, i «them / They'll» només si va triar «Other» o no ho va dir. «From …» ara és de color terracota, com a My profile.
+  - **Llistes de plans (My plans):** ja no hi surten els noms de qui hi va, només quantes persones: «Monastiraki · 3 people going» (a Past, «5 people went»).
+  - **My plans, colors definitius:** **el teu pla** verd clar, **Now** granat (ara una mica més marró vermellós, però suau), **Today** groc (mel, igual que abans) i **Tomorrow** lila (igual que abans). L'hora i el títol de cada pla van del mateix color que el seu bloc, una mica més intens perquè es puguin llegir bé sobre el blanc.
     - Els interessos i els idiomes ara van separats en dues seccions amb títol, com a la fitxa curta: **«MY KIND OF PLANS»** i **«LANGUAGES»**.
   - **«You're in» (prova):** la caixa té el fons d'un verd més clar i una vora verda una mica més marcada. Digues-me si t'agrada.
   - **Fitxa del pla (en tocar un pla al mapa), nou ordre:** el títol; la descripció just a sota; una línia fina; el lloc en terracota amb «Exact point is shared after joining» **a la seva pròpia línia** a sota (en cursiva i fosc); i després la resta com abans. Quan ja hi ets, aquella línia mostra l'adreça exacta en verd, i si la toques et dona les indicacions.
