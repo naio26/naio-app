@@ -18,7 +18,7 @@ export const PIN_SIZE = {
 
 /**
  * YOUR plan: its own shape (owner chose B, a classic map pin), never the green pill or the orange circle.
- * Light yellow with a brown star and the same brown border; "Your plan" below is just brown text,
+ * Light yellow with a solid brown star and the same brown border; "Your plan" below is just brown text,
  * no background and no border (owner is trying it).
  */
 export function MinePin({ selected }: { selected?: boolean }) {
@@ -28,7 +28,7 @@ export function MinePin({ selected }: { selected?: boolean }) {
       {/* A square with one sharp corner, turned 45° so the corner points down at the spot. */}
       <View style={[styles.drop, { backgroundColor: own.bg, borderColor: own.fg }, selected && styles.dropOn]}>
         <View style={{ transform: [{ rotate: '-45deg' }] }}>
-          <Icon name="star" size={16} color={own.fg} />
+          <Icon name="star" size={16} color={own.fg} filled />
         </View>
       </View>
       <Txt numberOfLines={1} style={[styles.personName, { color: own.fg }]}>
