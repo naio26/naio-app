@@ -13,41 +13,27 @@ export const PIN_SIZE = {
   plan: { height: 56, anchorY: 56 }, // the tip at the bottom
   person: { height: 80, anchorY: 22 }, // the centre of the circle
   you: { height: 76, anchorY: 24 }, // the centre of the blue dot
-  mineA: { height: 66, anchorY: 20 }, // your plan, option A: the centre of the square
-  mineB: { height: 76, anchorY: 43 }, // your plan, option B: the point of the pin
+  mine: { height: 76, anchorY: 43 }, // your plan: the point of the pin
 };
 
 /**
- * YOUR plan: its own shape, never the green pill or the orange circle. Light yellow with a brown border,
- * the original star (white outline, size 12, as on the first "Your plan" marker) and "Your plan" below as
- * plain brown text (no background, no border). Two shapes being compared (Settings → Demo):
- * A = rounded square (built like the orange people markers), B = classic map pin.
+ * YOUR plan: its own shape (owner chose B, a classic map pin), never the green pill or the orange circle.
+ * Light yellow with a brown border, a small yellow outline star (no fill), and "Your plan" below as
+ * plain brown text (no background, no border).
  */
-export function MinePin({ look, selected }: { look: 'A' | 'B'; selected?: boolean }) {
+export function MinePin({ selected }: { selected?: boolean }) {
   const own = useMineColours();
-  const star = <Icon name="star" size={12} color={colors.white} />;
-  const label = (
-    <Txt numberOfLines={1} style={[styles.personName, { color: own.fg }]}>
-      Your plan
-    </Txt>
-  );
-  if (look === 'A') {
-    return (
-      <View style={[styles.personWrap, { height: PIN_SIZE.mineA.height }]}>
-        <View style={[styles.square, { backgroundColor: own.bg, borderColor: own.fg }, selected && styles.squareOn]}>
-          {star}
-        </View>
-        {label}
-      </View>
-    );
-  }
   return (
-    <View style={[styles.personWrap, { height: PIN_SIZE.mineB.height }]}>
+    <View style={[styles.personWrap, { height: PIN_SIZE.mine.height }]}>
       {/* A square with one sharp corner, turned 45° so the corner points down at the spot. */}
       <View style={[styles.drop, { backgroundColor: own.bg, borderColor: own.fg }, selected && styles.dropOn]}>
-        <View style={{ transform: [{ rotate: '-45deg' }] }}>{star}</View>
+        <View style={{ transform: [{ rotate: '-45deg' }] }}>
+          <Icon name="star" size={10} color={colors.mineStar} />
+        </View>
       </View>
-      {label}
+      <Txt numberOfLines={1} style={[styles.personName, { color: own.fg }]}>
+        Your plan
+      </Txt>
     </View>
   );
 }
@@ -151,16 +137,6 @@ const styles = StyleSheet.create({
   ring: { borderRadius: 24, borderWidth: 3, borderColor: colors.white, ...shadow.soft },
   ringOn: { borderColor: colors.openToPlans, transform: [{ scale: 1.08 }] },
   dropOn: { transform: [{ rotate: '45deg' }, { scale: 1.1 }] },
-  square: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    borderWidth: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...shadow.soft,
-  },
-  squareOn: { transform: [{ scale: 1.1 }] },
   drop: {
     width: 32,
     height: 32,

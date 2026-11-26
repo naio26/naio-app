@@ -3,7 +3,6 @@ import { Alert, View } from 'react-native';
 import { router } from 'expo-router';
 import { Button, Card, Screen, ScreenHeader, SettingsRow, SettingsSection, Txt } from '@/components';
 import { useBoot } from '@/state/boot';
-import { setMinePinLook, useMinePinLook } from '@/state/look';
 import { usePlans } from '@/state/plans';
 import { useSafety } from '@/state/safety';
 import { colors, space } from '@/theme';
@@ -13,7 +12,6 @@ export default function Settings() {
   const { offline, setOffline, locationMode, prefs, blocked } = useSafety();
   const on = Object.values(prefs).filter(Boolean).length;
   const { resetDemo } = useBoot();
-  const minePin = useMinePinLook();
   const { plans, statusOf, simulateHostAccepts } = usePlans();
   const pending = plans.filter((p) => statusOf(p) === 'requested').length;
   const [confirmReset, setConfirmReset] = useState(false);
@@ -66,27 +64,6 @@ export default function Settings() {
 
       {/* Demo only: clears everything saved on this phone and starts again from the intro. */}
       <SettingsSection title="Demo" />
-      {/* To compare: the shape of YOUR plan's marker on the map. */}
-      {(
-        [
-          ['A', '“Your plan” marker - A', 'Rounded square · then look at the map'],
-          ['B', '“Your plan” marker - B', 'Map pin · then look at the map'],
-        ] as const
-      ).map(([v, title, sub]) => (
-        <SettingsRow
-          key={v}
-          title={title}
-          sub={sub}
-          onPress={() => setMinePinLook(v)}
-          right={
-            minePin === v ? (
-              <Txt variant="label" color={colors.green}>
-                On
-              </Txt>
-            ) : undefined
-          }
-        />
-      ))}
       <SettingsRow
         title="Simulate host accepts"
         sub={

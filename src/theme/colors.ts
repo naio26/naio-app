@@ -52,6 +52,7 @@ export const colors = {
   mine: '#F7DF8E', // light yellow: backgrounds ("Your plan" label, map marker, yellow buttons)
   mineInk: '#7A5A0B', // deeper golden: text, outlines and icons on your plan (readable)
   mineSoft: '#FDF5DA', // very pale yellow: top band of your plan's details
+  mineStar: '#D9A514', // stronger yellow: the small outline star in your plan's map pin
   // THE "Open to plans" orange, one single colour: legend dot, people markers, the available person card.
   openToPlans: '#E8893A',
   // The drawn map (25–28).
