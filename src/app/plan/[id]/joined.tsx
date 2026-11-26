@@ -48,7 +48,9 @@ export default function YoureIn() {
         <Txt variant="bodyStrong" style={{ fontSize: 18 }}>
           {plan.title}
         </Txt>
-        <Txt variant="small">{planWhen(plan)}</Txt>
+        <Txt variant="small" color={colors.green}>
+          {planWhen(plan)}
+        </Txt>
         <View style={styles.point}>
           <Icon name="map-pin" color={colors.green} />
           <Txt variant="small" color={colors.green} style={{ flex: 1 }}>

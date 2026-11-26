@@ -31,7 +31,8 @@ export function PlanSheet({ plan }: { plan: Plan }) {
       <View style={{ gap: 6 }}>
         <PlanBadge status={status} />
         {/* More room between the day/time and the title. */}
-        <Txt variant="eyebrow" style={{ letterSpacing: 1.2, marginBottom: 6 }}>
+        {/* In the plan ("You're in"): day and time in the same green. */}
+        <Txt variant="eyebrow" style={[{ letterSpacing: 1.2, marginBottom: 6 }, status === 'accepted' && { color: colors.green }]}>
           {planWhen(plan)}
         </Txt>
         <Txt variant="h1">{plan.title}</Txt>

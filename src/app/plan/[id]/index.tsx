@@ -51,7 +51,8 @@ export default function PlanDetails() {
           <BackButton />
           <View style={{ marginTop: space.xl, gap: 8 }}>
             <PlanBadge status={status} />
-            <Txt variant="eyebrow" style={{ letterSpacing: 1.2 }}>
+            {/* In the plan ("You're in"): day and time in the same green, however you got here. */}
+            <Txt variant="eyebrow" style={[{ letterSpacing: 1.2 }, status === 'accepted' && { color: colors.green }]}>
               {planWhen(plan)}
             </Txt>
             <Txt variant="display" style={{ fontSize: 38, lineHeight: 44 }}>
