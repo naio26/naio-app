@@ -9,6 +9,7 @@ import { usePlans } from '@/state/plans';
 import { useSheetPlaceLook } from '@/state/look';
 import { colors, fonts, radius, space } from '@/theme';
 import { Button } from './Button';
+import { FitLanguages } from './FitLanguages';
 import { Icon } from './Icon';
 import { AvatarStack, PlanActions, PlanBadge, PointNote } from './PlanBits';
 import { Txt } from './Txt';
@@ -82,23 +83,27 @@ export function PlanSheet({ plan }: { plan: Plan }) {
         </View>
         <View style={styles.lang}>
           <Icon name="message-circle" size={16} color={colors.muted} />
-          <Txt style={[styles.boxText, { color: colors.muted }]}>{languagesText(plan.languages)}</Txt>
+          {/* As many languages as fit on one line, then "+N" (the full list is on plan details). */}
+          <FitLanguages languages={plan.languages} style={[styles.boxText, { color: colors.muted }]} />
         </View>
       </View>
 
       {/* Option B: the place below the going/language row, just above the people. */}
       {placeLook === 'B' && where}
 
-      {/* Names in regular weight, no "(host)" here. "View details" on the right: tap each person there. */}
+      {/* Names in regular weight, no "(host)" here. Only in a plan you've joined (main button: the group chat),
+          a green "View details" link on the right (tap each person there); otherwise the button below does it. */}
       <View style={styles.peopleRow}>
         <View style={{ flex: 1 }}>
           <AvatarStack people={members} plain meColor={mine ? colors.mineInk : colors.accent} />
         </View>
-        <Pressable accessibilityRole="link" hitSlop={10} onPress={details}>
-          <Txt variant="caption" style={[styles.peopleLink, { color: joined ? colors.green : tone }]}>
-            View details
-          </Txt>
-        </Pressable>
+        {joined && (
+          <Pressable accessibilityRole="link" hitSlop={10} onPress={details}>
+            <Txt variant="caption" style={[styles.peopleLink, { color: colors.green }]}>
+              View details
+            </Txt>
+          </Pressable>
+        )}
       </View>
 
       {/* No "Join plan" here: you always see the details first. Once you're accepted: the group chat. */}
@@ -145,5 +150,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   boxText: { fontFamily: fonts.sans, fontSize: 14, lineHeight: 19, color: colors.dark },
-  lang: { flexShrink: 1, flexDirection: 'row', alignItems: 'center', gap: 6 },
+  lang: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 6 },
 });

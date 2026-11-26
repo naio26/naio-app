@@ -17,7 +17,7 @@ import {
   VerifiedBadge,
 } from '@/components';
 import { areaText, languagesText } from '@/data/catalog';
-import { planWhen } from '@/data/time';
+import { planWhen, plansOverlap } from '@/data/time';
 import { useCity } from '@/state/city';
 import { usePeople } from '@/state/people';
 import { usePlan, usePlans } from '@/state/plans';
@@ -29,7 +29,7 @@ export default function PlanDetails() {
   const insets = useSafeAreaInsets();
   const plan = usePlan(id);
   const city = useCity();
-  const { statusOf, membersOf } = usePlans();
+  const { plans, statusOf, membersOf } = usePlans();
   const memberIds = plan ? membersOf(plan) : [];
   const members = usePeople(memberIds);
   // Tap someone's circle in "Who's going": their short profile in a sheet.
@@ -38,6 +38,10 @@ export default function PlanDetails() {
   if (!plan) return <View style={styles.root} />;
 
   const status = statusOf(plan);
+  const clash =
+    status === 'none'
+      ? plans.find((p) => p.id !== plan.id && statusOf(p) !== 'none' && plansOverlap(plan, p))
+      : undefined;
   const host = members.find((m) => m.id === plan.hostId);
   // Your own plan: yellow dominates (pale yellow band, golden text and buttons).
   const mine = status === 'host';
@@ -126,6 +130,12 @@ export default function PlanDetails() {
       </ScrollView>
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + space.sm }]}>
+        {/* Heads-up before joining: it happens at the same time as another plan of yours (durations included). */}
+        {clash && (
+          <Txt variant="caption" center color={colors.accent}>
+            Overlaps with “{clash.title}” ({planWhen(clash)}).
+          </Txt>
+        )}
         {status !== 'host' && <VerifiedBadge />}
         <PlanActions plan={plan} status={status} host={host} going={memberIds.length} hostingNote={false} />
       </View>

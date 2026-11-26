@@ -3,13 +3,11 @@ import { areaText } from '@/data/catalog';
 import { StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Avatar, BackButton, Button, Card, Chip, Screen, Txt } from '@/components';
-import { LANGUAGE_FLAGS } from '@/data/catalog';
+import { BackButton, Button, Card, PersonSummary, Screen, Txt } from '@/components';
 import { planWhen } from '@/data/time';
 import { useCity } from '@/state/city';
 import { usePeople } from '@/state/people';
 import { usePlans } from '@/state/plans';
-import { useProfile } from '@/state/profile';
 import { colors, fonts, radius, space } from '@/theme';
 
 // Screens 40–41 — someone wants to join your plan. Look at their profile, then accept or decline.
@@ -17,7 +15,6 @@ export default function JoinRequestScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
   const { requests, plans, answerRequest, membersOf } = usePlans();
-  const { profile } = useProfile();
   const request = requests.find((r) => r.id === id);
   const plan = plans.find((p) => p.id === request?.planId);
   const [person] = usePeople(request ? [request.personId] : []);
@@ -44,48 +41,19 @@ export default function JoinRequestScreen() {
   return (
     <Screen scroll edges={['bottom']} contentStyle={[styles.content, { paddingTop: insets.top + 12 }]}>
       <BackButton />
-      <View style={styles.hero}>
-        <Avatar initials={person.initials} size={150} color={person.avatarColor} verified={person.verified} serif />
-        <View style={[styles.pill, request.status === 'accepted' && { backgroundColor: colors.greenSoft }]}>
-          <Txt style={[styles.pillText, request.status === 'accepted' && { color: colors.green }]}>{pill}</Txt>
-        </View>
-        <Txt variant="display" center>
-          {person.firstName}, {person.ageRange}
-        </Txt>
-        <Txt center>{[person.situation, person.from && `From ${person.from}`].filter(Boolean).join(' · ')}</Txt>
-      </View>
+      {/* Their profile in the same style as the "open to plans" card. No flags. */}
+      <PersonSummary
+        person={person}
+        eyebrow={pill}
+        eyebrowColor={request.status === 'accepted' ? colors.green : colors.accent}
+      />
 
       <Card style={styles.card}>
-        <View style={{ gap: 6 }}>
-          <Txt style={styles.label}>Wants to join</Txt>
-          <Txt variant="h2">{plan.title}</Txt>
-          <Txt variant="small" color={colors.dark} style={{ fontSize: 15 }}>
-            {planWhen(plan)} · {areaText(plan.area, city.name)}
-          </Txt>
-        </View>
-        {person.about && (
-          <View style={{ gap: 4 }}>
-            <Txt style={styles.label}>About {person.firstName}</Txt>
-            <Txt color={colors.dark}>{person.about}</Txt>
-          </View>
-        )}
-        <View style={{ gap: 4 }}>
-          <Txt style={styles.label}>Languages</Txt>
-          <Txt color={colors.dark}>
-            {person.languages
-              .map((l) => `${LANGUAGE_FLAGS[l.code] ? `${LANGUAGE_FLAGS[l.code]} ` : ''}${l.name}`)
-              .join(' · ')}
-          </Txt>
-        </View>
-        <View style={{ gap: 8 }}>
-          <Txt style={styles.label}>Interests</Txt>
-          <View style={styles.chips}>
-            {/* Interests you share are highlighted. */}
-            {person.interests.map((i) => (
-              <Chip key={i} label={i} selected={profile.interests.includes(i)} />
-            ))}
-          </View>
-        </View>
+        <Txt style={styles.label}>Wants to join</Txt>
+        <Txt variant="h2">{plan.title}</Txt>
+        <Txt variant="small" color={colors.dark} style={{ fontSize: 15 }}>
+          {planWhen(plan)} · {areaText(plan.area, city.name)}
+        </Txt>
       </Card>
 
       {request.status === 'pending' && (
@@ -138,24 +106,8 @@ export default function JoinRequestScreen() {
 
 const styles = StyleSheet.create({
   content: { paddingBottom: space.xl, gap: space.xl },
-  hero: { alignItems: 'center', gap: 12, marginTop: -space.md },
-  pill: {
-    backgroundColor: colors.accentSoft,
-    borderRadius: 999,
-    paddingHorizontal: 18,
-    paddingVertical: 8,
-    marginTop: space.sm,
-  },
-  pillText: {
-    fontFamily: fonts.sansBold,
-    fontSize: 13,
-    letterSpacing: 1.6,
-    textTransform: 'uppercase',
-    color: colors.accent,
-  },
-  card: { padding: 26, gap: 18, borderRadius: 28 },
+  card: { padding: 22, gap: 6 },
   label: { fontFamily: fonts.sans, fontSize: 12, letterSpacing: 1.6, textTransform: 'uppercase', color: colors.muted },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   buttons: { flexDirection: 'row', gap: 12 },
   accepted: { backgroundColor: colors.greenSoft, borderRadius: radius.lg, padding: 20 },
 });

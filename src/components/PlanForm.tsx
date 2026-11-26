@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Icon, type IconName } from './Icon';
-import { MAX_GROUP, MAX_SPOTS, MIN_SPOTS, MOODS } from '@/data/catalog';
+import { DEFAULT_DURATION, DURATIONS, MAX_GROUP, MAX_SPOTS, MIN_SPOTS, MOODS } from '@/data/catalog';
 import { useCity } from '@/state/city';
-import { formatTime, nowHHMM, timeOptions } from '@/data/time';
+import { formatTime, nowHHMM, planWhen, plansOverlap, timeOptions, toMinutes } from '@/data/time';
+import { usePlans } from '@/state/plans';
 import { Plan, PlanDay, PlanDraft } from '@/data/types';
 import { colors, fonts, radius, space } from '@/theme';
 import { BackButton } from './BackButton';
@@ -25,6 +26,7 @@ export function emptyDraft(): PlanDraft {
     title: '',
     day: 'today',
     time: timeOptions('today')[1] ?? timeOptions('tomorrow')[0],
+    duration: DEFAULT_DURATION,
     spots: 5,
     languages: ['English'],
     area: '',
@@ -39,6 +41,7 @@ export function draftFromPlan(p: Plan): PlanDraft {
     title: p.title,
     day: p.day,
     time: p.time,
+    duration: p.durationH ?? DEFAULT_DURATION,
     spots: Math.min(p.capacity - 1, MAX_SPOTS),
     languages: p.languages,
     area: p.area,
@@ -50,6 +53,7 @@ export function draftFromPlan(p: Plan): PlanDraft {
 
 /** The form behind "Create a plan" (29) and "Edit plan" (32). */
 export function PlanForm({
+  planId,
   title,
   initial,
   submitLabel,
@@ -61,9 +65,15 @@ export function PlanForm({
   submitLabel: string;
   /** When editing, you can't go below the people already in. */
   minSpots?: number;
+  /** When editing: the plan itself (so it doesn't "overlap" with itself). */
+  planId?: string;
   onSubmit: (d: PlanDraft) => Promise<void>;
 }) {
   const [d, setD] = useState<PlanDraft>(initial);
+  // Your other plans at the same time (in, hosting or asked to join), using each plan's duration.
+  const { plans, statusOf } = usePlans();
+  const asPlan = { day: d.day, time: d.time, durationH: d.duration } as Plan;
+  const clash = plans.find((p) => p.id !== planId && statusOf(p) !== 'none' && plansOverlap(asPlan, p));
   const city = useCity();
   // "Now": today, starting at the current time (no time to pick).
   const [now, setNow] = useState(false);
@@ -80,6 +90,15 @@ export function PlanForm({
     const list = timeOptions(day);
     set({ day, time: list.includes(d.time) ? d.time : list[0] });
   };
+  // "Now": it ends after the chosen duration ("4 h+" just says the start).
+  const endTime =
+    d.duration >= 4
+      ? 'later, 4 h+'
+      : formatTime(
+          `${String(Math.floor(((toMinutes(d.time) + d.duration * 60) % 1440) / 60)).padStart(2, '0')}:${String(
+            (toMinutes(d.time) + d.duration * 60) % 60,
+          ).padStart(2, '0')}`,
+        );
   const startNow = () => {
     setNow(true);
     set({ day: 'today', time: nowHHMM() });
@@ -129,7 +148,7 @@ export function PlanForm({
         />
       </Field>
 
-      <Field label="Day / time" hint={now ? 'Next 2 hours' : undefined}>
+      <Field label="Day / time" hint={now ? `Starts now · until ${endTime}` : undefined}>
         <View style={styles.row}>
           <Chip label="Now" selected={now} onPress={startNow} />
           {(['today', 'tomorrow'] as const).map((day) => (
@@ -147,6 +166,26 @@ export function PlanForm({
               <Chip key={t} size="sm" label={formatTime(t)} selected={d.time === t} onPress={() => set({ time: t })} />
             ))}
           </ScrollView>
+        )}
+      </Field>
+
+      <Field label="Duration" sub="How long the plan lasts.">
+        <View style={styles.row}>
+          {DURATIONS.map((o) => (
+            <Chip
+              key={o.hours}
+              size="sm"
+              label={o.label}
+              selected={d.duration === o.hours}
+              onPress={() => set({ duration: o.hours })}
+            />
+          ))}
+        </View>
+        {/* Heads-up when it happens at the same time as another plan of yours. */}
+        {clash && (
+          <Txt variant="caption" color={colors.accent}>
+            Overlaps with “{clash.title}” ({planWhen(clash)}).
+          </Txt>
         )}
       </Field>
 
@@ -226,17 +265,6 @@ export function PlanForm({
         />
       </Field>
 
-      <View style={styles.preview}>
-        <Txt variant="eyebrow" style={{ letterSpacing: 1.2, fontSize: 11 }}>
-          Preview
-        </Txt>
-        <Txt variant="bodyStrong" style={{ fontSize: 18 }}>
-          {d.title.trim() || 'Your activity'}
-        </Txt>
-        <Txt variant="small">
-          {now ? 'Now' : `${d.day === 'today' ? 'Today' : 'Tomorrow'} · ${formatTime(d.time)}`} · {d.area || city.name}
-        </Txt>
-      </View>
     </Screen>
   );
 }
@@ -326,5 +354,4 @@ const styles = StyleSheet.create({
   },
   stepBtn: { width: 40, height: 40, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   note: { height: 84, paddingTop: 14, textAlignVertical: 'top' },
-  preview: { backgroundColor: colors.blush, borderRadius: radius.lg, padding: 20, gap: 8 },
 });

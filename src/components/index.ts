@@ -41,5 +41,6 @@ export { VerifiedBadge } from './VerifiedBadge';
 export { AllSet, askLocation } from './AllSet';
 export { RangeSlider } from './RangeSlider';
 export { BalancedTags } from './BalancedTags';
+export { PersonSummary } from './PersonSummary';
 export { FromLine, PersonCard, ProfileBlock, profileText } from './PersonCard';
 export { PlanSheet } from './PlanSheet';

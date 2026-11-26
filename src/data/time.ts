@@ -18,12 +18,38 @@ export function formatTime(hhmm: string, short = false) {
   return short && m === 0 ? `${h12} ${suffix}` : `${h12}:${String(m).padStart(2, '0')} ${suffix}`;
 }
 
-/** Starting within the next hour (or started less than 30 min ago). */
+/** How long a plan lasts, in hours (older saved plans: 2). 4 = "4 h+". */
+export const durationOf = (plan: Plan) => plan.durationH ?? 2;
+
+/** Start and end as minutes from the start of TODAY (tomorrow's plans add 24 h). */
+export function planSpan(plan: Plan) {
+  const start = (plan.day === 'tomorrow' ? 24 * 60 : 0) + toMinutes(plan.time);
+  return { start, end: start + durationOf(plan) * 60 };
+}
+
+/** Happening right now (between its start and its end) or starting within the next hour. */
 export function isNow(plan: Plan) {
-  const now = demoNow();
-  if (plan.day !== now.day) return false;
-  const diff = toMinutes(plan.time) - now.minutes;
-  return diff >= -30 && diff <= 60;
+  const now = demoNow().minutes;
+  const { start, end } = planSpan(plan);
+  return (start <= now && now < end) || (start > now && start - now <= 60);
+}
+
+/** Do two plans happen (partly) at the same time? Uses each plan's own duration. */
+export function plansOverlap(a: Plan, b: Plan) {
+  const x = planSpan(a);
+  const y = planSpan(b);
+  return x.start < y.end && y.start < x.end;
+}
+
+/** "8:30 – 10:30 PM", "11:00 AM – 1:00 PM"; 4 h+: "from 8:30 PM · 4 h+". */
+export function timeRange(plan: Plan) {
+  if (durationOf(plan) >= 4) return `from ${formatTime(plan.time)} · 4 h+`;
+  const endMin = (toMinutes(plan.time) + durationOf(plan) * 60) % (24 * 60);
+  const end = `${String(Math.floor(endMin / 60)).padStart(2, '0')}:${String(endMin % 60).padStart(2, '0')}`;
+  const a = formatTime(plan.time);
+  const b = formatTime(end);
+  const sameHalf = a.slice(-2) === b.slice(-2);
+  return `${sameHalf ? a.slice(0, -3) : a} – ${b}`;
 }
 
 /**
@@ -40,8 +66,8 @@ const kindLabel = { now: 'Now', today: 'Today', tomorrow: 'Tomorrow' } as const;
 /** "Now", "Today" or "Tomorrow". */
 export const dayKindLabel = (plan: Plan) => kindLabel[dayKind(plan)];
 
-/** "Today · 6:00 PM" ("Now · 4:30 PM" when it starts within the hour). */
-export const planWhen = (plan: Plan) => `${dayKindLabel(plan)} · ${formatTime(plan.time)}`;
+/** "Today · 6:00 – 8:00 PM" ("Now · 4:30 – 5:30 PM" while it's on or starts within the hour). */
+export const planWhen = (plan: Plan) => `${dayKindLabel(plan)} · ${timeRange(plan)}`;
 
 /** Map pin label: "NOW", "TODAY 6 PM", "TOMORROW 10 AM". */
 
@@ -49,8 +75,16 @@ export const planWhen = (plan: Plan) => `${dayKindLabel(plan)} · ${formatTime(p
 export const daySlotAt = (minutes: number): DaySlot =>
   minutes < 12 * 60 ? 'morning' : minutes < 18 * 60 ? 'afternoon' : 'evening';
 
-function slot(plan: Plan): TimeWindow {
-  return `${plan.day}-${daySlotAt(toMinutes(plan.time))}` as TimeWindow;
+/** Every "When" window a plan covers, from its start to its end (a plan 11 AM – 1 PM is morning AND afternoon). */
+function planWindows(plan: Plan): TimeWindow[] {
+  const startMin = toMinutes(plan.time);
+  const endMin = Math.min(startMin + durationOf(plan) * 60, 24 * 60); // its own day only
+  const parts: [DaySlot, number, number][] = [
+    ['morning', 0, 12 * 60],
+    ['afternoon', 12 * 60, 18 * 60],
+    ['evening', 18 * 60, 24 * 60],
+  ];
+  return parts.filter(([, a, b]) => startMin < b && a < endMin).map(([s]) => `${plan.day}-${s}` as TimeWindow);
 }
 
 /** The "When" windows someone open to plans covers ("now" also counts as the current part of today). */
@@ -70,7 +104,7 @@ export function matchesFilters(plan: Plan, f: Filters, hostGender?: Gender) {
   if (f.moods.length && !plan.moods.some((m) => f.moods.includes(m))) return false;
   if (f.languages.length && !plan.languages.some((l) => f.languages.includes(l))) return false;
   if (f.genders.length && !(hostGender && f.genders.includes(hostGender))) return false;
-  if (f.when.length && !(f.when.includes(slot(plan)) || (f.when.includes('now') && isNow(plan)))) return false;
+  if (f.when.length && !(planWindows(plan).some((w) => f.when.includes(w)) || (f.when.includes('now') && isNow(plan)))) return false;
   return true;
 }
 

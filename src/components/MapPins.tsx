@@ -24,9 +24,13 @@ export const PIN_SIZE = {
 export function MinePin({ selected }: { selected?: boolean }) {
   const own = useMineColours();
   return (
-    <View style={[styles.personWrap, { height: PIN_SIZE.mine.height }]}>
+    // collapsable={false}: the phone keeps this view (and its size) so the whole marker can be tapped.
+    <View collapsable={false} style={[styles.personWrap, styles.mineWrap, { height: PIN_SIZE.mine.height }]}>
       {/* A square with one sharp corner, turned 45° so the corner points down at the spot. */}
-      <View style={[styles.drop, { backgroundColor: own.bg, borderColor: own.fg }, selected && styles.dropOn]} />
+      <View
+        collapsable={false}
+        style={[styles.drop, { backgroundColor: own.bg, borderColor: own.fg }, selected && styles.dropOn]}
+      />
       <Txt numberOfLines={1} style={[styles.personName, { color: own.fg }]}>
         Your plan
       </Txt>
@@ -133,6 +137,7 @@ const styles = StyleSheet.create({
   ring: { borderRadius: 24, borderWidth: 3, borderColor: colors.white, ...shadow.soft },
   ringOn: { borderColor: colors.openToPlans, transform: [{ scale: 1.08 }] },
   dropOn: { transform: [{ rotate: '45deg' }, { scale: 1.1 }] },
+  mineWrap: { width: 80 },
   drop: {
     width: 22,
     height: 22,

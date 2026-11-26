@@ -12,6 +12,7 @@ import {
   MapMarker,
   NaioMap,
   PersonPin,
+  PersonSummary,
   MinePin,
   PIN_SIZE,
   PlanPin,
@@ -122,7 +123,8 @@ export default function MapTab() {
               location={p.location}
               size={statusOf(p) === 'host' ? PIN_SIZE.mine : PIN_SIZE.plan}
               label={statusOf(p) === 'host' ? 'Your plan' : `Plan, ${when}`}
-              z={on ? 6 : 2}
+              // Your plan sits above nearby plan pills, so a tap on it always reaches it.
+              z={statusOf(p) === 'host' ? (on ? 9 : 7) : on ? 6 : 2}
               onPress={() => setSelected({ kind: 'plan', plan: p })}
             >
               {/* Your plan has its own shape (yellow map pin); other plans keep the green pill. */}
@@ -245,34 +247,11 @@ export default function MapTab() {
 
 /** Screen 28 — someone available without a plan. You can't message them. */
 function PersonSheet({ person }: { person: Person }) {
-  const a = person.available!;
   const pr = pronouns(person.gender);
   const note = `${person.firstName} hasn’t created a plan but seems to be in a similar mood. You can’t message ${pr.object} directly. ${pr.subjectWill} be notified when a nearby plan matches ${pr.possessive} filters.`;
   return (
     <View style={{ gap: space.lg }}>
-      <View style={{ gap: 8 }}>
-        <Txt variant="eyebrow" style={{ letterSpacing: 1.2, color: colors.openToPlans }}>
-          Available
-        </Txt>
-        <Txt variant="h1">
-          {person.firstName}, {person.ageRange}
-        </Txt>
-        {/* Stay and time come from the person's data (the city is the current city's name there). */}
-        <Txt variant="small" style={{ fontSize: 14 }}>
-          {a.stay} · {availabilityText(a)}
-        </Txt>
-        <FromLine from={person.from} strong />
-      </View>
-      {!!person.about?.trim() && <Txt style={profileText}>{person.about.trim()}</Txt>}
-      {/* Two titled sections, like the short profile card of people in a plan. */}
-      {person.interests.length > 0 && (
-        <ProfileBlock label="My kind of plans">
-          <BalancedTags items={person.interests} align="left" />
-        </ProfileBlock>
-      )}
-      {person.languages.length > 0 && (
-        <ProfileBlock label="Languages">{person.languages.map((l) => l.name).join(' · ')}</ProfileBlock>
-      )}
+      <PersonSummary person={person} eyebrow="Available" eyebrowColor={colors.openToPlans} />
       {/* Dashed frame, no fill (owner chose A). Pronouns follow the person's gender (they/them if Other or not said). */}
       <InfoBox style={styles.frame} text={note} />
     </View>

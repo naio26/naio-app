@@ -90,6 +90,8 @@ export type Plan = {
   hostId: string; // 'me' when you host it
   memberIds: string[]; // includes the host
   moods: string[];
+  /** How long it lasts, in hours: 1, 2, 3 or 4 (= "4 h+"). Older saved plans have none: 2. */
+  durationH?: number;
   location: { latitude: number; longitude: number }; // approximate
   cancelled?: boolean; // cancelled plans vanish from the map; My plans shows them greyed out
   removed?: boolean; // a cancelled plan you swiped away in My plans
@@ -112,6 +114,7 @@ export type PlanDraft = {
   title: string;
   day: PlanDay;
   time: string; // 24h "HH:mm"
+  duration: number; // hours: 1, 2, 3 or 4 (= "4 h+")
   spots: number; // people who can join, not counting you (max MAX_SPOTS = 14)
   languages: string[]; // one or more
   area: string; // public, e.g. "Monastiraki"

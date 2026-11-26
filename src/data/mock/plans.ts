@@ -19,6 +19,7 @@ export const plans: Plan[] = [
     hostId: 'nora',
     memberIds: ['maya', 'leo', 'nora', 'jonas'],
     moods: ['Chill', 'Food & drinks'],
+    durationH: 2,
     location: { latitude: 37.9819, longitude: 23.7436 },
   },
   {
@@ -37,6 +38,7 @@ export const plans: Plan[] = [
     hostId: 'jonas',
     memberIds: ['jonas'],
     moods: ['Coffee', 'Chill'],
+    durationH: 1,
     location: { latitude: 37.9643, longitude: 23.7247 },
   },
   {
@@ -55,6 +57,7 @@ export const plans: Plan[] = [
     hostId: 'me',
     memberIds: ['me', 'maya', 'nora'],
     moods: ['Coffee', 'Discover city/town'],
+    durationH: 2,
     location: { latitude: 37.9761, longitude: 23.7257 },
   },
   {
@@ -73,6 +76,7 @@ export const plans: Plan[] = [
     hostId: 'leo',
     memberIds: ['leo'],
     moods: ['Food & drinks', 'Night out'],
+    durationH: 3,
     location: { latitude: 37.9779, longitude: 23.7236 },
   },
   {
@@ -91,6 +95,7 @@ export const plans: Plan[] = [
     hostId: 'sofia',
     memberIds: ['sofia', 'leo'],
     moods: ['Outdoors', 'Adventure'],
+    durationH: 3,
     location: { latitude: 37.9676, longitude: 23.7172 },
   },
   {
@@ -110,6 +115,7 @@ export const plans: Plan[] = [
     hostId: 'sofia',
     memberIds: ['sofia', 'jonas', 'nora'],
     moods: ['Deep talk', 'Food & drinks'],
+    durationH: 2,
     location: { latitude: 37.9765, longitude: 23.7185 },
   },
   // Further away, to test "How far would you go?" (distances are worked out from the location).
@@ -129,6 +135,7 @@ export const plans: Plan[] = [
     hostId: 'nora',
     memberIds: ['nora', 'leo'],
     moods: ['Food & drinks'],
+    durationH: 3,
     location: { latitude: 37.942, longitude: 23.6465 },
   },
   {
@@ -147,6 +154,7 @@ export const plans: Plan[] = [
     hostId: 'jonas',
     memberIds: ['jonas', 'sofia'],
     moods: ['Outdoors', 'Chill'],
+    durationH: 2,
     location: { latitude: 37.865, longitude: 23.753 },
   },
   {
@@ -165,6 +173,7 @@ export const plans: Plan[] = [
     hostId: 'leo',
     memberIds: ['leo'],
     moods: ['Outdoors', 'Adventure'],
+    durationH: 4, // 4 h+
     location: { latitude: 38.172, longitude: 23.72 },
   },
 ];

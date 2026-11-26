@@ -29,29 +29,6 @@ export const LANGUAGES: Language[] = [
 ];
 export const POPULAR_LANGUAGES = 10;
 
-/** Flags next to languages on the profile (screen 20). Languages without one show no flag. */
-export const LANGUAGE_FLAGS: Record<string, string> = {
-  ES: '🇪🇸',
-  EN: '🇬🇧',
-  EL: '🇬🇷',
-  FR: '🇫🇷',
-  IT: '🇮🇹',
-  DE: '🇩🇪',
-  PT: '🇵🇹',
-  NL: '🇳🇱',
-  RU: '🇷🇺',
-  UK: '🇺🇦',
-  PL: '🇵🇱',
-  RO: '🇷🇴',
-  TR: '🇹🇷',
-  HE: '🇮🇱',
-  JA: '🇯🇵',
-  KO: '🇰🇷',
-  SV: '🇸🇪',
-  ZH: '🇨🇳',
-  HI: '🇮🇳',
-};
-
 export const INTERESTS = [
   'Coffee',
   'Sports',
@@ -101,6 +78,15 @@ export const MOODS = [
 ];
 
 /** Distance chips. Choosing one includes every closer plan. */
+/** How long a plan lasts (Create / Edit a plan). 4 means "4 h+". 2 h by default. */
+export const DURATIONS: { hours: number; label: string }[] = [
+  { hours: 1, label: '1 h' },
+  { hours: 2, label: '2 h' },
+  { hours: 3, label: '3 h' },
+  { hours: 4, label: '4 h+' },
+];
+export const DEFAULT_DURATION = 2;
+
 /** "How far would you go?": up to 1, 5, 10 or 20 km. 20 km is the default (and what Reset goes back to). */
 export const DISTANCES: { label: string; maxKm: number }[] = [
   { label: '1 km', maxKm: 1 },

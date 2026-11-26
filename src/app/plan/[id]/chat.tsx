@@ -67,10 +67,15 @@ export default function PlanChat() {
           <Txt style={styles.title}>{plan.title}</Txt>
           <View style={styles.meta}>
             <View style={styles.dot} />
-            <Txt variant="small" numberOfLines={1} style={{ flex: 1 }}>
-              {memberIds.length} going · {planWhen(plan).replace(' · ', ' ')} · {languagesText(plan.languages)}
+            {/* Never cut: wraps if the time range is long. */}
+            <Txt variant="small" style={{ flex: 1 }}>
+              {memberIds.length} going · {planWhen(plan).replace(' · ', ' ')}
             </Txt>
           </View>
+          {/* The languages on their own line. */}
+          <Txt variant="small" style={styles.langs}>
+            {languagesText(plan.languages)}
+          </Txt>
         </Pressable>
         <Pressable accessibilityRole="button" hitSlop={10} onPress={viewPlan}>
           <Txt variant="label" color={colors.accent} style={{ fontSize: 14 }}>
@@ -194,8 +199,9 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.border,
   },
   title: { fontFamily: fonts.serif, fontSize: 24, lineHeight: 30, color: colors.dark },
-  meta: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  dot: { width: 7, height: 7, borderRadius: 4, backgroundColor: colors.green },
+  meta: { flexDirection: 'row', alignItems: 'flex-start', gap: 6 },
+  langs: { paddingLeft: 13 }, // lined up with the text after the green dot
+  dot: { width: 7, height: 7, borderRadius: 4, backgroundColor: colors.green, marginTop: 6 },
   list: { padding: space.lg, gap: 10 },
   pinned: {
     flexDirection: 'row',

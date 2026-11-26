@@ -11,6 +11,7 @@ export default function EditPlan() {
   return (
     <PlanForm
       title="Edit plan"
+      planId={id}
       initial={draftFromPlan(plan)}
       submitLabel="Save changes"
       minSpots={membersOf(plan).length - 1}

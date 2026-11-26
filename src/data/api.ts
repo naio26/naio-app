@@ -97,6 +97,8 @@ const ready: Promise<void> = load<ReturnType<typeof fresh>>('db').then((saved) =
     const known = new Set(db.plans.map((p) => p.id));
     db.plans.push(...clone(plans).filter((p) => !known.has(p.id)));
     db.plans = db.plans.map(withDistance);
+    // Older saved copies have no durations yet: take the demo ones (others: 2 h).
+    db.plans = db.plans.map((p) => ({ ...p, durationH: p.durationH ?? plans.find((m) => m.id === p.id)?.durationH ?? 2 }));
   }
 });
 const persist = () => save('db', db);
@@ -195,6 +197,7 @@ function applyDraft(plan: Plan, d: PlanDraft): Plan {
     meetNear: area.name,
     exactPoint: d.exactPoint.trim(),
     languages: d.languages,
+    durationH: d.duration,
     capacity: Math.min(d.spots + 1, MAX_GROUP),
     moods: d.moods,
     location: area.location,
