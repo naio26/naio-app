@@ -39,7 +39,6 @@ export default function PlanDetails() {
 
   const status = statusOf(plan);
   const host = members.find((m) => m.id === plan.hostId);
-  const inside = status === 'accepted' || status === 'host';
   // Your own plan: yellow dominates (pale yellow band, golden text and buttons).
   const mine = status === 'host';
 
@@ -68,8 +67,8 @@ export default function PlanDetails() {
         </View>
 
         <View style={styles.body}>
-          {/* Once you're in: the description in italics (just the text, not as a note from the host). */}
-          <Txt style={inside ? styles.descItalic : styles.desc}>{plan.description}</Txt>
+          {/* The description in italics on every plan (in or not). */}
+          <Txt style={styles.descItalic}>{plan.description}</Txt>
 
           <View>
             {rows.map((r) => (
@@ -153,7 +152,6 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: colors.muted,
   },
-  desc: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.dark },
   descItalic: { fontFamily: fonts.sansItalic, fontSize: 15, lineHeight: 22, color: colors.dark },
   // Titles in bold (above), the text under them in regular weight.
   rowValue: { fontFamily: fonts.sans, fontSize: 15, lineHeight: 22, color: colors.dark },

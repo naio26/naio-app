@@ -6,6 +6,7 @@ import { Plan } from '@/data/types';
 import { useCity } from '@/state/city';
 import { usePeople } from '@/state/people';
 import { usePlans } from '@/state/plans';
+import { useSheetPlaceLook } from '@/state/look';
 import { colors, fonts, radius, space } from '@/theme';
 import { Button } from './Button';
 import { Icon } from './Icon';
@@ -30,6 +31,24 @@ export function PlanSheet({ plan }: { plan: Plan }) {
   // A plan you're in: green day/time, "View details" link and group chat button (the rest as any plan).
   const joined = status === 'accepted';
   const details = () => router.push({ pathname: '/plan/[id]', params: { id: plan.id } });
+  // Where the place goes is being compared (Settings → Demo): current, A or B.
+  const placeLook = useSheetPlaceLook();
+  // The place in terracotta (golden on your plan) and, right under it, the exact-point note.
+  const where = (
+    <View style={{ gap: 2 }}>
+      <Txt style={[styles.place, { color: tone }]}>{placeText(plan.area, city.name)}</Txt>
+      {inside ? (
+        // Once you're in: the exact point, tap it for directions.
+        <PointNote plan={plan} status={status} />
+      ) : (
+        // Before joining: italic, in the same terracotta as the place, right under it.
+        <View style={styles.noteLine}>
+          <Icon name="map-pin" size={14} color={colors.accent} />
+          <Txt style={styles.placeNote}>Exact point is shared after joining</Txt>
+        </View>
+      )}
+    </View>
+  );
 
   return (
     <View style={{ gap: space.lg }}>
@@ -41,27 +60,18 @@ export function PlanSheet({ plan }: { plan: Plan }) {
           {planWhen(plan)}
         </Txt>
         <Txt variant="h1">{plan.title}</Txt>
+        {/* Option A: the place right under the title, like on plan details. */}
+        {placeLook === 'A' && <View style={{ marginBottom: 4 }}>{where}</View>}
         {/* The description right under the title, the same size as on plan details. */}
         <Txt style={styles.desc}>{plan.tagline}</Txt>
       </View>
 
-      {/* Divider, then the place in terracotta with the exact-point note on its own line below. */}
-      <View style={styles.placeBlock}>
-        <Txt style={[styles.place, { color: tone }]}>{placeText(plan.area, city.name)}</Txt>
-        {inside ? (
-          // Once you're in: the exact point in green, tap it for directions.
-          <PointNote plan={plan} status={status} />
-        ) : (
-          // Before joining: italic, in the same terracotta as the place, right under it.
-          <View style={styles.noteLine}>
-            <Icon name="map-pin" size={14} color={colors.accent} />
-            <Txt style={styles.placeNote}>Exact point is shared after joining</Txt>
-          </View>
-        )}
-      </View>
+      {/* Current: divider, then the place in terracotta with the exact-point note right under it. */}
+      {placeLook === 'current' && <View style={styles.placeBlock}>{where}</View>}
 
-      {/* The owner's choice: the box "3/7 going · 4 spots left", and the language on the right (thin icon, no box). */}
-      <View style={styles.factsRow}>
+      {/* The owner's choice: the box "3/7 going · 4 spots left", and the language on the right (thin icon, no box).
+          With A and B the divider sits above this row. */}
+      <View style={[styles.factsRow, placeLook !== 'current' && styles.topLine]}>
         <View style={styles.box}>
           <Txt style={styles.boxText}>
             <Txt style={[styles.boxText, styles.bold]}>
@@ -75,6 +85,9 @@ export function PlanSheet({ plan }: { plan: Plan }) {
           <Txt style={[styles.boxText, { color: colors.muted }]}>{languagesText(plan.languages)}</Txt>
         </View>
       </View>
+
+      {/* Option B: the place below the going/language row, just above the people. */}
+      {placeLook === 'B' && where}
 
       {/* Names in regular weight, no "(host)" here. "View details" on the right: tap each person there. */}
       <View style={styles.peopleRow}>
@@ -113,7 +126,8 @@ export function PlanSheet({ plan }: { plan: Plan }) {
 
 const styles = StyleSheet.create({
   place: { fontFamily: fonts.sans, fontSize: 14.5, lineHeight: 21, color: colors.accent },
-  placeBlock: { gap: 2, paddingTop: space.lg, borderTopWidth: 1, borderTopColor: colors.border },
+  placeBlock: { paddingTop: space.lg, borderTopWidth: 1, borderTopColor: colors.border },
+  topLine: { paddingTop: space.lg, borderTopWidth: 1, borderTopColor: colors.border },
   desc: { fontSize: 15, lineHeight: 22 },
   peopleRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   peopleLink: { fontFamily: fonts.sansBold, textDecorationLine: 'underline' },
