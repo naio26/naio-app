@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { Button, Chip, goBack, Icon, Screen, ScreenHeader, Txt } from '@/components';
+import { Button, goBack, Icon, Screen, ScreenHeader, Txt } from '@/components';
 import { availabilityText, DAY_SLOTS, hasAvailability } from '@/data/catalog';
 import { daySlotAt, demoNow } from '@/data/time';
 import { Availability, DaySlot, PlanDay } from '@/data/types';
-import { useOpenLook } from '@/state/look';
 import { useProfile } from '@/state/profile';
 import { colors, fonts, radius, space } from '@/theme';
 
@@ -17,10 +16,9 @@ const NONE: Availability = { now: false, today: [], tomorrow: [] };
 
 // Not in the designs (same style): you mark yourself as open to plans, from My profile.
 // Now and/or any parts of today and tomorrow, several at once. Saved in your profile.
-// Two ways to pick are being compared (Settings → Demo): A = grid, B = one row of time chips.
+// The owner chose A: "Now" on top, then a grid of Today / Tomorrow × Morning / Afternoon / Evening.
 export default function OpenToPlans() {
   const { profile, update } = useProfile();
-  const look = useOpenLook();
   const current = profile.available;
   const [draft, setDraft] = useState<Availability>(current ?? NONE);
 
@@ -77,11 +75,7 @@ export default function OpenToPlans() {
           <Txt variant="question">When are you free?</Txt>
           <Txt variant="caption">Pick as many as you like.</Txt>
         </View>
-        {look === 'A' ? (
-          <Grid draft={draft} isPast={isPast} onNow={toggleNow} onSlot={toggle} />
-        ) : (
-          <TimeChips draft={draft} isPast={isPast} onNow={toggleNow} onSlot={toggle} />
-        )}
+        <Grid draft={draft} isPast={isPast} onNow={toggleNow} onSlot={toggle} />
       </View>
 
       {/* The result on one line (wraps to a second one only if it doesn't fit). */}
@@ -104,7 +98,7 @@ type PickerProps = {
   onSlot: (day: PlanDay, s: DaySlot) => void;
 };
 
-/** Option A: "Now" on top, then a grid of Today / Tomorrow × Morning / Afternoon / Evening. */
+/** "Now" on top, then a grid of Today / Tomorrow × Morning / Afternoon / Evening. */
 function Grid({ draft, isPast, onNow, onSlot }: PickerProps) {
   return (
     <View style={{ gap: 12 }}>
@@ -156,32 +150,9 @@ function Grid({ draft, isPast, onNow, onSlot }: PickerProps) {
   );
 }
 
-/** Option B: every time that's still to come, in order, as one row of chips (wraps): Now, Today evening… */
-function TimeChips({ draft, isPast, onNow, onSlot }: PickerProps) {
-  return (
-    <View style={{ gap: 12 }}>
-      <View style={styles.chips}>
-        <Chip label="Now" selected={draft.now} onPress={onNow} />
-        {DAYS.flatMap((d) =>
-          DAY_SLOTS.filter((s) => !isPast(d.key, s.key)).map((s) => (
-            <Chip
-              key={`${d.key}-${s.key}`}
-              label={`${d.label} ${s.title.toLowerCase()}`}
-              selected={draft[d.key].includes(s.key)}
-              onPress={() => onSlot(d.key, s.key)}
-            />
-          )),
-        )}
-      </View>
-      <Txt variant="caption">Morning until 12 PM · Afternoon 12–6 PM · Evening from 6 PM</Txt>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   content: { paddingTop: space.xl, gap: space.xl },
   section: { gap: 16 },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   cell: {
     borderRadius: radius.md,
     borderWidth: 1.5,

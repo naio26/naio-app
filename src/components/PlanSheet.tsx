@@ -6,7 +6,6 @@ import { Plan } from '@/data/types';
 import { useCity } from '@/state/city';
 import { usePeople } from '@/state/people';
 import { usePlans } from '@/state/plans';
-import { useSheetPlaceLook } from '@/state/look';
 import { colors, fonts, radius, space } from '@/theme';
 import { Button } from './Button';
 import { FitLanguages } from './FitLanguages';
@@ -32,8 +31,6 @@ export function PlanSheet({ plan }: { plan: Plan }) {
   // A plan you're in: green day/time, "View details" link and group chat button (the rest as any plan).
   const joined = status === 'accepted';
   const details = () => router.push({ pathname: '/plan/[id]', params: { id: plan.id } });
-  // Where the place goes is being compared (Settings → Demo): current, A or B.
-  const placeLook = useSheetPlaceLook();
   // The place in terracotta (golden on your plan) and, right under it, the exact-point note.
   const where = (
     <View style={{ gap: 2 }}>
@@ -61,18 +58,15 @@ export function PlanSheet({ plan }: { plan: Plan }) {
           {planWhen(plan)}
         </Txt>
         <Txt variant="h1">{plan.title}</Txt>
-        {/* Option A: the place right under the title, like on plan details. */}
-        {placeLook === 'A' && <View style={{ marginBottom: 4 }}>{where}</View>}
         {/* The description right under the title, the same size as on plan details. */}
         <Txt style={styles.desc}>{plan.tagline}</Txt>
       </View>
 
-      {/* Current: divider, then the place in terracotta with the exact-point note right under it. */}
-      {placeLook === 'current' && <View style={styles.placeBlock}>{where}</View>}
+      {/* Owner's choice: divider, then the place in terracotta with the exact-point note right under it. */}
+      <View style={styles.placeBlock}>{where}</View>
 
-      {/* The owner's choice: the box "3/7 going · 4 spots left", and the language on the right (thin icon, no box).
-          With A and B the divider sits above this row. */}
-      <View style={[styles.factsRow, placeLook !== 'current' && styles.topLine]}>
+      {/* The owner's choice: the box "3/7 going · 4 spots left", and the language on the right (thin icon, no box). */}
+      <View style={styles.factsRow}>
         <View style={styles.box}>
           <Txt style={styles.boxText}>
             <Txt style={[styles.boxText, styles.bold]}>
@@ -87,9 +81,6 @@ export function PlanSheet({ plan }: { plan: Plan }) {
           <FitLanguages languages={plan.languages} style={[styles.boxText, { color: colors.muted }]} />
         </View>
       </View>
-
-      {/* Option B: the place below the going/language row, just above the people. */}
-      {placeLook === 'B' && where}
 
       {/* Names in regular weight, no "(host)" here. Only in a plan you've joined (main button: the group chat),
           a green "View details" link on the right (tap each person there); otherwise the button below does it. */}
@@ -132,7 +123,6 @@ export function PlanSheet({ plan }: { plan: Plan }) {
 const styles = StyleSheet.create({
   place: { fontFamily: fonts.sans, fontSize: 14.5, lineHeight: 21, color: colors.accent },
   placeBlock: { paddingTop: space.lg, borderTopWidth: 1, borderTopColor: colors.border },
-  topLine: { paddingTop: space.lg, borderTopWidth: 1, borderTopColor: colors.border },
   desc: { fontSize: 15, lineHeight: 22 },
   peopleRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   peopleLink: { fontFamily: fonts.sansBold, textDecorationLine: 'underline' },

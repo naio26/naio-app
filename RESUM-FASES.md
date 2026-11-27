@@ -1,7 +1,7 @@
 
 # Resum de fases — naio.
 
-Última actualització: 27 de novembre de 2026 (nota «No noise» discreta, diverses disponibilitats amb opcions A/B, fletxa a l'adreça, filtre de distància original amb 20 km automàtics, dos noms i «+N» a la fitxa, disponibilitat a la mateixa línia si hi cap, durada dels plans, sol·licituds sense banderes, idiomes «+N», crear sense vista prèvia, filtre de distància 1–20 km, disponibilitat per franges, pantalla «Open to plans», opcions del lloc a la fitxa del mapa, descripció en cursiva, marcador sense estrella, regles de colors dels plans, opcions A/B del marcador del teu pla, marcador del teu pla: agulla groga amb vora marró, opció B triada, logo d'una sola mida, els teus plans en groc, Today turquesa, un sol taronja per a «Open to plans», una sola mida de títol, logo més petit, dia i hora en verd als plans on ets, quadre de ratlles de les persones en taronja, opció A triada, botó verd del xat a tot arreu, botó verd del xat, persones en taronja, llistes sense noms, colors definitius de My plans, fitxa de les persones en taronja, idiomes, àrea i missatge de «Create a plan», colors de My plans per tipus amb una sola regla, fitxa verda suau al mapa per als plans on ets, pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
+Última actualització: 27 de novembre de 2026 (triada l'opció A d'«Open to plans» i el lloc actual a la fitxa del mapa, nota «No noise» discreta, diverses disponibilitats amb opcions A/B, fletxa a l'adreça, filtre de distància original amb 20 km automàtics, dos noms i «+N» a la fitxa, disponibilitat a la mateixa línia si hi cap, durada dels plans, sol·licituds sense banderes, idiomes «+N», crear sense vista prèvia, filtre de distància 1–20 km, disponibilitat per franges, pantalla «Open to plans», opcions del lloc a la fitxa del mapa, descripció en cursiva, marcador sense estrella, regles de colors dels plans, opcions A/B del marcador del teu pla, marcador del teu pla: agulla groga amb vora marró, opció B triada, logo d'una sola mida, els teus plans en groc, Today turquesa, un sol taronja per a «Open to plans», una sola mida de títol, logo més petit, dia i hora en verd als plans on ets, quadre de ratlles de les persones en taronja, opció A triada, botó verd del xat a tot arreu, botó verd del xat, persones en taronja, llistes sense noms, colors definitius de My plans, fitxa de les persones en taronja, idiomes, àrea i missatge de «Create a plan», colors de My plans per tipus amb una sola regla, fitxa verda suau al mapa per als plans on ets, pantalles dels plans, grups de fins a 15 persones, diversos idiomes, «Leave plan», «Your plan» en verd, «(HOST)»; versió de prova v3 actualitzada)
 
 Aquest document explica, en paraules senzilles, què s'ha fet a l'app, què falta i què necessito de tu. S'actualitza cada vegada que s'acaba una fase.
 
@@ -527,7 +527,7 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
   - **Nova pantalla «Open to plans» (no és als dissenys):** a dalt de **My profile** hi ha una fila «Open to plans». Si la toques, tries «Now», «Today» o «Tomorrow» i, per a avui o demà, una o més franges (les d'avui que ja han passat no surten). A sota hi veus com ho veurà la gent («Available tomorrow · morning & evening»). «Show me as open to plans» ho desa; després pots canviar-ho o tocar «I'm not open to plans anymore».
   - **Descripció en cursiva a tots els detalls de plans**, hi siguis o no.
   - **Marcador del teu pla:** sense estrella i una mica més petit (mateixa forma, colors i «Your plan»).
-  - **Per triar (Settings → Demo): on va el lloc a la fitxa del pla del mapa.** **Current** (el d'ara): després de la descripció i la línia. **A**: just a sota del títol, com als detalls del pla. **B**: a sota de «4/7 going» i l'idioma, just abans de les persones. Toca «Plan sheet place - current», «- A» o «- B» (surt «On» a la triada) i després toca un pla al mapa. Si tanques l'app, torna a «current».
+  - **Lloc a la fitxa del pla del mapa (decidit):** es queda com ara, després de la descripció i la línia.
   - **Plans on ets: més verd.** El dia i l'hora (per exemple «TOMORROW · 8:30 PM»), just a sota de «You're in», són verds als detalls del pla i a la fitxa del mapa. A la fitxa del mapa, l'enllaç «View details» al costat de les persones també és verd.
   - **Nou pla de prova en tres idiomes:** «Language swap in Thiseio» (de la Sofia, avui a les 7:30 PM, a Thiseio), en anglès, grec i castellà, per veure com queden diversos idiomes a la fitxa del mapa, als detalls i a My plans. Surt al mapa sense haver de fer «Reset demo».
   - **Marcador del teu pla: vas triar B**, l'agulla de mapa en forma de gota, groc clar amb la vora marró i «Your plan» a sota només en text marró. El marcador és una mica més petit, i l'estrella de dins és més gran, només el contorn (sense omplir) i de color marró. L'opció A i les files de Settings → Demo s'han tret.
@@ -559,6 +559,7 @@ Ara l'app guarda el teu progrés al mòbil: si la tornes a carregar, continua on
     - **Filtre de distància, com era al principi:** «< 5 km», «5–10 km», «10–20 km», «20–30 km» i «> 30 km» (en triar-ne una, també es marquen les més properes). Si no en tries cap, l'app mostra automàticament només plans i persones a 20 km o menys («Not set · showing plans and people up to 20 km»). Si en tries una, s'aplica aquella. «Reset» torna a «cap». Els filtres desats abans es posen a «cap» (és a dir, 20 km).
     - **Manteniment:** Expo havia tret petites actualitzacions dels seus paquets (sense canviar de versió SDK 58); s'han posat al dia perquè la comprovació del projecte passi.
     - La versió de prova v3 (i l'enllaç «latest») s'ha actualitzat amb aquests canvis.
+    - **Decisions preses:** a «Open to plans» vas triar **A**, la graella. A la fitxa del pla del mapa, el lloc es queda **com ara**, després de la descripció i la línia. Les altres opcions (B d'«Open to plans», i A i B del lloc) i les seves files de Settings → Demo s'han tret.
 
 ## 2. PROPERAMENT
 
@@ -572,7 +573,6 @@ Les quatre fases del pla estan fetes. No hi ha cap fase més planificada. Quan v
 
 ### El que necessito de tu
 
-- **Triar A o B a «Open to plans»** (Settings → Demo): la graella (A) o la fila de botons (B).
 - **Fletxa de l'adreça:** si t'agrada a la fitxa del mapa, la puc posar també als detalls del pla.
 
 - **Unir la versió desada amb la branca principal:** la versió està desada a GitHub en una branca a part, `phases-1-4`. Quan vulguis, la puc unir amb la branca principal (`main`).
