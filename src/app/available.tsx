@@ -1,37 +1,41 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { Button, Chip, goBack, Screen, ScreenHeader, Txt } from '@/components';
-import { availabilityText, DAY_SLOTS } from '@/data/catalog';
+import { Button, Chip, goBack, Icon, Screen, ScreenHeader, Txt } from '@/components';
+import { availabilityText, DAY_SLOTS, hasAvailability } from '@/data/catalog';
 import { daySlotAt, demoNow } from '@/data/time';
 import { Availability, DaySlot, PlanDay } from '@/data/types';
+import { useOpenLook } from '@/state/look';
 import { useProfile } from '@/state/profile';
 import { colors, fonts, radius, space } from '@/theme';
 
-type When = 'now' | PlanDay;
-const WHEN: { key: When; label: string }[] = [
-  { key: 'now', label: 'Now' },
+const ORDER: DaySlot[] = ['morning', 'afternoon', 'evening'];
+const DAYS: { key: PlanDay; label: string }[] = [
   { key: 'today', label: 'Today' },
   { key: 'tomorrow', label: 'Tomorrow' },
 ];
-const ORDER: DaySlot[] = ['morning', 'afternoon', 'evening'];
+const NONE: Availability = { now: false, today: [], tomorrow: [] };
 
 // Not in the designs (same style): you mark yourself as open to plans, from My profile.
-// Now, or Today / Tomorrow with one or more parts of the day. Saved in your profile.
+// Now and/or any parts of today and tomorrow, several at once. Saved in your profile.
+// Two ways to pick are being compared (Settings → Demo): A = grid, B = one row of time chips.
 export default function OpenToPlans() {
   const { profile, update } = useProfile();
+  const look = useOpenLook();
   const current = profile.available;
-  const [when, setWhen] = useState<When | null>(current?.when ?? null);
-  const [slots, setSlots] = useState<DaySlot[]>(current && current.when !== 'now' ? current.slots : []);
+  const [draft, setDraft] = useState<Availability>(current ?? NONE);
 
   // Today, the parts of the day that are already over can't be picked (the demo clock is 4:18 PM).
   const nowSlot = ORDER.indexOf(daySlotAt(demoNow().minutes));
-  const options = DAY_SLOTS.filter((s) => when !== 'today' || ORDER.indexOf(s.key) >= nowSlot);
-  const picked = slots.filter((s) => options.some((o) => o.key === s));
+  const isPast = (day: PlanDay, s: DaySlot) => day === 'today' && ORDER.indexOf(s) < nowSlot;
+  const choice: Availability = { ...draft, today: draft.today.filter((s) => !isPast('today', s)) };
+  const ready = hasAvailability(choice);
 
-  const choice: Availability | null =
-    when === 'now' ? { when: 'now', slots: [] } : when && picked.length ? { when, slots: picked } : null;
-
-  const toggle = (s: DaySlot) => setSlots((l) => (l.includes(s) ? l.filter((x) => x !== s) : [...l, s]));
+  const toggleNow = () => setDraft((d) => ({ ...d, now: !d.now }));
+  const toggle = (day: PlanDay, s: DaySlot) =>
+    setDraft((d) => ({
+      ...d,
+      [day]: d[day].includes(s) ? d[day].filter((x) => x !== s) : ORDER.filter((o) => o === s || d[day].includes(o)),
+    }));
 
   return (
     <Screen
@@ -43,9 +47,9 @@ export default function OpenToPlans() {
           <Button
             title={current ? 'Save' : 'Show me as open to plans'}
             arrow
-            disabled={!choice}
+            disabled={!ready}
             onPress={() => {
-              if (!choice) return;
+              if (!ready) return;
               update({ available: choice });
               goBack();
             }}
@@ -69,41 +73,19 @@ export default function OpenToPlans() {
       </Txt>
 
       <View style={styles.section}>
-        <Txt variant="question">When are you free?</Txt>
-        <View style={styles.row}>
-          {WHEN.map((w) => (
-            <Chip key={w.key} label={w.label} selected={when === w.key} onPress={() => setWhen(w.key)} />
-          ))}
+        <View style={{ gap: 4 }}>
+          <Txt variant="question">When are you free?</Txt>
+          <Txt variant="caption">Pick as many as you like.</Txt>
         </View>
+        {look === 'A' ? (
+          <Grid draft={draft} isPast={isPast} onNow={toggleNow} onSlot={toggle} />
+        ) : (
+          <TimeChips draft={draft} isPast={isPast} onNow={toggleNow} onSlot={toggle} />
+        )}
       </View>
 
-      {(when === 'today' || when === 'tomorrow') && (
-        <View style={styles.section}>
-          <Txt variant="question">What part of the day?</Txt>
-          <Txt variant="caption" style={{ marginTop: -8 }}>
-            Pick one or more.
-          </Txt>
-          <View style={styles.row}>
-            {options.map((s) => {
-              const on = picked.includes(s.key);
-              return (
-                <Pressable
-                  key={s.key}
-                  accessibilityRole="button"
-                  accessibilityState={{ selected: on }}
-                  onPress={() => toggle(s.key)}
-                  style={[styles.slot, on && styles.slotOn]}
-                >
-                  <Txt style={[styles.slotTitle, on && styles.slotTitleOn]}>{s.title}</Txt>
-                  <Txt style={[styles.slotSub, on && { color: colors.accent }]}>{s.sub}</Txt>
-                </Pressable>
-              );
-            })}
-          </View>
-        </View>
-      )}
-
-      {choice && (
+      {/* The result on one line (wraps to a second one only if it doesn't fit). */}
+      {ready && (
         <View style={styles.preview}>
           <Txt variant="caption">People will see</Txt>
           <Txt variant="bodyStrong" color={colors.openToPlans}>
@@ -115,15 +97,92 @@ export default function OpenToPlans() {
   );
 }
 
+type PickerProps = {
+  draft: Availability;
+  isPast: (day: PlanDay, s: DaySlot) => boolean;
+  onNow: () => void;
+  onSlot: (day: PlanDay, s: DaySlot) => void;
+};
+
+/** Option A: "Now" on top, then a grid of Today / Tomorrow × Morning / Afternoon / Evening. */
+function Grid({ draft, isPast, onNow, onSlot }: PickerProps) {
+  return (
+    <View style={{ gap: 12 }}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ selected: draft.now }}
+        onPress={onNow}
+        style={[styles.cell, styles.nowCell, draft.now && styles.cellOn]}
+      >
+        <Txt style={[styles.cellTitle, draft.now && styles.cellTitleOn]}>Now</Txt>
+        {draft.now && <Icon name="check" size={16} color={colors.accent} />}
+      </Pressable>
+
+      <View style={{ gap: 8 }}>
+        <View style={styles.gridRow}>
+          <View style={styles.dayCol} />
+          {DAY_SLOTS.map((s) => (
+            <View key={s.key} style={styles.head}>
+              <Txt style={styles.headTitle}>{s.title}</Txt>
+              <Txt style={styles.headSub}>{s.sub}</Txt>
+            </View>
+          ))}
+        </View>
+        {DAYS.map((d) => (
+          <View key={d.key} style={styles.gridRow}>
+            <Txt style={[styles.dayCol, styles.dayLabel]}>{d.label}</Txt>
+            {DAY_SLOTS.map((s) => {
+              if (isPast(d.key, s.key))
+                // Already over today: an empty dashed box, can't be picked.
+                return <View key={s.key} style={[styles.cell, styles.gridCell, styles.cellPast]} />;
+              const on = draft[d.key].includes(s.key);
+              return (
+                <Pressable
+                  key={s.key}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${d.label} ${s.title.toLowerCase()}`}
+                  accessibilityState={{ selected: on }}
+                  onPress={() => onSlot(d.key, s.key)}
+                  style={[styles.cell, styles.gridCell, on && styles.cellOn]}
+                >
+                  {on && <Icon name="check" size={18} color={colors.accent} />}
+                </Pressable>
+              );
+            })}
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+/** Option B: every time that's still to come, in order, as one row of chips (wraps): Now, Today evening… */
+function TimeChips({ draft, isPast, onNow, onSlot }: PickerProps) {
+  return (
+    <View style={{ gap: 12 }}>
+      <View style={styles.chips}>
+        <Chip label="Now" selected={draft.now} onPress={onNow} />
+        {DAYS.flatMap((d) =>
+          DAY_SLOTS.filter((s) => !isPast(d.key, s.key)).map((s) => (
+            <Chip
+              key={`${d.key}-${s.key}`}
+              label={`${d.label} ${s.title.toLowerCase()}`}
+              selected={draft[d.key].includes(s.key)}
+              onPress={() => onSlot(d.key, s.key)}
+            />
+          )),
+        )}
+      </View>
+      <Txt variant="caption">Morning until 12 PM · Afternoon 12–6 PM · Evening from 6 PM</Txt>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   content: { paddingTop: space.xl, gap: space.xl },
-  section: { gap: 14 },
-  row: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  slot: {
-    flex: 1,
-    minWidth: 92,
-    height: 64,
-    gap: 3,
+  section: { gap: 16 },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  cell: {
     borderRadius: radius.md,
     borderWidth: 1.5,
     borderColor: colors.border,
@@ -131,9 +190,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  slotOn: { backgroundColor: colors.accentSoft, borderColor: colors.accentLine },
-  slotTitle: { fontFamily: fonts.sans, fontSize: 14, color: colors.dark },
-  slotTitleOn: { fontFamily: fonts.sansBold, color: colors.accent },
-  slotSub: { fontFamily: fonts.sans, fontSize: 11.5, color: colors.muted },
+  cellOn: { backgroundColor: colors.accentSoft, borderColor: colors.accentLine },
+  cellPast: { backgroundColor: 'transparent', borderStyle: 'dashed' },
+  nowCell: { height: 48, flexDirection: 'row', gap: 8 },
+  cellTitle: { fontFamily: fonts.sans, fontSize: 14, color: colors.dark },
+  cellTitleOn: { fontFamily: fonts.sansBold, color: colors.accent },
+  gridRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  gridCell: { flex: 1, height: 48 },
+  dayCol: { width: 72 },
+  dayLabel: { fontFamily: fonts.sansBold, fontSize: 14, color: colors.dark },
+  head: { flex: 1, alignItems: 'center', gap: 1 },
+  headTitle: { fontFamily: fonts.sans, fontSize: 13, color: colors.dark },
+  headSub: { fontFamily: fonts.sans, fontSize: 11, color: colors.muted },
   preview: { gap: 4, paddingTop: space.lg, borderTopWidth: 1, borderTopColor: colors.border },
 });

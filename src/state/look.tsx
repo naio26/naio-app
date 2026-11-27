@@ -28,3 +28,23 @@ export function useSheetPlaceLook() {
     () => sheetPlace,
   );
 }
+
+// TEST ONLY (Settings → Demo): how you pick your times on "Open to plans" (My profile), while the owner compares.
+// A = a grid (Now, then Today / Tomorrow × Morning / Afternoon / Evening), B = one row of time chips in order.
+// Not saved: starts on A.
+export type OpenLook = 'A' | 'B';
+let openLook: OpenLook = 'A';
+const openListeners = new Set<() => void>();
+export function setOpenLook(l: OpenLook) {
+  openLook = l;
+  openListeners.forEach((f) => f());
+}
+export function useOpenLook() {
+  return useSyncExternalStore(
+    (f) => {
+      openListeners.add(f);
+      return () => openListeners.delete(f);
+    },
+    () => openLook,
+  );
+}

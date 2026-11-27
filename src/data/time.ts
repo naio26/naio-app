@@ -1,5 +1,6 @@
 // Times in the app. The demo runs on a fixed clock so plans always look "upcoming",
 // whatever time you test at. Swap demoNow() for the real time once there's a backend.
+import { effectiveKm } from './catalog';
 import { Availability, DaySlot, Filters, Gender, Plan, PlanDay, TimeWindow } from './types';
 
 /** Demo clock: today at 4:18 PM. */
@@ -90,17 +91,20 @@ function planWindows(plan: Plan): TimeWindow[] {
 /** The "When" windows someone open to plans covers ("now" also counts as the current part of today). */
 export function availabilityWindows(a: Availability): TimeWindow[] {
   const now = daySlotAt(demoNow().minutes);
-  if (a.when === 'now') return ['now', `today-${now}` as TimeWindow];
-  const out = a.slots.map((s) => `${a.when}-${s}` as TimeWindow);
+  const out: TimeWindow[] = [
+    ...a.today.map((s) => `today-${s}` as TimeWindow),
+    ...a.tomorrow.map((s) => `tomorrow-${s}` as TimeWindow),
+  ];
+  if (a.now) out.push('now', `today-${now}` as TimeWindow);
   // Free today in the part of the day it is now: that's "now" too.
-  if (a.when === 'today' && a.slots.includes(now)) out.push('now');
+  if (a.today.includes(now)) out.push('now');
   return out;
 }
 
 /** Does a plan pass the filters from screens 23–24? Empty groups mean "anything". */
 export function matchesFilters(plan: Plan, f: Filters, hostGender?: Gender) {
-  // Always a distance: only plans within it show (20 km by default).
-  if (plan.distanceKm > f.maxKm) return false;
+  // Always a distance: the one chosen, or 20 km when none is.
+  if (plan.distanceKm > effectiveKm(f.maxKm)) return false;
   if (f.moods.length && !plan.moods.some((m) => f.moods.includes(m))) return false;
   if (f.languages.length && !plan.languages.some((l) => f.languages.includes(l))) return false;
   if (f.genders.length && !(hostGender && f.genders.includes(hostGender))) return false;

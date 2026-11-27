@@ -40,7 +40,7 @@ export function PlanSheet({ plan }: { plan: Plan }) {
       <Txt style={[styles.place, { color: tone }]}>{placeText(plan.area, city.name)}</Txt>
       {inside ? (
         // Once you're in: the exact point, tap it for directions.
-        <PointNote plan={plan} status={status} />
+        <PointNote plan={plan} status={status} arrowEnd />
       ) : (
         // Before joining: italic, in the same terracotta as the place, right under it.
         <View style={styles.noteLine}>
@@ -95,7 +95,7 @@ export function PlanSheet({ plan }: { plan: Plan }) {
           a green "View details" link on the right (tap each person there); otherwise the button below does it. */}
       <View style={styles.peopleRow}>
         <View style={{ flex: 1 }}>
-          <AvatarStack people={members} plain meColor={mine ? colors.mineInk : colors.accent} />
+          <AvatarStack people={members} plain nameMax={2} meColor={mine ? colors.mineInk : colors.accent} />
         </View>
         {joined && (
           <Pressable accessibilityRole="link" hitSlop={10} onPress={details}>

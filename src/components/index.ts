@@ -37,6 +37,7 @@ export { SwipeToRemove } from './SwipeToRemove';
 export { SettingsRow, SettingsSection } from './SettingsRow';
 export { ProfileView } from './ProfileView';
 export { Icon, type IconName } from './Icon';
+export { HelperNote } from './HelperNote';
 export { VerifiedBadge } from './VerifiedBadge';
 export { AllSet, askLocation } from './AllSet';
 export { RangeSlider } from './RangeSlider';

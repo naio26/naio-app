@@ -1,4 +1,5 @@
 // Who shows up on the map: plans and people that match YOUR filters (screens 23–24).
+import { effectiveKm } from './catalog';
 import { availabilityWindows, matchesFilters } from './time';
 import { AGE_RANGES, AgeRange, Filters, Gender, Person, Plan } from './types';
 
@@ -37,7 +38,7 @@ export function planMatches(plan: Plan, f: Filters, host?: { gender?: Gender; ag
 export function personMatches(p: Person, f: Filters) {
   const a = p.available;
   if (!a) return false;
-  if (kmBetween(MY_AREA, a.location) > f.maxKm) return false;
+  if (kmBetween(MY_AREA, a.location) > effectiveKm(f.maxKm)) return false;
   if (f.genders.length && !(p.gender && f.genders.includes(p.gender))) return false;
   if (f.languages.length && !p.languages.some((l) => f.languages.includes(l.name))) return false;
   if (!inAges(p.ageRange, f)) return false;

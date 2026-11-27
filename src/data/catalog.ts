@@ -87,14 +87,21 @@ export const DURATIONS: { hours: number; label: string }[] = [
 ];
 export const DEFAULT_DURATION = 2;
 
-/** "How far would you go?": up to 1, 5, 10 or 20 km. 20 km is the default (and what Reset goes back to). */
+/** Any distance ("> 30 km"). A plain number, so it survives being saved on the phone. */
+export const ANY_KM = 100000;
+
+/** "How far would you go?" (screen 23). Choosing one includes every closer plan. */
 export const DISTANCES: { label: string; maxKm: number }[] = [
-  { label: '1 km', maxKm: 1 },
-  { label: '5 km', maxKm: 5 },
-  { label: '10 km', maxKm: 10 },
-  { label: '20 km', maxKm: 20 },
+  { label: '< 5 km', maxKm: 5 },
+  { label: '5–10 km', maxKm: 10 },
+  { label: '10–20 km', maxKm: 20 },
+  { label: '20–30 km', maxKm: 30 },
+  { label: '> 30 km', maxKm: ANY_KM },
 ];
+/** With no distance chosen, the map shows plans and people up to 20 km from you. */
 export const DEFAULT_KM = 20;
+/** The distance that applies: the one chosen, or 20 km when none is. */
+export const effectiveKm = (maxKm: number | null) => maxKm ?? DEFAULT_KM;
 
 /** Parts of the day for "open to plans" (people in orange). */
 export const DAY_SLOTS: { key: DaySlot; title: string; sub: string }[] = [
@@ -103,12 +110,35 @@ export const DAY_SLOTS: { key: DaySlot; title: string; sub: string }[] = [
   { key: 'evening', title: 'Evening', sub: 'from 6 PM' },
 ];
 
-/** "Available now", "Available today · afternoon", "Available tomorrow · morning & evening". */
+/** "morning", "morning & evening", "morning, afternoon & evening" (always in day order). */
+function slotList(slots: DaySlot[]) {
+  const names = DAY_SLOTS.filter((s) => slots.includes(s.key)).map((s) => s.title.toLowerCase());
+  return names.length < 2 ? (names[0] ?? '') : `${names.slice(0, -1).join(', ')} & ${names[names.length - 1]}`;
+}
+
+/** Every availability on one line: "Available now · today evening · tomorrow morning & afternoon". */
 export function availabilityText(a: Availability) {
-  if (a.when === 'now') return 'Available now';
-  const names = DAY_SLOTS.filter((s) => a.slots.includes(s.key)).map((s) => s.title.toLowerCase());
-  const list = names.length < 2 ? (names[0] ?? '') : `${names.slice(0, -1).join(', ')} & ${names[names.length - 1]}`;
-  return `Available ${a.when}${list ? ` · ${list}` : ''}`;
+  const parts = [
+    a.now && 'now',
+    a.today.length > 0 && `today ${slotList(a.today)}`,
+    a.tomorrow.length > 0 && `tomorrow ${slotList(a.tomorrow)}`,
+  ].filter(Boolean);
+  return `Available ${parts.join(' · ')}`;
+}
+
+/** Is anything chosen at all? */
+export const hasAvailability = (a?: Availability) => !!a && (a.now || a.today.length > 0 || a.tomorrow.length > 0);
+
+/** Saved by older versions as { when, slots } (one day only): turned into the new shape. */
+export function upgradeAvailability(a: unknown): Availability | undefined {
+  if (!a || typeof a !== 'object') return undefined;
+  const o = a as { when?: string; slots?: DaySlot[]; now?: boolean; today?: DaySlot[]; tomorrow?: DaySlot[] };
+  if (o.when === undefined) return { now: !!o.now, today: o.today ?? [], tomorrow: o.tomorrow ?? [] };
+  return {
+    now: o.when === 'now',
+    today: o.when === 'today' ? (o.slots ?? []) : [],
+    tomorrow: o.when === 'tomorrow' ? (o.slots ?? []) : [],
+  };
 }
 
 /** All languages with the city's own languages first (e.g. Greek, English in Athens), then the usual order. */

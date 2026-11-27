@@ -3,7 +3,7 @@ import { Alert, View } from 'react-native';
 import { router } from 'expo-router';
 import { Button, Card, Screen, ScreenHeader, SettingsRow, SettingsSection, Txt } from '@/components';
 import { useBoot } from '@/state/boot';
-import { setSheetPlaceLook, useSheetPlaceLook } from '@/state/look';
+import { setOpenLook, setSheetPlaceLook, useOpenLook, useSheetPlaceLook } from '@/state/look';
 import { usePlans } from '@/state/plans';
 import { useSafety } from '@/state/safety';
 import { colors, space } from '@/theme';
@@ -14,6 +14,7 @@ export default function Settings() {
   const on = Object.values(prefs).filter(Boolean).length;
   const { resetDemo } = useBoot();
   const placeLook = useSheetPlaceLook();
+  const openLook = useOpenLook();
   const { plans, statusOf, simulateHostAccepts } = usePlans();
   const pending = plans.filter((p) => statusOf(p) === 'requested').length;
   const [confirmReset, setConfirmReset] = useState(false);
@@ -81,6 +82,30 @@ export default function Settings() {
           onPress={() => setSheetPlaceLook(v)}
           right={
             placeLook === v ? (
+              <Txt variant="label" color={colors.green}>
+                On
+              </Txt>
+            ) : undefined
+          }
+        />
+      ))}
+      {/* To compare: how you pick your times on "Open to plans" (also in My profile). Opens the screen. */}
+      {(
+        [
+          ['A', 'Open to plans - A', 'Grid: Now, then Today / Tomorrow × parts of the day'],
+          ['B', 'Open to plans - B', 'One row of time chips in order: Now, Today evening…'],
+        ] as const
+      ).map(([v, title, sub]) => (
+        <SettingsRow
+          key={v}
+          title={title}
+          sub={sub}
+          onPress={() => {
+            setOpenLook(v);
+            router.push('/available');
+          }}
+          right={
+            openLook === v ? (
               <Txt variant="label" color={colors.green}>
                 On
               </Txt>

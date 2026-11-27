@@ -20,9 +20,12 @@ export function AvatarStack({
   hostId,
   plain,
   meColor = colors.accent,
+  nameMax,
 }: {
   people: Person[];
   max?: number;
+  /** Only this many names, then "+N" for everyone else, on one line ("Maya, Leo +3"). */
+  nameMax?: number;
   /** Kept for callers; names never carry a host marker. */
   hostId?: string;
   /** Names in regular weight instead of bold. */
@@ -32,7 +35,9 @@ export function AvatarStack({
 }) {
   const shown = people.slice(0, max);
   const extra = people.length - shown.length;
-  const names = goingNames(shown) + (extra > 0 ? ` +${extra}` : '');
+  const named = people.slice(0, nameMax ?? max);
+  const unnamed = people.length - named.length;
+  const names = goingNames(named) + (unnamed > 0 ? ` +${unnamed}` : '');
   return (
     <View style={styles.stackRow}>
       <View style={styles.stack}>
@@ -52,7 +57,11 @@ export function AvatarStack({
           </View>
         )}
       </View>
-      <Txt variant="label" style={[{ flex: 1 }, plain && { fontFamily: fonts.sans }]}>
+      <Txt
+        variant="label"
+        numberOfLines={nameMax ? 1 : undefined}
+        style={[{ flex: 1 }, plain && { fontFamily: fonts.sans }]}
+      >
         {names}
       </Txt>
     </View>
@@ -118,10 +127,13 @@ export function PointNote({
   status,
   hostName,
   lockedText,
+  arrowEnd,
 }: {
   plan: Plan;
   status: MyStatus;
   hostName?: string;
+  /** Once you're in: no pin at the start, the navigation arrow at the end instead (map plan sheet). */
+  arrowEnd?: boolean;
   /** Replaces the text while locked ("Exact point is shared once accepted" on Request sent). */
   lockedText?: string;
 }) {
@@ -150,10 +162,11 @@ export function PointNote({
       style={({ pressed }) => [styles.pointNote, pressed && { opacity: 0.6 }]}
     >
       {/* Link blue, so it's clear it can be tapped. */}
-      <Icon name="map-pin" size={14} color={colors.link} />
+      {!arrowEnd && <Icon name="map-pin" size={14} color={colors.link} />}
       <Txt variant="caption" color={colors.link} style={[{ flexShrink: 1 }, styles.underline]}>
         {plan.exactPoint}
       </Txt>
+      {arrowEnd && <Icon name="navigation" size={13} color={colors.link} />}
     </Pressable>
   );
 }

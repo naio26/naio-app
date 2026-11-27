@@ -19,7 +19,7 @@ export const people: Person[] = [
     ],
     avatarColor: '#C8694F',
     // 0.6 km · now
-    available: { when: 'now', slots: [], stay: `In ${demoCity.name} for 4 days`, location: { latitude: 37.9792, longitude: 23.7402 } },
+    available: { now: true, today: [], tomorrow: [], stay: `In ${demoCity.name} for 4 days`, location: { latitude: 37.9792, longitude: 23.7402 } },
   },
   {
     id: 'leo',
@@ -107,10 +107,11 @@ export const people: Person[] = [
       { code: 'FR', name: 'French', level: 'Conversational' },
     ],
     avatarColor: '#8A6A9A',
-    // 3.7 km (Kallithea) · today, afternoon and evening
+    // 3.7 km (Kallithea) · today afternoon and evening + tomorrow evening
     available: {
-      when: 'today',
-      slots: ['afternoon', 'evening'],
+      now: false,
+      today: ['afternoon', 'evening'],
+      tomorrow: ['evening'],
       stay: `New in ${demoCity.name}`,
       location: { latitude: 37.955, longitude: 23.701 },
     },
@@ -133,8 +134,9 @@ export const people: Person[] = [
     avatarColor: '#B0705A',
     // 8.6 km (Piraeus) · tomorrow morning
     available: {
-      when: 'tomorrow',
-      slots: ['morning'],
+      now: false,
+      today: [],
+      tomorrow: ['morning'],
       stay: `In ${demoCity.name} for 2 weeks`,
       location: { latitude: 37.942, longitude: 23.6465 },
     },
@@ -155,10 +157,11 @@ export const people: Person[] = [
       { code: 'EN', name: 'English', level: 'Fluent' },
     ],
     avatarColor: '#6F7FA0',
-    // 12.8 km (Kifisia) · tomorrow morning and evening
+    // 12.8 km (Kifisia) · today evening + tomorrow morning and evening
     available: {
-      when: 'tomorrow',
-      slots: ['morning', 'evening'],
+      now: false,
+      today: ['evening'],
+      tomorrow: ['morning', 'evening'],
       stay: `New in ${demoCity.name}`,
       location: { latitude: 38.0736, longitude: 23.8114 },
     },

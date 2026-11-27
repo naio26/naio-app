@@ -10,7 +10,7 @@ import {
   ScreenHeader,
   Txt,
 } from '@/components';
-import { DISTANCES, MOODS } from '@/data/catalog';
+import { ANY_KM, DEFAULT_KM, DISTANCES, MOODS } from '@/data/catalog';
 import { AGE_RANGES, Filters, Gender, GENDERS, TimeWindow } from '@/data/types';
 import { useCity } from '@/state/city';
 import { NO_FILTERS, useFilters } from '@/state/filters';
@@ -34,7 +34,12 @@ export default function FiltersSheet() {
     : [0, AGE_RANGES.length - 1];
   const set = (changes: Partial<Filters>) => setDraft((d) => ({ ...d, ...changes }));
 
-  const distanceHint = `Up to ${draft.maxKm} km from you · plans and people`;
+  const distanceHint =
+    draft.maxKm === null
+      ? `Not set · showing plans and people up to ${DEFAULT_KM} km`
+      : draft.maxKm === ANY_KM
+        ? 'Any distance, even more than 30 km'
+        : `Up to ${draft.maxKm} km · includes every closer plan`;
 
   return (
     <Screen
@@ -80,14 +85,14 @@ export default function FiltersSheet() {
         </Txt>
         <View style={styles.boxes}>
           {DISTANCES.map((d) => {
-            // One distance is always chosen (20 km by default).
-            const on = draft.maxKm === d.maxKm;
+            // Choosing one includes every closer box. None chosen = 20 km automatically.
+            const on = draft.maxKm !== null && d.maxKm <= draft.maxKm;
             return (
               <Pressable
                 key={d.label}
                 accessibilityRole="button"
                 accessibilityState={{ selected: on }}
-                onPress={() => set({ maxKm: d.maxKm })}
+                onPress={() => set({ maxKm: draft.maxKm === d.maxKm ? null : d.maxKm })}
                 style={[styles.box, styles.distance, on && styles.boxOn]}
               >
                 <Txt style={[styles.boxTitle, on && styles.boxTitleOn]}>{d.label}</Txt>
@@ -254,7 +259,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   boxOn: { backgroundColor: colors.accentSoft, borderColor: colors.accentLine, borderWidth: 1.5 },
-  distance: { flex: 1, height: 50 },
+  distance: { width: '31%', height: 50 },
   boxTitle: { fontFamily: fonts.sans, fontSize: 14, color: colors.dark },
   boxTitleOn: { fontFamily: fonts.sansBold, color: colors.accent },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },

@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
-import { MIN_INTERESTS } from '@/data/catalog';
+import { MIN_INTERESTS, upgradeAvailability } from '@/data/catalog';
 import { DocType, MyProfile } from '@/data/types';
 import { KEYS, useSaved } from './storage';
 
@@ -34,9 +34,11 @@ const empty: MyProfile = {
 };
 
 /** Profiles saved by older versions: "Living locally" and "Local" are now called "I’m a local". */
+// Availability saved as one day ({ when, slots }) becomes now / today / tomorrow (several at once).
 function upgrade(p: MyProfile): MyProfile {
   const old = p.situation as string | undefined;
-  return old === 'Living locally' || old === 'Local' ? { ...p, situation: 'I’m a local' } : p;
+  const situation = old === 'Living locally' || old === 'Local' ? 'I’m a local' : p.situation;
+  return { ...p, situation, available: upgradeAvailability(p.available) };
 }
 
 const ProfileContext = createContext<ProfileState | null>(null);

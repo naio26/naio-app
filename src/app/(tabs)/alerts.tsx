@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import { Icon, type IconName } from '@/components';
-import { Avatar, Card, Screen, Txt } from '@/components';
+import { Avatar, HelperNote, Screen, Txt } from '@/components';
 import { ago } from '@/data/time';
 import { Notice } from '@/data/types';
 import { useAlerts } from '@/state/alerts';
@@ -38,12 +38,8 @@ export default function AlertsTab() {
         ))}
         {shown.length === 0 && <Txt style={{ paddingVertical: space.lg }}>You’re all caught up.</Txt>}
       </View>
-      <Card tone="muted" style={styles.noNoise}>
-        <Txt style={styles.noNoiseTitle}>No noise.</Txt>
-        <Txt variant="small" style={{ fontSize: 14 }}>
-          Only joins, relevant nearby plans and plan-chat messages.
-        </Txt>
-      </Card>
+      {/* Small and discreet, no box: exactly like "Plans don’t live forever" in My plans. */}
+      <HelperNote icon="bell-off" title="No noise." text="Only joins, relevant nearby plans and plan-chat messages." />
     </Screen>
   );
 }
@@ -115,6 +111,4 @@ const styles = StyleSheet.create({
   },
   icon: { width: 56, alignItems: 'center' }, // same width as an avatar, so texts line up
   unread: { width: 10, height: 10, borderRadius: 5, backgroundColor: colors.brandDot },
-  noNoise: { padding: 24, gap: 6 },
-  noNoiseTitle: { fontFamily: fonts.serifBold, fontSize: 28, lineHeight: 34, color: colors.dark },
 });

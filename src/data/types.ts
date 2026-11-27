@@ -69,10 +69,10 @@ export type PlanDay = 'today' | 'tomorrow';
 export type DaySlot = 'morning' | 'afternoon' | 'evening';
 
 /**
- * When someone is open to plans: "now", or today / tomorrow with one or more slots.
- * Shown as "Available now", "Available today · afternoon", "Available tomorrow · morning & evening".
+ * When someone is open to plans: now, and/or any parts of today and tomorrow (several at once).
+ * Shown on one line: "Available now · today evening · tomorrow morning & afternoon".
  */
-export type Availability = { when: 'now'; slots: [] } | { when: PlanDay; slots: DaySlot[] };
+export type Availability = { now: boolean; today: DaySlot[]; tomorrow: DaySlot[] };
 
 export type Plan = {
   id: string;
@@ -187,7 +187,7 @@ export type TimeWindow =
   | 'tomorrow-evening';
 
 export type Filters = {
-  maxKm: number; // one of DISTANCES (1, 5, 10, 20 km), 20 by default
+  maxKm: number | null; // one of DISTANCES; null = none chosen (then 20 km applies, see effectiveKm)
   moods: string[]; // empty = any mood
   languages: string[]; // empty = any language
   when: TimeWindow[]; // empty = any time
