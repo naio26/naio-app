@@ -92,6 +92,8 @@ export type Plan = {
   moods: string[];
   /** How long it lasts, in hours: 1, 2, 3 or 4 (= "4 h+"). Older saved plans have none: 2. */
   durationH?: number;
+  /** Age range of the people the host wants in the plan. Undefined/null = any age. */
+  ages?: AgeSpan | null;
   location: { latitude: number; longitude: number }; // approximate
   cancelled?: boolean; // cancelled plans vanish from the map; My plans shows them greyed out
   removed?: boolean; // a cancelled plan you swiped away in My plans
@@ -121,7 +123,11 @@ export type PlanDraft = {
   exactPoint: string; // shared only with people you accept
   note: string;
   moods: string[];
+  ages: AgeSpan | null; // who the host wants in the plan, null = any age
 };
+
+/** From–to on the official age ranges (both included), e.g. 25-30 to 31-39. */
+export type AgeSpan = { from: AgeRange; to: AgeRange };
 
 /** Someone asking to join one of YOUR plans (39–41). */
 export type JoinRequest = {
@@ -193,5 +199,5 @@ export type Filters = {
   when: TimeWindow[]; // empty = any time
   genders: Gender[]; // host's gender, empty = anyone
   /** Age ranges of the people you want to make plans with, from–to (both included). null = any age. */
-  ages: { from: AgeRange; to: AgeRange } | null;
+  ages: AgeSpan | null;
 };

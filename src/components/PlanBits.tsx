@@ -182,6 +182,8 @@ export function PlanActions({
   going,
   secondary,
   hostingNote = true,
+  clash,
+  onClash,
 }: {
   plan: Plan;
   status: MyStatus;
@@ -191,6 +193,9 @@ export function PlanActions({
   secondary?: { title: string; onPress: () => void };
   /** Show "You're hosting this plan." above the buttons (the details page shows it in the page instead). */
   hostingNote?: boolean;
+  /** Another plan of yours at the same time: "Join" never joins directly, it asks first (onClash). */
+  clash?: Plan;
+  onClash?: (p: Plan) => void;
 }) {
   const { requestJoin, cancelRequest, leavePlan } = usePlans();
   const [busy, setBusy] = useState(false);
@@ -199,6 +204,7 @@ export function PlanActions({
   const full = going >= plan.capacity;
 
   const join = async () => {
+    if (clash && onClash) return onClash(clash);
     setBusy(true);
     await requestJoin(plan.id);
     setBusy(false);
@@ -298,7 +304,7 @@ export function HostingNote() {
 }
 
 /** Small label above a plan title: "Request sent", "You're in", or "★ Your plan" (light yellow, never a day or time). */
-export function PlanBadge({ status }: { status: MyStatus }) {
+export function PlanBadge({ status, hosting }: { status: MyStatus; hosting?: boolean }) {
   const own = useMineColours();
   if (status === 'none') return null;
   const look = {
@@ -306,11 +312,21 @@ export function PlanBadge({ status }: { status: MyStatus }) {
     accepted: { text: 'You’re in', fg: colors.green, icon: 'check' as const },
     host: { text: 'Your plan', fg: own.fg, icon: 'star' as const },
   }[status];
-  return (
+  const badge = (
     // Your own plan: golden bold text on the light yellow fill, only "Your plan" (never a day or time).
     <View style={[styles.badge, status === 'host' && [styles.badgeMine, { backgroundColor: own.bg }]]}>
       <Icon name={look.icon} size={14} color={look.fg} />
       <Txt style={[styles.badgeText, { color: look.fg }]}>{look.text}</Txt>
+    </View>
+  );
+  if (!(hosting && status === 'host')) return badge;
+  // Your plan: "You're hosting" right next to the label, smaller, no second star.
+  return (
+    <View style={styles.badgeRow}>
+      {badge}
+      <Txt variant="caption" color={own.fg}>
+        You’re hosting
+      </Txt>
     </View>
   );
 }
@@ -335,6 +351,7 @@ const styles = StyleSheet.create({
   moreText: { fontFamily: fonts.sansBold, fontSize: 12, color: colors.muted },
   actions: { gap: 10 },
   hosting: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 4 },
+  badgeRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   pair: { flexDirection: 'row', gap: 10 },
   waiting: { flexDirection: 'row', alignItems: 'center', gap: 10, minHeight: 44 },
   badge: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', gap: 6, marginBottom: space.xs },

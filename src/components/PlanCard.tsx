@@ -56,9 +56,12 @@ export function PlanCard({
         pressed && { opacity: 0.8 },
       ]}
     >
-      <View style={[styles.art, compact && { width: 64 }, { backgroundColor: tint }]} />
+      <View style={[styles.art, compact && { width: 44 }, { backgroundColor: tint }]} />
       <View style={[styles.body, compact && styles.bodyCompact]}>
-        <Txt style={[styles.eyebrow, ink ? { color: ink } : null]}>{eyebrow}</Txt>
+        {/* Always ONE line ("TOMORROW · 10:00 AM – 1:00 PM"); on a very narrow phone it shrinks a little. */}
+        <Txt style={[styles.eyebrow, ink ? { color: ink } : null]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
+          {eyebrow}
+        </Txt>
         <Txt style={[styles.title, compact && styles.titleCompact, ink ? { color: ink } : null]} numberOfLines={2}>
           {title}
         </Txt>
@@ -81,7 +84,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     overflow: 'hidden',
   },
-  art: { width: 104 },
+  // Narrow block, so the time line always fits on one line.
+  art: { width: 56 },
   compact: { minHeight: 96 },
   bodyCompact: { paddingVertical: 12, gap: 4 },
   titleCompact: { fontSize: 17, lineHeight: 22 },

@@ -14,6 +14,8 @@ type Props = {
   background?: string;
   edges?: Edge[];
   contentStyle?: StyleProp<ViewStyle>;
+  /** Drawn over the whole screen (a BottomSheet), not inside the scrolling content. */
+  overlay?: ReactNode;
 };
 
 /** Cream page with safe areas, optional scroll and a bottom action area. */
@@ -26,6 +28,7 @@ export function Screen({
   background = colors.cream,
   edges = ['top', 'bottom'],
   contentStyle,
+  overlay,
 }: Props) {
   const inner = [padded && styles.padded, contentStyle];
   return (
@@ -46,6 +49,7 @@ export function Screen({
         )}
         {footer && <View style={styles.footer}>{footer}</View>}
       </KeyboardAvoidingView>
+      {overlay}
     </SafeAreaView>
   );
 }

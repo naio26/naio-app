@@ -45,3 +45,4 @@ export { BalancedTags } from './BalancedTags';
 export { PersonSummary } from './PersonSummary';
 export { FromLine, PersonCard, ProfileBlock, profileText } from './PersonCard';
 export { PlanSheet } from './PlanSheet';
+export { OverlapChoice } from './OverlapChoice';

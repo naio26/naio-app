@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   Avatar,
   BackButton,
   BottomSheet,
   GoingLine,
-  HostingNote,
   InfoBox,
+  OverlapChoice,
   PlanActions,
   PersonCard,
   PlanBadge,
@@ -18,6 +18,7 @@ import {
 } from '@/components';
 import { areaText, languagesText } from '@/data/catalog';
 import { planWhen, plansOverlap } from '@/data/time';
+import { Plan } from '@/data/types';
 import { useCity } from '@/state/city';
 import { usePeople } from '@/state/people';
 import { usePlan, usePlans } from '@/state/plans';
@@ -29,7 +30,9 @@ export default function PlanDetails() {
   const insets = useSafeAreaInsets();
   const plan = usePlan(id);
   const city = useCity();
-  const { plans, statusOf, membersOf } = usePlans();
+  const { plans, statusOf, membersOf, requestJoin } = usePlans();
+  // Join tapped while it overlaps with one of your plans: keep yours, or leave/cancel it and join this one.
+  const [asking, setAsking] = useState<Plan | null>(null);
   const memberIds = plan ? membersOf(plan) : [];
   const members = usePeople(memberIds);
   // Tap someone's circle in "Who's going": their short profile in a sheet.
@@ -47,7 +50,11 @@ export default function PlanDetails() {
   const mine = status === 'host';
 
   // No "Meet near" and no "Exact meeting point" row: the place (and, once you're in, the exact point) is under the title.
-  const rows = [{ label: plan.languages.length > 1 ? 'Languages' : 'Language', value: languagesText(plan.languages) }];
+  const rows = [
+    { label: plan.languages.length > 1 ? 'Languages' : 'Language', value: languagesText(plan.languages) },
+    // The age range the host chose (only when they chose one).
+    ...(plan.ages ? [{ label: 'Age range', value: `${plan.ages.from} to ${plan.ages.to}` }] : []),
+  ];
 
   return (
     <View style={styles.root}>
@@ -66,7 +73,7 @@ export default function PlanDetails() {
             <Txt>
               {areaText(plan.area, city.name)} · {plan.distanceKm} km
             </Txt>
-            <PointNote plan={plan} status={status} hostName={host?.firstName} />
+            <PointNote plan={plan} status={status} hostName={host?.firstName} arrowEnd />
           </View>
         </View>
 
@@ -119,7 +126,6 @@ export default function PlanDetails() {
             ))}
           </View>
 
-          {status === 'host' && <HostingNote />}
           {status === 'requested' && (
             <InfoBox
               title="Waiting for the host"
@@ -137,8 +143,26 @@ export default function PlanDetails() {
           </Txt>
         )}
         {status !== 'host' && <VerifiedBadge />}
-        <PlanActions plan={plan} status={status} host={host} going={memberIds.length} hostingNote={false} />
+        <PlanActions
+          plan={plan}
+          status={status}
+          host={host}
+          going={memberIds.length}
+          hostingNote={false}
+          clash={clash}
+          onClash={setAsking}
+        />
       </View>
+
+      <OverlapChoice
+        clash={asking}
+        action="join"
+        onClose={() => setAsking(null)}
+        onContinue={async () => {
+          await requestJoin(plan.id);
+          router.push({ pathname: '/plan/[id]/requested', params: { id: plan.id } });
+        }}
+      />
 
       <BottomSheet visible={!!shown} onClose={() => setShownId(null)} backdrop grabber={false}>
         {shown && <PersonCard person={shown} host={shown.id === plan.hostId} />}

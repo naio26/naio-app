@@ -51,7 +51,7 @@ export function PlanSheet({ plan }: { plan: Plan }) {
   return (
     <View style={{ gap: space.lg }}>
       <View style={{ gap: 6 }}>
-        <PlanBadge status={status} />
+        <PlanBadge status={status} hosting />
         {/* More room between the day/time and the title. */}
         {/* Your own plan: golden. A plan you're in: green, like "You're in". */}
         <Txt variant="eyebrow" style={[{ letterSpacing: 1.2, marginBottom: 6 }, mine && { color: colors.mineInk }, joined && { color: colors.green }]}>
@@ -104,6 +104,7 @@ export function PlanSheet({ plan }: { plan: Plan }) {
           status={status}
           host={host}
           going={going}
+          hostingNote={false}
           secondary={{ title: 'View details', onPress: details }}
         />
       ) : status === 'accepted' ? (

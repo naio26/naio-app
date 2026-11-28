@@ -13,8 +13,8 @@ import {
 import { router, useLocalSearchParams } from 'expo-router';
 import { Icon, type IconName } from '@/components';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Avatar, BackButton, Txt } from '@/components';
-import { formatTime, planWhen, startsIn } from '@/data/time';
+import { Avatar, BackButton, PlanBadge, Txt } from '@/components';
+import { dayKindLabel, formatTime, startsIn, timeRange } from '@/data/time';
 import { Message, Person } from '@/data/types';
 import { useChat } from '@/state/chat';
 import { usePeople } from '@/state/people';
@@ -63,18 +63,22 @@ export default function PlanChat() {
           onPress={viewPlan}
           style={({ pressed }) => [{ flex: 1, gap: 4 }, pressed && { opacity: 0.6 }]}
         >
-          {/* Always the full title, on two lines if needed: never cut with "…". */}
-          <Txt style={styles.title}>{plan.title}</Txt>
+          {/* Your plan: the ★ "Your plan" label with "You're hosting" next to it, small. */}
+          {status === 'host' && <PlanBadge status="host" hosting />}
+          {/* The title on ONE line: it shrinks a little if it's long. */}
+          <Txt style={styles.title} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
+            {plan.title}
+          </Txt>
+          {/* Day and time together (the time range never breaks, so "PM" never ends up alone),
+              then who's going and the languages. */}
           <View style={styles.meta}>
             <View style={styles.dot} />
-            {/* Never cut: wraps if the time range is long. */}
             <Txt variant="small" style={{ flex: 1 }}>
-              {memberIds.length} going · {planWhen(plan).replace(' · ', ' ')}
+              {dayKindLabel(plan)} · {timeRange(plan).replace(/ /g, '\u00A0')}
             </Txt>
           </View>
-          {/* The languages on their own line. */}
           <Txt variant="small" style={styles.langs}>
-            {languagesText(plan.languages)}
+            {memberIds.length} going · {languagesText(plan.languages)}
           </Txt>
         </Pressable>
         <Pressable accessibilityRole="button" hitSlop={10} onPress={viewPlan}>
@@ -198,7 +202,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
-  title: { fontFamily: fonts.serif, fontSize: 24, lineHeight: 30, color: colors.dark },
+  title: { fontFamily: fonts.serif, fontSize: 21, lineHeight: 27, color: colors.dark },
   meta: { flexDirection: 'row', alignItems: 'flex-start', gap: 6 },
   langs: { paddingLeft: 13 }, // lined up with the text after the green dot
   dot: { width: 7, height: 7, borderRadius: 4, backgroundColor: colors.green, marginTop: 6 },

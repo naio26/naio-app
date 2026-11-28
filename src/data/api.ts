@@ -200,6 +200,7 @@ function applyDraft(plan: Plan, d: PlanDraft): Plan {
     durationH: d.duration,
     capacity: Math.min(d.spots + 1, MAX_GROUP),
     moods: d.moods,
+    ages: d.ages,
     location: area.location,
     distanceKm: Math.max(0.2, toKm(area.location, ME)),
   };

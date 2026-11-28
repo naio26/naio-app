@@ -5,13 +5,15 @@ import { DEFAULT_DURATION, DURATIONS, MAX_GROUP, MAX_SPOTS, MIN_SPOTS, MOODS } f
 import { useCity } from '@/state/city';
 import { formatTime, nowHHMM, planWhen, plansOverlap, timeOptions, toMinutes } from '@/data/time';
 import { usePlans } from '@/state/plans';
-import { Plan, PlanDay, PlanDraft } from '@/data/types';
+import { AGE_RANGES, Plan, PlanDay, PlanDraft } from '@/data/types';
 import { colors, fonts, radius, space } from '@/theme';
 import { BackButton } from './BackButton';
 import { Button } from './Button';
 import { Chip } from './Chip';
 import { Input } from './Input';
 import { LanguagePicker } from './LanguagePicker';
+import { OverlapChoice } from './OverlapChoice';
+import { RangeSlider } from './RangeSlider';
 import { Screen } from './Screen';
 import { Txt } from './Txt';
 
@@ -33,6 +35,7 @@ export function emptyDraft(): PlanDraft {
     exactPoint: '',
     note: '',
     moods: [],
+    ages: null,
   };
 }
 
@@ -48,6 +51,7 @@ export function draftFromPlan(p: Plan): PlanDraft {
     exactPoint: p.exactPoint,
     note: p.description,
     moods: p.moods,
+    ages: p.ages ?? null,
   };
 }
 
@@ -112,16 +116,30 @@ export function PlanForm({
     d.moods.length === 0 && 'a mood',
   ].filter(Boolean) as string[];
 
-  const submit = async () => {
+  const save = async () => {
     setSaving(true);
     await onSubmit(d);
     setSaving(false);
   };
+  // Overlapping one of your plans: never posted directly. You choose to keep your current plan or swap.
+  const [asking, setAsking] = useState<Plan | null>(null);
+  const submit = () => (clash ? setAsking(clash) : save());
+  const ageValue: [number, number] = d.ages
+    ? [AGE_RANGES.indexOf(d.ages.from), AGE_RANGES.indexOf(d.ages.to)]
+    : [0, AGE_RANGES.length - 1];
 
   return (
     <Screen
       scroll
       contentStyle={styles.content}
+      overlay={
+        <OverlapChoice
+          clash={asking}
+          action={planId ? 'save' : 'post'}
+          onClose={() => setAsking(null)}
+          onContinue={save}
+        />
+      }
       footer={
         <View style={{ gap: 8 }}>
           {missing.length > 0 && (
@@ -206,6 +224,17 @@ export function PlanForm({
       <Field label="Languages" sub="Pick one or more languages.">
         {/* Same as Filters → Language: the city's suggested languages, then "+ Add another language". */}
         <LanguagePicker size="sm" selected={d.languages} onChange={(languages) => set({ languages })} />
+      </Field>
+
+      {/* Same slider as Filters → Age range: the people you want in the plan (all = any age). */}
+      <Field label="Age range" sub={d.ages ? `People aged ${d.ages.from} to ${d.ages.to}` : 'People of any age'}>
+        <RangeSlider
+          steps={AGE_RANGES}
+          value={ageValue}
+          onChange={([a, b]) =>
+            set({ ages: a === 0 && b === AGE_RANGES.length - 1 ? null : { from: AGE_RANGES[a], to: AGE_RANGES[b] } })
+          }
+        />
       </Field>
 
       <Field

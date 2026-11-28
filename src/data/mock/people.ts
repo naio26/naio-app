@@ -166,4 +166,30 @@ export const people: Person[] = [
       location: { latitude: 38.0736, longitude: 23.8114 },
     },
   },
+  {
+    id: 'tomas',
+    firstName: 'Tomás',
+    initials: 'T',
+    ageRange: '25-30',
+    gender: 'Male',
+    verified: true,
+    from: 'Buenos Aires, Argentina',
+    situation: 'Travelling solo',
+    about: 'Backpacking for a month. Happy to join anything outdoors, or a long lunch.',
+    interests: ['Nature', 'Adventure', 'Photography'],
+    languages: [
+      { code: 'ES', name: 'Spanish', level: 'Native' },
+      { code: 'EN', name: 'English', level: 'Fluent' },
+    ],
+    avatarColor: '#5F8A7A',
+    // 1.8 km (Pangrati) · a long availability, to see how it wraps:
+    // today afternoon and evening + tomorrow morning and afternoon
+    available: {
+      now: false,
+      today: ['afternoon', 'evening'],
+      tomorrow: ['morning', 'afternoon'],
+      stay: `In ${demoCity.name} for 10 days`,
+      location: { latitude: 37.9685, longitude: 23.7465 },
+    },
+  },
 ];
