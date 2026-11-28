@@ -1,0 +1,76 @@
+import { useMemo, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { router } from 'expo-router';
+import { Button, CodeBadge, OptionRow, Screen, ScreenHeader, SearchField, Txt } from '@/components';
+import { LANGUAGES, languagesFor, POPULAR_LANGUAGES } from '@/data/catalog';
+import { Language } from '@/data/types';
+import { useCity } from '@/state/city';
+import { useProfile } from '@/state/profile';
+import { space } from '@/theme';
+
+// Screen 16 — pick the languages you speak. Levels come next (17).
+export default function Languages() {
+  const { profile, update } = useProfile();
+  const city = useCity();
+  const [query, setQuery] = useState('');
+  const selected = profile.languages;
+
+  const list = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    // "Popular near you": the city's languages first.
+    if (!q) return languagesFor(city.languages).slice(0, POPULAR_LANGUAGES);
+    return LANGUAGES.filter((l) => l.name.toLowerCase().includes(q) || l.code.toLowerCase() === q);
+  }, [query, city.languages]);
+
+  const toggle = (lang: Language) => {
+    const isOn = selected.some((l) => l.code === lang.code);
+    update({ languages: isOn ? selected.filter((l) => l.code !== lang.code) : [...selected, { ...lang }] });
+  };
+
+  // Languages chosen through search stay visible on top, even when the search is cleared.
+  const extra = query ? [] : selected.filter((s) => !list.some((l) => l.code === s.code));
+
+  return (
+    <Screen
+      scroll
+      header={<ScreenHeader eyebrow="Your profile" title="Languages you speak" />}
+      contentStyle={styles.content}
+      footer={
+        <Button
+          title={selected.length ? 'Continue' : 'Choose at least one'}
+          arrow
+          disabled={!selected.length}
+          onPress={() => router.push('/setup/language-levels')}
+        />
+      }
+    >
+      <SearchField placeholder="Search languages" value={query} onChangeText={setQuery} />
+
+      <Txt variant="caption" style={styles.heading}>
+        {query ? 'Results' : 'Popular near you'}
+      </Txt>
+
+      <View>
+        {[...extra, ...list].map((l) => {
+          const on = selected.some((s) => s.code === l.code);
+          return (
+            <OptionRow
+              key={l.code}
+              label={l.name}
+              selected={on}
+              idleIcon="plus"
+              leading={<CodeBadge code={l.code} />}
+              onPress={() => toggle(l)}
+            />
+          );
+        })}
+        {list.length === 0 && <Txt style={{ paddingVertical: space.lg }}>No language called “{query}” yet.</Txt>}
+      </View>
+    </Screen>
+  );
+}
+
+const styles = StyleSheet.create({
+  content: { paddingTop: space.xl, paddingBottom: space.xl, gap: space.md },
+  heading: { letterSpacing: 1.6, textTransform: 'uppercase', marginTop: space.md, marginBottom: space.xs },
+});
